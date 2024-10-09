@@ -26,7 +26,7 @@
             android:layout_weight="1"
             android:background="#D8C5FD"
             android:fontFamily="serif"
-            android:text="Welcome! "
+            android:text="Welcome!"
             android:textAlignment="center"
             android:textColor="#4F4545"
             android:textSize="48sp"
@@ -76,7 +76,7 @@
             <!-- Second Column of First Row -->
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/userNameText"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -87,7 +87,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/userNameTextViewId"
+                android:id="@+id/userNameDisplay"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
@@ -104,7 +104,7 @@
             <!-- First Column of Second Row -->
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/userRoleText"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
@@ -115,11 +115,13 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/userRoleTextViewId"
+                android:id="@+id/userRoleDisplay"
                 android:layout_width="0dp"
+                android:text="Attendee"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="visible" />
 
             <!-- Second Column of Second Row -->
 

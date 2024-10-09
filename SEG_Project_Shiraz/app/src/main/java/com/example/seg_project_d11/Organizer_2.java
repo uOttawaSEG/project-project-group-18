@@ -16,7 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Organizer_2 extends AppCompatActivity {
-    Button goBack; //submit
+    Button goBack, submit;
     TextView orgName, orgEmail, orgPassword, orgConfirmPassword;
     String organizationName, organizerEmail, organizerPassword, organizerConfirmPassword;
     //ActivityResultLauncher<Intent> Organizer_1Launcher; //homepageLauncher
@@ -31,7 +31,7 @@ public class Organizer_2 extends AppCompatActivity {
             return insets;
         });
         goBack = findViewById(R.id.backButton_o2);
-        //submit= findViewById(R.id.submit);
+        submit= findViewById(R.id.submitButton);
 
         //Associates each text field to TextView variable
         orgName= findViewById(R.id.organizationName);
@@ -57,6 +57,18 @@ public class Organizer_2 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        /*
+        submit.setOnClickListener(new View.OnClickListener() {
+          //  @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Organizer_2.this, Welcome.class);
+                startActivity(intent);
+            }
+        });*/
+
+
+
 
         /* //Implement with team
         submit = findViewById(R.id.submitButton);

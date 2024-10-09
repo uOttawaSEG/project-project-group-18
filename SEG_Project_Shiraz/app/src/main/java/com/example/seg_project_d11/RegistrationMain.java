@@ -17,6 +17,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class RegistrationMain extends AppCompatActivity {
     Button goToOrgReg;
+    Button goToAttendeeReg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,12 +30,25 @@ public class RegistrationMain extends AppCompatActivity {
             return insets;
         });
         goToOrgReg = findViewById(R.id.amOrganizer);
+        goToAttendeeReg = findViewById(R.id.amAttendee);
+
         //For goToOrgReg
         goToOrgReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegistrationMain.this, Organizer_1.class);
                 startActivity(intent);
+            }
+        });
+
+        //for goToAttendeeReg button
+        goToAttendeeReg.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(RegistrationMain.this, Attendee_1.class);
+                startActivity(intent);
+
             }
         });
 

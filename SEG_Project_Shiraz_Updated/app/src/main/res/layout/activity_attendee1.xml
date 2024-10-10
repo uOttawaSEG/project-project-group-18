@@ -79,7 +79,7 @@
             android:text="Phone number" />
 
         <EditText
-            android:id="@+id/organizerPhone"
+            android:id="@+id/attendeePhone"
             android:layout_width="299dp"
             android:layout_height="wrap_content"
             android:ems="10"

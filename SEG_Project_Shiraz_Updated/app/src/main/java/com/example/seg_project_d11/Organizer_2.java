@@ -31,7 +31,7 @@ public class Organizer_2 extends AppCompatActivity {
     //ViewModel initialization, hold user information in static variables
     OrganizationViewModel organizationViewModel;
 
-    //String array, holds the combination of all user input, used in the userInfo txt file
+    //String, holds the combination of all user input, used in the userInfo txt file
     String userInfo;
 
     @Override

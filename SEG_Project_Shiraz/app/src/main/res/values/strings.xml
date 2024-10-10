@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">SEG_Project_D11</string>
-    <string name="attendee_account_registration">Attendee Account Registration</string>
-    <string name="first_name">First name</string>
-    <string name="last_name">Last Name</string>
-    <string name="phone_number">Phone number</string>
-    <string name="address">Address</string>
-</resources>

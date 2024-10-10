@@ -58,14 +58,15 @@ public class Organizer_2 extends AppCompatActivity {
             }
         });
 
-        /*
+
         submit.setOnClickListener(new View.OnClickListener() {
           //  @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Organizer_2.this, Welcome.class);
+                Intent intent = new Intent(Organizer_2.this, Welcome_Organizer.class);
+                intent.putExtra("organizerEmail", organizerEmail); //gives the organizer username to welcome screen
                 startActivity(intent);
             }
-        });*/
+        });
 
 
 

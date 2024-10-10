@@ -36,7 +36,7 @@
             android:layout_height="25dp" />
 
         <EditText
-            android:id="@+id/organizationName"
+            android:id="@+id/attendeeName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -48,7 +48,7 @@
             android:layout_height="25dp" />
 
         <EditText
-            android:id="@+id/organizerEmail"
+            android:id="@+id/attendeeEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -60,7 +60,7 @@
             android:layout_height="25dp" />
 
         <EditText
-            android:id="@+id/organizerPassword"
+            android:id="@+id/attendeePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -73,7 +73,7 @@
             android:layout_height="25dp" />
 
         <EditText
-            android:id="@+id/organizerConfirmPassword"
+            android:id="@+id/attendeeConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"

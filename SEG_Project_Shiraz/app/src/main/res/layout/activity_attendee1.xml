@@ -5,14 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Organizer_1">
+    tools:context=".Attendee_1">
+
 
     <TextView
         android:id="@+id/userRoleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#527689EF"
-        android:text="Organizer Account Registration"
+        android:text="@string/attendee_account_registration"
         android:textAlignment="center"
         android:textSize="30dp"
         android:textStyle="bold"
@@ -36,48 +37,48 @@
             android:layout_height="25dp" />
 
         <EditText
-            android:id="@+id/organizerName"
+            android:id="@+id/attendeeName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:text="First name" />
+            android:text="@string/first_name" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="25dp" />
 
         <EditText
-            android:id="@+id/organizerLastName"
+            android:id="@+id/attendeeLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:text="Last Name" />
+            android:text="@string/last_name" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="25dp" />
 
         <EditText
-            android:id="@+id/organizerPhone"
+            android:id="@+id/attendeePhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="phone"
-            android:text="Phone number" />
+            android:text="@string/phone_number" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="25dp" />
 
         <EditText
-            android:id="@+id/organizerAddress"
+            android:id="@+id/attendeeAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPostalAddress"
-            android:text="Address" />
+            android:text="@string/address" />
 
         <Space
             android:layout_width="match_parent"
@@ -89,7 +90,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/backButton_o1"
+                android:id="@+id/backButton_01"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:backgroundTint="#3F51B5"

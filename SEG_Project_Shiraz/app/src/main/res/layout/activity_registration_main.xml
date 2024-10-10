@@ -34,7 +34,7 @@
             android:layout_height="15dp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/userNameText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="You are an..."

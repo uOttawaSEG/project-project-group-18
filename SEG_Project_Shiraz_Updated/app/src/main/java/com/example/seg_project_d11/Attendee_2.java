@@ -35,6 +35,8 @@ public class Attendee_2 extends AppCompatActivity {
 
     //String, holds the combination of all user input, used in the userInfo txt file
     String userInfo;
+//button that goes to welcomesceen
+    Button welcomeAttendee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,8 @@ public class Attendee_2 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
 
         //Initializes view model
         organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
@@ -67,6 +71,15 @@ public class Attendee_2 extends AppCompatActivity {
         attendEmail.setText(OrganizationViewModel.attendeeEmail);
         attendPassword.setText(OrganizationViewModel.attendeePassword);
 
+        welcomeAttendee = findViewById(R.id.submitButton);
+        welcomeAttendee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Attendee_2.this, WelcomeMain.class);
+                startActivity(intent);
+            }
+        });
+
         //On click activity for Back button
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +95,7 @@ public class Attendee_2 extends AppCompatActivity {
                 //goes back to Attendee_1 activity
                 Intent intent = new Intent(Attendee_2.this, Attendee_1.class);
                 startActivity(intent);
+
             }
         });
 

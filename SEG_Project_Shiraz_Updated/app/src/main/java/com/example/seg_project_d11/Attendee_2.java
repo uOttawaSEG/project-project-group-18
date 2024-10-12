@@ -35,6 +35,7 @@ public class Attendee_2 extends AppCompatActivity {
 
     //String, holds the combination of all user input, used in the userInfo txt file
     String userInfo;
+
 //button that goes to welcomesceen
     Button welcomeAttendee;
 
@@ -100,9 +101,9 @@ public class Attendee_2 extends AppCompatActivity {
         });
 
         //To be implemented once project is finalized
-        /*
-        submit = findViewById(R.id.submitButton);
-        submit.setOnClickListener(new View.OnClickListener() {
+
+        welcomeAttendee = findViewById(R.id.submitButton);
+        welcomeAttendee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -124,7 +125,7 @@ public class Attendee_2 extends AppCompatActivity {
                     allValid = false;
                 }
                 if (allValid){
-                    Intent intent = new Intent(Attendee_2.this, Homepage.class);
+                    Intent intent = new Intent(Attendee_2.this, WelcomeMain.class);
                     startActivity(intent);
                 }else{
                     //show a message to the user about fixing the errors
@@ -132,8 +133,6 @@ public class Attendee_2 extends AppCompatActivity {
                 }
             }
         });
-
-         */
 
     }
 

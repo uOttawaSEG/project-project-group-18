@@ -103,7 +103,7 @@ public class Attendee_1 extends AppCompatActivity {
                 //Tester, ensures the content of organizer name is correct, prints on logCat
                 Log.i("CREATION", OrganizationViewModel.attendeeName);
 
-                //Opens Organizer 2
+                //Opens Attendee 2
                 if (allValid){
                     Intent intent = new Intent(Attendee_1.this, Attendee_2.class);
                     startActivity(intent);

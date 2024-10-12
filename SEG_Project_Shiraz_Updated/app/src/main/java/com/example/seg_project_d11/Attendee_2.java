@@ -107,11 +107,6 @@ public class Attendee_2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-            //Stores the data of this page into the viewModel class's static variables
-                OrganizationViewModel.attendeeEmail = attendEmail.getText().toString().trim();
-                OrganizationViewModel.attendeePassword = attendPassword.getText().toString().trim();
-
-
                 //boolean variable to make sure all user inputs are valid before proceeding to next activity
                 boolean allValid = true;
 

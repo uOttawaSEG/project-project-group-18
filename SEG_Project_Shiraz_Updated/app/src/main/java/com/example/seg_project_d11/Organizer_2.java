@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -92,8 +93,27 @@ public class Organizer_2 extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Organizer_2.this, WelcomeMain.class);
-                startActivity(intent);
+
+                //boolean variable to make sure all user inputs are valid before proceeding to next activity
+                boolean allValid = true;
+
+                if (!UserValidator.validateEmail(OrganizationViewModel.organizerEmail)){
+                    orgEmail.setError("Invalid username! username must contain at least one letter and only letters, numbers and underscore are allowed.");
+                    allValid = false;
+                }
+
+                if (!UserValidator.validatePassword(OrganizationViewModel.organizerPassword)){
+                    orgPassword.setError("Invalid lastname! Only letters are allowed.");
+                    allValid = false;
+                }
+                if (allValid){
+                    Intent intent = new Intent(Organizer_2.this, WelcomeMain.class);
+                    startActivity(intent);
+                }else{
+                    //show a message to the user about fixing the errors
+                    Toast.makeText(Organizer_2.this, "Please correct the errors before proceeding.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 

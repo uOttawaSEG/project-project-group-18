@@ -43,6 +43,8 @@ public class WelcomeMain extends AppCompatActivity {
                 OrganizationViewModel.organizationName = null;
                 OrganizationViewModel.organizerEmail = null;
                 OrganizationViewModel.organizerPassword = null;
+                Intent intentLogout = new Intent(WelcomeMain.this, RegistrationMain.class);
+                startActivity(intentLogout);
             }
         });
 

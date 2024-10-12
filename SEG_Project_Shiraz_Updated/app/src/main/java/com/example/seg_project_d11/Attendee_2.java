@@ -27,6 +27,8 @@ public class Attendee_2 extends AppCompatActivity {
     Button goBack;
     // TO ADD: submit button
 
+    Button submit;
+
     //User input fields
     TextView attendEmail, attendPassword, attendConfirmPassword;
 
@@ -36,8 +38,6 @@ public class Attendee_2 extends AppCompatActivity {
     //String, holds the combination of all user input, used in the userInfo txt file
     String userInfo;
 
-//button that goes to welcomesceen
-    Button welcomeAttendee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class Attendee_2 extends AppCompatActivity {
         organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
 
         //initializes the Back and submit buttons
-        //submit= findViewById(R.id.submitButton);
+        submit= findViewById(R.id.submitButton);
         goBack = findViewById(R.id.backButton_o2);
 
         //initializes the userInfo string
@@ -72,12 +72,32 @@ public class Attendee_2 extends AppCompatActivity {
         attendEmail.setText(OrganizationViewModel.attendeeEmail);
         attendPassword.setText(OrganizationViewModel.attendeePassword);
 
-        welcomeAttendee = findViewById(R.id.submitButton);
-        welcomeAttendee.setOnClickListener(new View.OnClickListener() {
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Attendee_2.this, WelcomeMain.class);
-                startActivity(intent);
+
+                //boolean variable to make sure all user inputs are valid before proceeding to next activity
+                boolean allValid = true;
+
+                if (!UserValidator.validateEmail(OrganizationViewModel.attendeeEmail)){
+                    attendEmail.setError("Invalid username! username must contain at least one letter and only letters, numbers and underscore are allowed.");
+                    allValid = false;
+                }
+
+                if (!UserValidator.validatePassword(OrganizationViewModel.attendeePassword)){
+                    attendPassword.setError("Invalid lastname! Only letters are allowed.");
+                    allValid = false;
+                }
+
+
+                if (allValid){
+                    Intent intent1= new Intent(Attendee_2.this, Organizer_1.class);
+                    startActivity(intent1);
+                }else{
+                    //show a message to the user about fixing the errors
+                    Toast.makeText(Attendee_2.this, "Please correct the errors before proceeding.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -97,35 +117,6 @@ public class Attendee_2 extends AppCompatActivity {
                 Intent intent = new Intent(Attendee_2.this, Attendee_1.class);
                 startActivity(intent);
 
-            }
-        });
-
-        //To be implemented once project is finalized
-
-        welcomeAttendee = findViewById(R.id.submitButton);
-        welcomeAttendee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //boolean variable to make sure all user inputs are valid before proceeding to next activity
-                boolean allValid = true;
-
-                if (!UserValidator.validateEmail(OrganizationViewModel.attendeeEmail)){
-                    attendEmail.setError("Invalid username! username must contain at least one letter and only letters, numbers and underscore are allowed.");
-                    allValid = false;
-                }
-
-                if (!UserValidator.validatePassword(OrganizationViewModel.attendeePassword)){
-                    attendPassword.setError("Invalid lastname! Only letters are allowed.");
-                    allValid = false;
-                }
-                if (allValid){
-                    Intent intent = new Intent(Attendee_2.this, WelcomeMain.class);
-                    startActivity(intent);
-                }else{
-                    //show a message to the user about fixing the errors
-                    Toast.makeText(Attendee_2.this, "Please correct the errors before proceeding.", Toast.LENGTH_SHORT).show();
-                }
             }
         });
 

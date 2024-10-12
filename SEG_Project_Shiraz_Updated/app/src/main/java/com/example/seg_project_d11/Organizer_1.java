@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -80,12 +81,36 @@ public class Organizer_1 extends AppCompatActivity {
                 OrganizationViewModel.organizerPhone = orgPhone.getText().toString().trim();
                 OrganizationViewModel.organizerAddress = orgAddress.getText().toString().trim();
 
+                //boolean variable to make sure all user inputs are valid before proceeding to next activity
+                boolean allValid = true;
+
+                if (!UserValidator.validateName(OrganizationViewModel.organizerName)){
+                    orgName.setError("Invalid username! username must contain at least one letter and only letters, numbers and underscore are allowed.");
+                    allValid = false;
+                }
+
+                if (!UserValidator.validateLastname(OrganizationViewModel.organizerLastName)){
+                    orgLastName.setError("Invalid lastname! Only letters are allowed.");
+                    allValid = false;
+                }
+
+                if (!UserValidator.validatePhoneNumber(OrganizationViewModel.organizerPhone)){
+                    orgPhone.setError("Invalid phone number! Only numbers are allowed.");
+                    allValid = false;
+                }
+
                 //Tester, ensures the content of organizer name is correct, prints on logCat
                 Log.i("CREATION", OrganizationViewModel.organizerName);
 
-                //Opens Organizer 2
-                Intent intent = new Intent(Organizer_1.this, Organizer_2.class);
-                startActivity(intent);
+                if (allValid){
+                    //Opens Organizer 2
+                    Intent intent = new Intent(Organizer_1.this, Organizer_2.class);
+                    startActivity(intent);
+                }else{
+                    //show a message to the user about fixing the errors
+                    Toast.makeText(Organizer_1.this, "Please correct the errors before proceeding.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

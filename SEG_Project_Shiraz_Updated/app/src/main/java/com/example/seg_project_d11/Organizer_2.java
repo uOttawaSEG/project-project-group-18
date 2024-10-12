@@ -24,6 +24,7 @@ public class Organizer_2 extends AppCompatActivity {
     //go back and submit buttons
     Button goBack;
     // TO ADD: submit button
+    Button submit;
 
     //User input fields
     TextView orgName, orgEmail, orgPassword, orgConfirmPassword;
@@ -86,16 +87,16 @@ public class Organizer_2 extends AppCompatActivity {
         });
 
         //To be implemented once project is finalized
-        /*
+
         submit = findViewById(R.id.submitButton);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Organizer_2.this, Homepage.class);
+                Intent intent = new Intent(Organizer_2.this, WelcomeMain.class);
                 startActivity(intent);
             }
         });
-         */
+
     }
 
     //Creates text file (if not created already), and writes onto it the user information separated by "//"

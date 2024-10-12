@@ -59,7 +59,7 @@ public class UserValidator {
      */
     public static boolean validateEmail(String email){
 
-        if(email.isBlank()){
+        if(email == null || email.isBlank()){
             return false;
         }
         boolean containsAtSign = false;
@@ -85,7 +85,7 @@ public class UserValidator {
      */
     public static boolean validatePassword(String password){
 
-        if (password.isBlank()){
+        if (password == null || password.isBlank()){
             return false;
         }
 

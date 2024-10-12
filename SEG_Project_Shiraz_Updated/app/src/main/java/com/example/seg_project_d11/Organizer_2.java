@@ -101,12 +101,12 @@ public class Organizer_2 extends AppCompatActivity {
                 boolean allValid = true;
 
                 if (!UserValidator.validateEmail(OrganizationViewModel.organizerEmail)){
-                    orgEmail.setError("Invalid username! username must contain at least one letter and only letters, numbers and underscore are allowed.");
+                    orgEmail.setError("Invalid email! email must contain @ and dot.");
                     allValid = false;
                 }
 
                 if (!UserValidator.validatePassword(OrganizationViewModel.organizerPassword)){
-                    orgPassword.setError("Invalid lastname! Only letters are allowed.");
+                    orgPassword.setError("Invalid password! password must contain at least one letter and one number.");
                     allValid = false;
                 }
                 if (allValid){
@@ -116,10 +116,6 @@ public class Organizer_2 extends AppCompatActivity {
                     //show a message to the user about fixing the errors
                     Toast.makeText(Organizer_2.this, "Please correct the errors before proceeding.", Toast.LENGTH_SHORT).show();
                 }
-
-
-                Intent intent = new Intent(Organizer_2.this, WelcomeMain.class);
-                startActivity(intent);
 
 
 

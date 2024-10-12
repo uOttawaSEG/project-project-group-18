@@ -38,7 +38,7 @@ public class Attendee_1 extends AppCompatActivity {
         //creates the view model
         organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
         //Associates each button to variable
-        goBack = findViewById(R.id.backButton_o1);
+        goBack = findViewById(R.id.backButton_A1);
         goNext = findViewById(R.id.nextButton);
 
         //Associates each text field to TextView variable

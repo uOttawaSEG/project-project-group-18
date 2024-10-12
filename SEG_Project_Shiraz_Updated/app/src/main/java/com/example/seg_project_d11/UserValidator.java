@@ -1,5 +1,7 @@
 package com.example.seg_project_d11;
 
+import android.util.Log;
+
 public class UserValidator {
 
     //methods to validate user inputs
@@ -26,6 +28,7 @@ public class UserValidator {
                 return false;
             }
         }
+        Log.i("validateName",Boolean.toString(containsLetter));
         return containsLetter;
 
     }

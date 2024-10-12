@@ -33,6 +33,7 @@ public class Attendee_2 extends AppCompatActivity {
     TextView attendEmail, attendPassword, attendConfirmPassword;
 
     //ViewModel initialization, hold user information in static variables
+    //change organizationiewModel
     OrganizationViewModel organizationViewModel;
 
     //String, holds the combination of all user input, used in the userInfo txt file
@@ -53,11 +54,12 @@ public class Attendee_2 extends AppCompatActivity {
 
 
         //Initializes view model
+        //change this
         organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
 
         //initializes the Back and submit buttons
         submit= findViewById(R.id.submitButton);
-        goBack = findViewById(R.id.backButton_o2);
+        goBack = findViewById(R.id.backButton_A2);
 
         //initializes the userInfo string
         userInfo = null;
@@ -76,6 +78,8 @@ public class Attendee_2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+
                 //boolean variable to make sure all user inputs are valid before proceeding to next activity
                 boolean allValid = true;
 
@@ -91,12 +95,13 @@ public class Attendee_2 extends AppCompatActivity {
 
 
                 if (allValid){
-                    Intent intent1= new Intent(Attendee_2.this, Organizer_1.class);
+                    Intent intent1= new Intent(Attendee_2.this, MainActivity.class);
                     startActivity(intent1);
                 }else{
                     //show a message to the user about fixing the errors
                     Toast.makeText(Attendee_2.this, "Please correct the errors before proceeding.", Toast.LENGTH_SHORT).show();
                 }
+
 
             }
         });

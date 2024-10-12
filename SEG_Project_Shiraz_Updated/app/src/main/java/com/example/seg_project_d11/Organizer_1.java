@@ -89,6 +89,7 @@ public class Organizer_1 extends AppCompatActivity {
                     allValid = false;
                 }
 
+
                 if (!UserValidator.validateLastname(OrganizationViewModel.organizerLastName)){
                     orgLastName.setError("Invalid lastname! Only letters are allowed.");
                     allValid = false;
@@ -98,6 +99,8 @@ public class Organizer_1 extends AppCompatActivity {
                     orgPhone.setError("Invalid phone number! Only numbers are allowed.");
                     allValid = false;
                 }
+
+
 
                 //Tester, ensures the content of organizer name is correct, prints on logCat
                 Log.i("CREATION", OrganizationViewModel.organizerName);

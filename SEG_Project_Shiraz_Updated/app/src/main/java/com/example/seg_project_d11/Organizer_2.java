@@ -110,7 +110,8 @@ public class Organizer_2 extends AppCompatActivity {
                     allValid = false;
                 }
                 if (allValid){
-                    Intent intent = new Intent(Organizer_2.this, MainActivity.class);
+                    //Intent intent = new Intent(Organizer_2.this, MainActivity.class);
+                    Intent intent = new Intent(Organizer_2.this, MainActivity2.class);
                     startActivity(intent);
                 }else{
                     //show a message to the user about fixing the errors

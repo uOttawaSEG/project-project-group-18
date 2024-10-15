@@ -29,9 +29,9 @@
             android:id="@+id/userRole"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Attendee"
+            android:text="Organizer!"
             android:textAlignment="center"
-            android:textSize="27dp" />
+            android:textSize="27sp" />
 
         <Button
             android:id="@+id/button7"

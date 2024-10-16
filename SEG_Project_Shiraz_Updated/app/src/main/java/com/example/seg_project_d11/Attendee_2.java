@@ -32,8 +32,7 @@ public class Attendee_2 extends AppCompatActivity {
     TextView attendEmail, attendPassword, attendConfirmPassword;
 
     //ViewModel initialization, hold user information in static variables
-    //change organizationiewModel
-    OrganizationViewModel organizationViewModel;
+    AccountsViewModel attendeeViewModel;
 
     //String, holds the combination of all user input, used in the userInfo txt file
     String userInfo;
@@ -54,7 +53,7 @@ public class Attendee_2 extends AppCompatActivity {
 
         //Initializes view model
         //change this
-        organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
+        attendeeViewModel = new ViewModelProvider(this).get(AccountsViewModel.class);
 
         //initializes the Back and submit buttons
         submit= findViewById(R.id.submitButton);
@@ -70,36 +69,37 @@ public class Attendee_2 extends AppCompatActivity {
 
         //Sets the text on each text field to be the user's information,
         //the default is null (empty) if nothing has been entered yet
-        attendEmail.setText(OrganizationViewModel.attendeeEmail);
-        attendPassword.setText(OrganizationViewModel.attendeePassword);
+        attendEmail.setText(AccountsViewModel.attendeeEmail);
+        attendPassword.setText(AccountsViewModel.attendeePassword);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 //Stores the data of this page into the viewModel class's static variables
-                OrganizationViewModel.attendeeEmail = attendEmail.getText().toString().trim();
-                OrganizationViewModel.attendeePassword = attendPassword.getText().toString().trim();
-
-
+                AccountsViewModel.attendeeEmail = attendEmail.getText().toString().trim();
+                AccountsViewModel.attendeePassword = attendPassword.getText().toString().trim();
 
                 //boolean variable to make sure all user inputs are valid before proceeding to next activity
                 boolean allValid = true;
 
-                if (!UserValidator.validateEmail(OrganizationViewModel.attendeeEmail)){
+                if (!UserValidator.validateEmail(AccountsViewModel.attendeeEmail)){
                     attendEmail.setError("Invalid email! email must contain at least one @ and dot.");
                     allValid = false;
                 }
 
-                if (!UserValidator.validatePassword(OrganizationViewModel.attendeePassword)){
+                if (!UserValidator.validatePassword(AccountsViewModel.attendeePassword)){
                     attendPassword.setError("Invalid password! password must contain at lease one letter and one number.");
                     allValid = false;
                 }
 
 
                 if (allValid){
+                    //This functions should be allocated to the submit button, but in the mean times I will leave it here for testing purposes
+                    userInfo = "Attendee//" + AccountsViewModel.attendeeName + "//" + AccountsViewModel.attendeePhone + "//" + AccountsViewModel.attendeeLastName + "//" +  AccountsViewModel.attendeeAddress + "//" + AccountsViewModel.attendeeEmail + "//" +  AccountsViewModel.attendeePassword;
+                    saveUserInfo(userInfo);
                     Intent intent1= new Intent(Attendee_2.this, WelcomePage.class);
-                    intent1.putExtra("user_name", OrganizationViewModel.attendeeEmail);
+                    intent1.putExtra("user_name", AccountsViewModel.attendeeEmail);
                     intent1.putExtra("user_role", "Attendee");
                     startActivity(intent1);
                 }else{
@@ -116,13 +116,9 @@ public class Attendee_2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Stores the data of this page into the viewModel class's static variables
-                OrganizationViewModel.attendeeEmail = attendEmail.getText().toString().trim();
-                OrganizationViewModel.attendeePassword = attendPassword.getText().toString().trim();
+                AccountsViewModel.attendeeEmail = attendEmail.getText().toString().trim();
+                AccountsViewModel.attendeePassword = attendPassword.getText().toString().trim();
 
-
-                //This functions should be allocated to the submit button, but in the mean times I will leave it here for testing purposes
-                userInfo = OrganizationViewModel.attendeeName + "//" + OrganizationViewModel.attendeePhone + "//" + OrganizationViewModel.attendeeLastName + "//" +  OrganizationViewModel.attendeeAddress + "//" + OrganizationViewModel.attendeeEmail + "//" +  OrganizationViewModel.attendeePassword;
-                saveUserInfo(userInfo);
                 //goes back to Attendee_1 activity
                 Intent intent = new Intent(Attendee_2.this, Attendee_1.class);
                 startActivity(intent);
@@ -135,7 +131,7 @@ public class Attendee_2 extends AppCompatActivity {
     //Creates text file (if not created already), and writes onto it the user information separated by "//"
     private void saveUserInfo(String registrationInformation) {
         //creates file
-        File userInfo = new File(getFilesDir(),"OrganizerUserInfo.txt");
+        File userInfo = new File(getFilesDir(),"UserInfo.txt");
 
         try{
             //Checks if the file has already been created

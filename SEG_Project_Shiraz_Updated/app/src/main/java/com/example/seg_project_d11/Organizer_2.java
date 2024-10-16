@@ -30,7 +30,7 @@ public class Organizer_2 extends AppCompatActivity {
     TextView orgName, orgEmail, orgPassword, orgConfirmPassword;
 
     //ViewModel initialization, hold user information in static variables
-    OrganizationViewModel organizationViewModel;
+    AccountsViewModel organizationViewModel;
 
     //String, holds the combination of all user input, used in the userInfo txt file
     String userInfo;
@@ -46,7 +46,7 @@ public class Organizer_2 extends AppCompatActivity {
             return insets;
         });
         //Initializes view model
-        organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
+        organizationViewModel = new ViewModelProvider(this).get(AccountsViewModel.class);
 
         //initializes the Back and submit buttons
         submit= findViewById(R.id.submitButton);
@@ -63,9 +63,9 @@ public class Organizer_2 extends AppCompatActivity {
 
         //Sets the text on each text field to be the user's information,
         //the default is null (empty) if nothing has been entered yet
-        orgName.setText(OrganizationViewModel.organizationName);
-        orgEmail.setText(OrganizationViewModel.organizerEmail);
-        orgPassword.setText(OrganizationViewModel.organizerPassword);
+        orgName.setText(AccountsViewModel.organizationName);
+        orgEmail.setText(AccountsViewModel.organizerEmail);
+        orgPassword.setText(AccountsViewModel.organizerPassword);
 
 
         //On click activity for Back button
@@ -74,13 +74,9 @@ public class Organizer_2 extends AppCompatActivity {
             public void onClick(View view) {
 
                 //Stores the data of this page into the viewModel class's static variables
-                OrganizationViewModel.organizationName = orgName.getText().toString().trim();
-                OrganizationViewModel.organizerEmail = orgEmail.getText().toString().trim();
-                OrganizationViewModel.organizerPassword = orgPassword.getText().toString().trim();
-
-                //This functions should be allocated to the submit button, but in the mean times I will leave it here for testing purposes
-                userInfo = OrganizationViewModel.organizerName + "//" + OrganizationViewModel.organizerPhone + "//" + OrganizationViewModel.organizerLastName + "//" +  OrganizationViewModel.organizerAddress + "//" +  OrganizationViewModel.organizationName + "//" + OrganizationViewModel.organizerEmail + "//" +  OrganizationViewModel.organizerPassword;
-                saveUserInfo(userInfo);
+                AccountsViewModel.organizationName = orgName.getText().toString().trim();
+                AccountsViewModel.organizerEmail = orgEmail.getText().toString().trim();
+                AccountsViewModel.organizerPassword = orgPassword.getText().toString().trim();
 
                 //goes back to Organizer_1 activity
                 Intent intent = new Intent(Organizer_2.this, Organizer_1.class);
@@ -88,43 +84,42 @@ public class Organizer_2 extends AppCompatActivity {
             }
         });
 
-        //To be implemented once project is finalized
-
         submit = findViewById(R.id.submitButton);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 //Stores the data of this page into the viewModel class's static variables
-                OrganizationViewModel.organizationName = orgName.getText().toString().trim();
-                OrganizationViewModel.organizerEmail = orgEmail.getText().toString().trim();
-                OrganizationViewModel.organizerPassword = orgPassword.getText().toString().trim();
+                AccountsViewModel.organizationName = orgName.getText().toString().trim();
+                AccountsViewModel.organizerEmail = orgEmail.getText().toString().trim();
+                AccountsViewModel.organizerPassword = orgPassword.getText().toString().trim();
 
 
                 //boolean variable to make sure all user inputs are valid before proceeding to next activity
                 boolean allValid = true;
 
-                if (!UserValidator.validateEmail(OrganizationViewModel.organizerEmail)){
+                if (!UserValidator.validateEmail(AccountsViewModel.organizerEmail)){
                     orgEmail.setError("Invalid email! email must contain @ and dot.");
                     allValid = false;
                 }
 
-                if (!UserValidator.validatePassword(OrganizationViewModel.organizerPassword)){
+                if (!UserValidator.validatePassword(AccountsViewModel.organizerPassword)){
                     orgPassword.setError("Invalid password! password must contain at least one letter and one number.");
                     allValid = false;
                 }
                 if (allValid){
                     //Intent intent = new Intent(Organizer_2.this, MainActivity.class);
+                    //This functions should be allocated to the submit button, but in the mean times I will leave it here for testing purposes
+                    userInfo = "Organizer//" + AccountsViewModel.organizerName + "//" + AccountsViewModel.organizerPhone + "//" + AccountsViewModel.organizerLastName + "//" +  AccountsViewModel.organizerAddress + "//" +  AccountsViewModel.organizationName + "//" + AccountsViewModel.organizerEmail + "//" +  AccountsViewModel.organizerPassword;
+                    saveUserInfo(userInfo);
                     Intent intent = new Intent(Organizer_2.this, WelcomePage.class);
-                    intent.putExtra("user_name", OrganizationViewModel.organizerEmail);
+                    intent.putExtra("user_name", AccountsViewModel.organizerEmail);
                     intent.putExtra("user_role", "organizer");
                     startActivity(intent);
                 }else{
                     //show a message to the user about fixing the errors
                     Toast.makeText(Organizer_2.this, "Please correct the errors before proceeding.", Toast.LENGTH_SHORT).show();
                 }
-
-
 
             }
         });
@@ -134,7 +129,7 @@ public class Organizer_2 extends AppCompatActivity {
     //Creates text file (if not created already), and writes onto it the user information separated by "//"
     private void saveUserInfo(String registrationInformation) {
         //creates file
-        File userInfo = new File(getFilesDir(),"OrganizerUserInfo.txt");
+        File userInfo = new File(getFilesDir(),"UserInfo.txt");
 
         try{
             //Checks if the file has already been created

@@ -28,22 +28,22 @@ public class WelcomeMain extends AppCompatActivity {
         logOut.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 //clears user information from the machine if attendee
-                OrganizationViewModel.attendeeName = null;
-                OrganizationViewModel.attendeeLastName = null;
-                OrganizationViewModel.attendeePhone = null;
-                OrganizationViewModel.attendeeAddress = null;
-                OrganizationViewModel.attendeeEmail = null;
-                OrganizationViewModel.attendeePassword = null;
+                AccountsViewModel.attendeeName = null;
+                AccountsViewModel.attendeeLastName = null;
+                AccountsViewModel.attendeePhone = null;
+                AccountsViewModel.attendeeAddress = null;
+                AccountsViewModel.attendeeEmail = null;
+                AccountsViewModel.attendeePassword = null;
 
                 //clears user information from the machine if organizer
-                OrganizationViewModel.organizerName = null;
-                OrganizationViewModel.organizerLastName = null;
-                OrganizationViewModel.organizerPhone = null;
-                OrganizationViewModel.organizerAddress = null;
-                OrganizationViewModel.organizationName = null;
-                OrganizationViewModel.organizerEmail = null;
-                OrganizationViewModel.organizerPassword = null;
-                Intent intentLogout = new Intent(WelcomeMain.this, RegistrationMain.class);
+                AccountsViewModel.organizerName = null;
+                AccountsViewModel.organizerLastName = null;
+                AccountsViewModel.organizerPhone = null;
+                AccountsViewModel.organizerAddress = null;
+                AccountsViewModel.organizationName = null;
+                AccountsViewModel.organizerEmail = null;
+                AccountsViewModel.organizerPassword = null;
+                Intent intentLogout = new Intent(WelcomeMain.this, MainActivity.class);
                 startActivity(intentLogout);
             }
         });

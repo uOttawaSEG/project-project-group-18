@@ -13,6 +13,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class WelcomePage extends AppCompatActivity {
 
     Button logOut;
@@ -27,6 +30,17 @@ public class WelcomePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+/*
+        try {
+            Scanner myReader = new Scanner(userInfo);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                Log.d("File contents", data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            Log.d("FILE ERROR","An error occurred.");
+        }*/
 
         //get the role and userName from the previous intent
         String role = getIntent().getStringExtra("user_role");
@@ -55,21 +69,21 @@ public class WelcomePage extends AppCompatActivity {
         logOut.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 //clears user information from the machine if attendee
-                OrganizationViewModel.attendeeName = null;
-                OrganizationViewModel.attendeeLastName = null;
-                OrganizationViewModel.attendeePhone = null;
-                OrganizationViewModel.attendeeAddress = null;
-                OrganizationViewModel.attendeeEmail = null;
-                OrganizationViewModel.attendeePassword = null;
+                AccountsViewModel.attendeeName = null;
+                AccountsViewModel.attendeeLastName = null;
+                AccountsViewModel.attendeePhone = null;
+                AccountsViewModel.attendeeAddress = null;
+                AccountsViewModel.attendeeEmail = null;
+                AccountsViewModel.attendeePassword = null;
 
                 //clears user information from the machine if organizer
-                OrganizationViewModel.organizerName = null;
-                OrganizationViewModel.organizerLastName = null;
-                OrganizationViewModel.organizerPhone = null;
-                OrganizationViewModel.organizerAddress = null;
-                OrganizationViewModel.organizationName = null;
-                OrganizationViewModel.organizerEmail = null;
-                OrganizationViewModel.organizerPassword = null;
+                AccountsViewModel.organizerName = null;
+                AccountsViewModel.organizerLastName = null;
+                AccountsViewModel.organizerPhone = null;
+                AccountsViewModel.organizerAddress = null;
+                AccountsViewModel.organizationName = null;
+                AccountsViewModel.organizerEmail = null;
+                AccountsViewModel.organizerPassword = null;
                 Intent intentLogout = new Intent(WelcomePage.this, RegistrationMain.class);
                 startActivity(intentLogout);
             }

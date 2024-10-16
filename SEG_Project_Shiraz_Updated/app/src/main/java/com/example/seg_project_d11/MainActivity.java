@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
     //only the registration button works
     Button goToRegPage;
+    Button signIn;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +28,22 @@ public class MainActivity extends AppCompatActivity {
         });
         //Creates button variable
         goToRegPage= findViewById(R.id.registerButton);
+        signIn= findViewById(R.id.buttonSignIn);
+
         //On click, opens Registration_main activity
         goToRegPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, RegistrationMain.class);
+                startActivity(intent);
+            }
+        });
+
+        //On click, opens Registration_main activity
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, WelcomeMain.class);
                 startActivity(intent);
             }
         });

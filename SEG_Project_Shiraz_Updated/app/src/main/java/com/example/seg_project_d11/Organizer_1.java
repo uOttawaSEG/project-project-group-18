@@ -22,7 +22,7 @@ public class Organizer_1 extends AppCompatActivity {
     //User input fields
     TextView orgName, orgLastName, orgPhone, orgAddress;
     //ViewModel initialization, hold user information in static variables
-    OrganizationViewModel organizationViewModel;
+    AccountsViewModel organizationViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class Organizer_1 extends AppCompatActivity {
         });
 
         //creates the view model
-        organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
+        organizationViewModel = new ViewModelProvider(this).get(AccountsViewModel.class);
         //Associates each button to variable
         goBack = findViewById(R.id.backButton_o1);
         goNext = findViewById(R.id.nextButton);
@@ -49,23 +49,23 @@ public class Organizer_1 extends AppCompatActivity {
 
         //Sets the text on each text field to be the user's information,
         //the default is null (empty) if nothing has been entered yet
-        orgName.setText(OrganizationViewModel.organizerName);
-        orgLastName.setText(OrganizationViewModel.organizerLastName);
-        orgPhone.setText(OrganizationViewModel.organizerPhone);
-        orgAddress.setText(OrganizationViewModel.organizerAddress);
+        orgName.setText(AccountsViewModel.organizerName);
+        orgLastName.setText(AccountsViewModel.organizerLastName);
+        orgPhone.setText(AccountsViewModel.organizerPhone);
+        orgAddress.setText(AccountsViewModel.organizerAddress);
 
         //On click activity for back button
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //resets the user info inputs since, thereby cancelling registration
-                OrganizationViewModel.organizerName = null;
-                OrganizationViewModel.organizerLastName = null;
-                OrganizationViewModel.organizerPhone = null;
-                OrganizationViewModel.organizerAddress = null;
-                OrganizationViewModel.organizationName = null;
-                OrganizationViewModel.organizerEmail = null;
-                OrganizationViewModel.organizerPassword = null;
+                AccountsViewModel.organizerName = null;
+                AccountsViewModel.organizerLastName = null;
+                AccountsViewModel.organizerPhone = null;
+                AccountsViewModel.organizerAddress = null;
+                AccountsViewModel.organizationName = null;
+                AccountsViewModel.organizerEmail = null;
+                AccountsViewModel.organizerPassword = null;
                 //opens RegistrationMain
                 Intent intent = new Intent(Organizer_1.this, RegistrationMain.class);
                 startActivity(intent);
@@ -76,26 +76,26 @@ public class Organizer_1 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Stores the data of this page into the viewModel class's static variables
-                OrganizationViewModel.organizerName = orgName.getText().toString().trim();
-                OrganizationViewModel.organizerLastName = orgLastName.getText().toString().trim();
-                OrganizationViewModel.organizerPhone = orgPhone.getText().toString().trim();
-                OrganizationViewModel.organizerAddress = orgAddress.getText().toString().trim();
+                AccountsViewModel.organizerName = orgName.getText().toString().trim();
+                AccountsViewModel.organizerLastName = orgLastName.getText().toString().trim();
+                AccountsViewModel.organizerPhone = orgPhone.getText().toString().trim();
+                AccountsViewModel.organizerAddress = orgAddress.getText().toString().trim();
 
                 //boolean variable to make sure all user inputs are valid before proceeding to next activity
                 boolean allValid = true;
 
-                if (!UserValidator.validateName(OrganizationViewModel.organizerName)){
+                if (!UserValidator.validateName(AccountsViewModel.organizerName)){
                     orgName.setError("Invalid username! username must contain at least one letter and only letters, numbers and underscore are allowed.");
                     allValid = false;
                 }
 
 
-                if (!UserValidator.validateLastname(OrganizationViewModel.organizerLastName)){
+                if (!UserValidator.validateLastname(AccountsViewModel.organizerLastName)){
                     orgLastName.setError("Invalid lastname! Only letters are allowed.");
                     allValid = false;
                 }
 
-                if (!UserValidator.validatePhoneNumber(OrganizationViewModel.organizerPhone)){
+                if (!UserValidator.validatePhoneNumber(AccountsViewModel.organizerPhone)){
                     orgPhone.setError("Invalid phone number! Only numbers are allowed.");
                     allValid = false;
                 }
@@ -103,7 +103,7 @@ public class Organizer_1 extends AppCompatActivity {
 
 
                 //Tester, ensures the content of organizer name is correct, prints on logCat
-                Log.i("CREATION", OrganizationViewModel.organizerName);
+                Log.i("CREATION", AccountsViewModel.organizerName);
 
                 if (allValid){
                     //Opens Organizer 2

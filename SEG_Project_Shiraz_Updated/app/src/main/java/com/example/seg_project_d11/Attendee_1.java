@@ -22,7 +22,7 @@ public class Attendee_1 extends AppCompatActivity {
     //User input fields
     TextView attendName, attendLastName, attendPhone, attendAddress;
     //ViewModel initialization, hold user information in static variables
-    OrganizationViewModel organizationViewModel;
+    AccountsViewModel attendeeViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class Attendee_1 extends AppCompatActivity {
         });
 
         //creates the view model
-        organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
+        attendeeViewModel = new ViewModelProvider(this).get(AccountsViewModel.class);
         //Associates each button to variable
         goBack = findViewById(R.id.backButton_A1);
         goNext = findViewById(R.id.nextButton);
@@ -50,10 +50,10 @@ public class Attendee_1 extends AppCompatActivity {
 
         //Sets the text on each text field to be the user's information,
         //the default is null (empty) if nothing has been entered yet
-        attendName.setText(OrganizationViewModel.attendeeName);
-        attendLastName.setText(OrganizationViewModel.attendeeLastName);
-        attendPhone.setText(OrganizationViewModel.attendeePhone);
-        attendAddress.setText(OrganizationViewModel.attendeeAddress);
+        attendName.setText(AccountsViewModel.attendeeName);
+        attendLastName.setText(AccountsViewModel.attendeeLastName);
+        attendPhone.setText(AccountsViewModel.attendeePhone);
+        attendAddress.setText(AccountsViewModel.attendeeAddress);
 
 
         //On click activity for back button
@@ -61,12 +61,12 @@ public class Attendee_1 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //resets the user info inputs since, thereby cancelling registration
-                OrganizationViewModel.attendeeName = null;
-                OrganizationViewModel.attendeeLastName = null;
-                OrganizationViewModel.attendeePhone = null;
-                OrganizationViewModel.attendeeAddress = null;
-                OrganizationViewModel.attendeeEmail = null;
-                OrganizationViewModel.attendeePassword = null;
+                AccountsViewModel.attendeeName = null;
+                AccountsViewModel.attendeeLastName = null;
+                AccountsViewModel.attendeePhone = null;
+                AccountsViewModel.attendeeAddress = null;
+                AccountsViewModel.attendeeEmail = null;
+                AccountsViewModel.attendeePassword = null;
                 //opens RegistrationMain
                 Intent intent = new Intent(Attendee_1.this, RegistrationMain.class);
                 startActivity(intent);
@@ -77,31 +77,31 @@ public class Attendee_1 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Stores the data of this page into the viewModel class's static variables
-                OrganizationViewModel.attendeeName = attendName.getText().toString().trim();
-                OrganizationViewModel.attendeeLastName = attendLastName.getText().toString().trim();
-                OrganizationViewModel.attendeePhone = attendPhone.getText().toString().trim();
-                OrganizationViewModel.attendeeAddress = attendAddress.getText().toString().trim();
+                AccountsViewModel.attendeeName = attendName.getText().toString().trim();
+                AccountsViewModel.attendeeLastName = attendLastName.getText().toString().trim();
+                AccountsViewModel.attendeePhone = attendPhone.getText().toString().trim();
+                AccountsViewModel.attendeeAddress = attendAddress.getText().toString().trim();
 
                 //boolean variable to make sure all user inputs are valid before proceeding to next activity
                 boolean allValid = true;
 
-                if (!UserValidator.validateName(OrganizationViewModel.attendeeName)){
+                if (!UserValidator.validateName(AccountsViewModel.attendeeName)){
                     attendName.setError("Invalid username! username must contain at least one letter and only letters, numbers and underscore are allowed.");
                     allValid = false;
                 }
 
-                if (!UserValidator.validateLastname(OrganizationViewModel.attendeeLastName)){
+                if (!UserValidator.validateLastname(AccountsViewModel.attendeeLastName)){
                     attendLastName.setError("Invalid lastname! Only letters are allowed.");
                     allValid = false;
                 }
 
-                if (!UserValidator.validatePhoneNumber(OrganizationViewModel.attendeePhone)){
+                if (!UserValidator.validatePhoneNumber(AccountsViewModel.attendeePhone)){
                     attendPhone.setError("Invalid phone number! Only numbers are allowed.");
                     allValid = false;
                 }
 
-                //Tester, ensures the content of organizer name is correct, prints on logCat
-                Log.i("CREATION", OrganizationViewModel.attendeeName);
+                //Tester, ensures the content of attendee name is correct, prints on logCat
+                Log.i("CREATION", AccountsViewModel.attendeeName);
 
                 //Opens Attendee 2
                 if (allValid){

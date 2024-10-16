@@ -26,8 +26,6 @@ public class Attendee_2 extends AppCompatActivity {
 
     //go back and submit buttons
     Button goBack;
-    // TO ADD: submit button
-
     Button submit;
 
     //User input fields
@@ -100,7 +98,9 @@ public class Attendee_2 extends AppCompatActivity {
 
 
                 if (allValid){
-                    Intent intent1= new Intent(Attendee_2.this, MainActivity.class);
+                    Intent intent1= new Intent(Attendee_2.this, WelcomePage.class);
+                    intent1.putExtra("user_name", OrganizationViewModel.attendeeName);
+                    intent1.putExtra("user_role", "Attendee");
                     startActivity(intent1);
                 }else{
                     //show a message to the user about fixing the errors

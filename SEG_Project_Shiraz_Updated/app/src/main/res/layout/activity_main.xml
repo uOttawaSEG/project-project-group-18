@@ -21,17 +21,10 @@
             android:id="@+id/textView4"
             android:layout_width="250dp"
             android:layout_height="50dp"
-            android:text="Welcome back,"
+            android:text="Welcome back!"
             android:textAlignment="center"
             android:textSize="27dp" />
 
-        <TextView
-            android:id="@+id/userRole"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Attendee"
-            android:textAlignment="center"
-            android:textSize="27dp" />
 
         <Button
             android:id="@+id/button7"

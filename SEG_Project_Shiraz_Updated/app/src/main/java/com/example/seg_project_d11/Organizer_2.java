@@ -24,7 +24,6 @@ import java.util.Scanner;
 public class Organizer_2 extends AppCompatActivity {
     //go back and submit buttons
     Button goBack;
-    // TO ADD: submit button
     Button submit;
 
     //User input fields
@@ -50,7 +49,7 @@ public class Organizer_2 extends AppCompatActivity {
         organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
 
         //initializes the Back and submit buttons
-        //submit= findViewById(R.id.submit);
+        submit= findViewById(R.id.submitButton);
         goBack = findViewById(R.id.backButton_o2);
 
         //initializes the userInfo string
@@ -68,15 +67,16 @@ public class Organizer_2 extends AppCompatActivity {
         orgEmail.setText(OrganizationViewModel.organizerEmail);
         orgPassword.setText(OrganizationViewModel.organizerPassword);
 
+
         //On click activity for Back button
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //Stores the data of this page into the viewModel class's static variables
                 OrganizationViewModel.organizationName = orgName.getText().toString().trim();
                 OrganizationViewModel.organizerEmail = orgEmail.getText().toString().trim();
                 OrganizationViewModel.organizerPassword = orgPassword.getText().toString().trim();
-
 
                 //This functions should be allocated to the submit button, but in the mean times I will leave it here for testing purposes
                 userInfo = OrganizationViewModel.organizerName + "//" + OrganizationViewModel.organizerPhone + "//" + OrganizationViewModel.organizerLastName + "//" +  OrganizationViewModel.organizerAddress + "//" +  OrganizationViewModel.organizationName + "//" + OrganizationViewModel.organizerEmail + "//" +  OrganizationViewModel.organizerPassword;
@@ -95,6 +95,10 @@ public class Organizer_2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                //Stores the data of this page into the viewModel class's static variables
+                OrganizationViewModel.organizationName = orgName.getText().toString().trim();
+                OrganizationViewModel.organizerEmail = orgEmail.getText().toString().trim();
+                OrganizationViewModel.organizerPassword = orgPassword.getText().toString().trim();
 
 
                 //boolean variable to make sure all user inputs are valid before proceeding to next activity
@@ -111,7 +115,9 @@ public class Organizer_2 extends AppCompatActivity {
                 }
                 if (allValid){
                     //Intent intent = new Intent(Organizer_2.this, MainActivity.class);
-                    Intent intent = new Intent(Organizer_2.this, MainActivity2.class);
+                    Intent intent = new Intent(Organizer_2.this, WelcomePage.class);
+                    intent.putExtra("user_name", OrganizationViewModel.organizerName);
+                    intent.putExtra("user_role", "organizer");
                     startActivity(intent);
                 }else{
                     //show a message to the user about fixing the errors

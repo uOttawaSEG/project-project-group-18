@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class RegistrationMain extends AppCompatActivity {
-    //Only the register as an organization button works
+
     Button goToOrgReg;
     Button goToAttendeeReg;
     @Override

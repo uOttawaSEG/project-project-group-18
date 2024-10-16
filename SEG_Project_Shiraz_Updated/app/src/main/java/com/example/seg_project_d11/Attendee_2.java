@@ -99,7 +99,7 @@ public class Attendee_2 extends AppCompatActivity {
 
                 if (allValid){
                     Intent intent1= new Intent(Attendee_2.this, WelcomePage.class);
-                    intent1.putExtra("user_name", OrganizationViewModel.attendeeName);
+                    intent1.putExtra("user_name", OrganizationViewModel.attendeeEmail);
                     intent1.putExtra("user_role", "Attendee");
                     startActivity(intent1);
                 }else{

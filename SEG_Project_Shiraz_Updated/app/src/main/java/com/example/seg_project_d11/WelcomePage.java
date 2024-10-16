@@ -30,17 +30,6 @@ public class WelcomePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-/*
-        try {
-            Scanner myReader = new Scanner(userInfo);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                Log.d("File contents", data);
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            Log.d("FILE ERROR","An error occurred.");
-        }*/
 
         //get the role and userName from the previous intent
         String role = getIntent().getStringExtra("user_role");
@@ -57,11 +46,14 @@ public class WelcomePage extends AppCompatActivity {
         userNameDisplay.setText(userName);
 
         if (role.equals("organizer")) {
-            welcomeRoleText.setText("Welcome, Organizer!");
+            welcomeRoleText.setText("Welcome, organizer!");
             userRoleDisplay.setText("Organizer");
-        } else {
-            welcomeRoleText.setText("Welcome, Attendee!");
+        } else if (role.equals("attendee")) {
+            welcomeRoleText.setText("Welcome, attendee!");
             userRoleDisplay.setText("Attendee");
+        }else{
+            welcomeRoleText.setText("Welcome, guest!");
+            userRoleDisplay.setText("Guest");
         }
 
         Button logOut = findViewById(R.id.logOut);
@@ -84,7 +76,7 @@ public class WelcomePage extends AppCompatActivity {
                 AccountsViewModel.organizationName = null;
                 AccountsViewModel.organizerEmail = null;
                 AccountsViewModel.organizerPassword = null;
-                Intent intentLogout = new Intent(WelcomePage.this, RegistrationMain.class);
+                Intent intentLogout = new Intent(WelcomePage.this, MainActivity.class);
                 startActivity(intentLogout);
             }
         });

@@ -46,7 +46,7 @@ public class Organizer_2 extends AppCompatActivity {
             return insets;
         });
         //Initializes view model
-        organizationViewModel = new ViewModelProvider(this).get(AccountsViewModel.class);
+        organizationViewModel = new AccountsViewModel(this);
 
         //initializes the Back and submit buttons
         submit= findViewById(R.id.submitButton);
@@ -111,7 +111,7 @@ public class Organizer_2 extends AppCompatActivity {
                     //Intent intent = new Intent(Organizer_2.this, MainActivity.class);
                     //This functions should be allocated to the submit button, but in the mean times I will leave it here for testing purposes
                     userInfo = "Organizer//" + AccountsViewModel.organizerName + "//" + AccountsViewModel.organizerPhone + "//" + AccountsViewModel.organizerLastName + "//" +  AccountsViewModel.organizerAddress + "//" +  AccountsViewModel.organizationName + "//" + AccountsViewModel.organizerEmail + "//" +  AccountsViewModel.organizerPassword;
-                    saveUserInfo(userInfo);
+                    organizationViewModel.saveUserInfo(userInfo);
                     Intent intent = new Intent(Organizer_2.this, WelcomePage.class);
                     intent.putExtra("user_name", AccountsViewModel.organizerEmail);
                     intent.putExtra("user_role", "organizer");
@@ -124,44 +124,5 @@ public class Organizer_2 extends AppCompatActivity {
             }
         });
 
-    }
-
-    //Creates text file (if not created already), and writes onto it the user information separated by "//"
-    private void saveUserInfo(String registrationInformation) {
-        //creates file
-        File userInfo = new File(getFilesDir(),"UserInfo.txt");
-
-        try{
-            //Checks if the file has already been created
-            if (userInfo.createNewFile()) {
-                Log.d("File creation", "File created: " + userInfo.getName());
-            } else {
-                Log.d("File creation", "File already exists, name: " + userInfo.getName());
-            }
-
-            //Initialized fileWriter and buffered writer, which serves to write the user info into the text file
-            FileWriter fileWriter= new FileWriter(userInfo, true);
-            BufferedWriter bufferedWriter= new BufferedWriter(fileWriter);
-            bufferedWriter.write(registrationInformation);
-            //jumps to next line on file
-            bufferedWriter.newLine();
-            //closes writer
-            bufferedWriter.close();
-
-            //Tests file contents, prints everything on file currently
-            try {
-                Scanner myReader = new Scanner(userInfo);
-                while (myReader.hasNextLine()) {
-                    String data = myReader.nextLine();
-                    Log.d("File contents", data);
-                }
-                myReader.close();
-            } catch (FileNotFoundException e) {
-                Log.d("FILE ERROR","An error occurred.");
-            }
-
-        }catch(Exception e){
-            Log.d("File Creation", "Error creating file"+ e);
-        }
     }
 }

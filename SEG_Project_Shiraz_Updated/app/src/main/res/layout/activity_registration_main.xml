@@ -69,7 +69,7 @@
     </LinearLayout>
 4
     <Button
-        android:id="@+id/SignInButton"
+        android:id="@+id/signInButton"
         android:layout_width="140dp"
         android:layout_height="50dp"
         android:backgroundTint="#3F51B5"
@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:text="Already have an account?"
-        app:layout_constraintBottom_toTopOf="@+id/SignInButton"
+        app:layout_constraintBottom_toTopOf="@+id/signInButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

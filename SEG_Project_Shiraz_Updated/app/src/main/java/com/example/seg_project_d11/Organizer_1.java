@@ -36,7 +36,7 @@ public class Organizer_1 extends AppCompatActivity {
         });
 
         //creates the view model
-        organizationViewModel = new ViewModelProvider(this).get(AccountsViewModel.class);
+        organizationViewModel = new AccountsViewModel(this);
         //Associates each button to variable
         goBack = findViewById(R.id.backButton_o1);
         goNext = findViewById(R.id.nextButton);

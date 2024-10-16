@@ -16,11 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.util.Scanner;
+
 
 public class Attendee_2 extends AppCompatActivity {
 
@@ -53,7 +49,7 @@ public class Attendee_2 extends AppCompatActivity {
 
         //Initializes view model
         //change this
-        attendeeViewModel = new ViewModelProvider(this).get(AccountsViewModel.class);
+        attendeeViewModel = new AccountsViewModel(this);
 
         //initializes the Back and submit buttons
         submit= findViewById(R.id.submitButton);
@@ -97,7 +93,7 @@ public class Attendee_2 extends AppCompatActivity {
                 if (allValid){
                     //This functions should be allocated to the submit button, but in the mean times I will leave it here for testing purposes
                     userInfo = "Attendee//" + AccountsViewModel.attendeeName + "//" + AccountsViewModel.attendeePhone + "//" + AccountsViewModel.attendeeLastName + "//" +  AccountsViewModel.attendeeAddress + "//" + AccountsViewModel.attendeeEmail + "//" +  AccountsViewModel.attendeePassword;
-                    saveUserInfo(userInfo);
+                    attendeeViewModel.saveUserInfo(userInfo);
                     Intent intent1= new Intent(Attendee_2.this, WelcomePage.class);
                     intent1.putExtra("user_name", AccountsViewModel.attendeeEmail);
                     intent1.putExtra("user_role", "Attendee");
@@ -126,44 +122,5 @@ public class Attendee_2 extends AppCompatActivity {
             }
         });
 
-    }
-
-    //Creates text file (if not created already), and writes onto it the user information separated by "//"
-    private void saveUserInfo(String registrationInformation) {
-        //creates file
-        File userInfo = new File(getFilesDir(),"UserInfo.txt");
-
-        try{
-            //Checks if the file has already been created
-            if (userInfo.createNewFile()) {
-                Log.d("File creation", "File created: " + userInfo.getName());
-            } else {
-                Log.d("File creation", "File already exists, name: " + userInfo.getName());
-            }
-
-            //Initialized fileWriter and buffered writer, which serves to write the user info into the text file
-            FileWriter fileWriter= new FileWriter(userInfo, true);
-            BufferedWriter bufferedWriter= new BufferedWriter(fileWriter);
-            bufferedWriter.write(registrationInformation);
-            //jumps to next line on file
-            bufferedWriter.newLine();
-            //closes writer
-            bufferedWriter.close();
-
-            //Tests file contents, prints everything on file currently
-            try {
-                Scanner myReader = new Scanner(userInfo);
-                while (myReader.hasNextLine()) {
-                    String data = myReader.nextLine();
-                    Log.d("File contents", data);
-                }
-                myReader.close();
-            } catch (FileNotFoundException e) {
-                Log.d("FILE ERROR","An error occurred.");
-            }
-
-        }catch(Exception e){
-            Log.d("File Creation", "Error creating file"+ e);
-        }
     }
 }

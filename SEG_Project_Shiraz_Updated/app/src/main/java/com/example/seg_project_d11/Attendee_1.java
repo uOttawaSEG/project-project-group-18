@@ -36,7 +36,7 @@ public class Attendee_1 extends AppCompatActivity {
         });
 
         //creates the view model
-        attendeeViewModel = new ViewModelProvider(this).get(AccountsViewModel.class);
+        attendeeViewModel = new AccountsViewModel(this);
         //Associates each button to variable
         goBack = findViewById(R.id.backButton_A1);
         goNext = findViewById(R.id.nextButton);

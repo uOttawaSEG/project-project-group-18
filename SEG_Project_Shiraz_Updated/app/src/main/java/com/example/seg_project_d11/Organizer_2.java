@@ -116,7 +116,7 @@ public class Organizer_2 extends AppCompatActivity {
                 if (allValid){
                     //Intent intent = new Intent(Organizer_2.this, MainActivity.class);
                     Intent intent = new Intent(Organizer_2.this, WelcomePage.class);
-                    intent.putExtra("user_name", OrganizationViewModel.organizerName);
+                    intent.putExtra("user_name", OrganizationViewModel.organizerEmail);
                     intent.putExtra("user_role", "organizer");
                     startActivity(intent);
                 }else{

@@ -21,8 +21,11 @@ public class Attendee_1 extends AppCompatActivity {
     Button goBack, goNext;
     //User input fields
     TextView attendName, attendLastName, attendPhone, attendAddress;
+    /*
     //ViewModel initialization, hold user information in static variables
     AccountsViewModel attendeeViewModel;
+
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +37,12 @@ public class Attendee_1 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        /*
         //creates the view model
         attendeeViewModel = new AccountsViewModel(this);
+
+         */
+
         //Associates each button to variable
         goBack = findViewById(R.id.backButton_A1);
         goNext = findViewById(R.id.nextButton);
@@ -48,6 +54,7 @@ public class Attendee_1 extends AppCompatActivity {
         attendAddress = findViewById(R.id.attendeeAddress);
 
 
+        /*
         //Sets the text on each text field to be the user's information,
         //the default is null (empty) if nothing has been entered yet
         attendName.setText(AccountsViewModel.attendeeName);
@@ -55,11 +62,14 @@ public class Attendee_1 extends AppCompatActivity {
         attendPhone.setText(AccountsViewModel.attendeePhone);
         attendAddress.setText(AccountsViewModel.attendeeAddress);
 
+         */
+
 
         //On click activity for back button
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
                 //resets the user info inputs since, thereby cancelling registration
                 AccountsViewModel.attendeeName = null;
                 AccountsViewModel.attendeeLastName = null;
@@ -67,6 +77,9 @@ public class Attendee_1 extends AppCompatActivity {
                 AccountsViewModel.attendeeAddress = null;
                 AccountsViewModel.attendeeEmail = null;
                 AccountsViewModel.attendeePassword = null;
+
+                 */
+
                 //opens RegistrationMain
                 Intent intent = new Intent(Attendee_1.this, RegistrationMain.class);
                 startActivity(intent);
@@ -76,36 +89,46 @@ public class Attendee_1 extends AppCompatActivity {
         goNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
                 //Stores the data of this page into the viewModel class's static variables
                 AccountsViewModel.attendeeName = attendName.getText().toString().trim();
                 AccountsViewModel.attendeeLastName = attendLastName.getText().toString().trim();
                 AccountsViewModel.attendeePhone = attendPhone.getText().toString().trim();
                 AccountsViewModel.attendeeAddress = attendAddress.getText().toString().trim();
 
+                 */
+                String attendeeName = attendName.getText().toString().trim();
+                String attendeeLastName = attendLastName.getText().toString().trim();
+                String attendeePhone = attendPhone.getText().toString().trim();
+                String attendeeAddress = attendAddress.getText().toString().trim();
+
+
                 //boolean variable to make sure all user inputs are valid before proceeding to next activity
                 boolean allValid = true;
 
-                if (!UserValidator.validateName(AccountsViewModel.attendeeName)){
+                if (!UserValidator.validateName(attendeeName)){
                     attendName.setError("Invalid username! username must contain at least one letter and only letters, numbers and underscore are allowed.");
                     allValid = false;
                 }
 
-                if (!UserValidator.validateLastname(AccountsViewModel.attendeeLastName)){
+                if (!UserValidator.validateLastname(attendeeLastName)){
                     attendLastName.setError("Invalid lastname! Only letters are allowed.");
                     allValid = false;
                 }
 
-                if (!UserValidator.validatePhoneNumber(AccountsViewModel.attendeePhone)){
+                if (!UserValidator.validatePhoneNumber(attendeePhone)){
                     attendPhone.setError("Invalid phone number! Only numbers are allowed.");
                     allValid = false;
                 }
 
-                //Tester, ensures the content of attendee name is correct, prints on logCat
-                Log.i("CREATION", AccountsViewModel.attendeeName);
 
                 //Opens Attendee 2
                 if (allValid){
                     Intent intent = new Intent(Attendee_1.this, Attendee_2.class);
+                    intent.putExtra("attendeeName", attendeeName);
+                    intent.putExtra("attendeeLastName", attendeeLastName);
+                    intent.putExtra("attendeePhone", attendeePhone);
+                    intent.putExtra("attendeeAddress", attendeeAddress);
                     startActivity(intent);
                 }else{
                     //show a message to the user about fixing the errors

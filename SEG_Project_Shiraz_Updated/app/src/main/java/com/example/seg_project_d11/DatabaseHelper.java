@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PHONENUMBER = "phoneNumber";
     private static final String COLUMN_ADDRESS = "address";
     public static final String COLUMN_STATUS = "status";
-    public static final String COLUMN_ORGANIZATIONNAME = "organizationNameE";
+    public static final String COLUMN_ORGANIZATIONNAME = "organizationName";
 
 
     public DatabaseHelper(@Nullable Context context) {
@@ -43,7 +43,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +COLUMN_PHONENUMBER + " TEXT, "
                 +COLUMN_ADDRESS + " TEXT, "
                 +COLUMN_PASSWORD + " TEXT, "
-                +COLUMN_STATUS + " TEXT DEFAULT 'Pending" + "');";
+                +COLUMN_STATUS + " TEXT DEFAULT 'Pending');";
+
         db.execSQL(CREATE_ATTENDEES_TABLE);
 
         //create Organizers table
@@ -55,7 +56,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +COLUMN_ADDRESS + " TEXT, "
                 +COLUMN_PASSWORD + " TEXT, "
                 +COLUMN_ORGANIZATIONNAME + " TEXT, "
-                +COLUMN_STATUS + " TEXT DEFAULT 'Pending" + "');";
+                +COLUMN_STATUS + " TEXT DEFAULT 'Pending');";
+
         db.execSQL(CREATE_ORGANIZERS_TABLE);
 
     }
@@ -70,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
 
     }
-
+    // add an attendee data to the database
     public boolean addAttendee(Attendee attendee){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -94,8 +96,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-
+    //add an organizer to the database
     public boolean addOrganizer(Organizer organizer){
-        return true;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_EMAIL, organizer.getEmail());
+        cv.put(COLUMN_FIRSTNAME, organizer.getFirstName());
+        cv.put(COLUMN_LASTNAME, organizer.getLastName());
+        cv.put(COLUMN_PHONENUMBER, organizer.getPhoneNumber());
+        cv.put(COLUMN_ADDRESS, organizer.getAddress());
+        cv.put(COLUMN_PASSWORD, organizer.getPassword());
+        cv.put(COLUMN_STATUS, organizer.getStatus());
+
+        long insert = db.insert(USER_TABLE_ORGANIZERS, null, cv);
+
+        if(insert == -1){
+            return false;
+        }else{
+            return true;
+        }
     }
 }

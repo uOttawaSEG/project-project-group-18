@@ -28,15 +28,6 @@ public class Attendee_2 extends AppCompatActivity {
     //User input fields
     TextView attendEmail, attendPassword, attendConfirmPassword;
 
-    /*
-    //ViewModel initialization, hold user information in static variables
-    AccountsViewModel attendeeViewModel;
-
-
-    //String, holds the combination of all user input, used in the userInfo txt file
-    String userInfo;
-
-     */
 
 
     @Override
@@ -51,12 +42,6 @@ public class Attendee_2 extends AppCompatActivity {
         });
 
 
-        /*
-        //Initializes view model
-        //change this
-        attendeeViewModel = new AccountsViewModel(this);
-
-         */
 
         //initializes the Back and submit buttons
         submit= findViewById(R.id.submitButton);
@@ -65,11 +50,6 @@ public class Attendee_2 extends AppCompatActivity {
         //reference to the databaseHelper
         databaseHelper = new DatabaseHelper(this);
 
-        /*
-        //initializes the userInfo string
-        userInfo = null;
-
-         */
 
         //Associates each textField to TextView variable
         attendEmail= findViewById(R.id.attendeeEmail);
@@ -88,24 +68,11 @@ public class Attendee_2 extends AppCompatActivity {
 
         Log.d("Attendee_2","Attendee Name: " + attendeeName);
 
-        /*
-
-        //Sets the text on each text field to be the user's information,
-        //the default is null (empty) if nothing has been entered yet
-        attendEmail.setText(AccountsViewModel.attendeeEmail);
-        attendPassword.setText(AccountsViewModel.attendeePassword);
-
-         */
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                //Stores the data of this page into the viewModel class's static variables
-                AccountsViewModel.attendeeEmail = attendEmail.getText().toString().trim();
-                AccountsViewModel.attendeePassword = attendPassword.getText().toString().trim();
 
-                 */
                 String attendeeEmail = attendEmail.getText().toString().trim();
                 String attendeePassword = attendPassword.getText().toString().trim();
                 String attendeeConfirmPassword = attendConfirmPassword.getText().toString().trim();
@@ -129,11 +96,6 @@ public class Attendee_2 extends AppCompatActivity {
 
 
                 if (allValid){
-                    /*
-                    //This functions should be allocated to the submit button, but in the mean times I will leave it here for testing purposes
-                    userInfo = "Attendee//" + AccountsViewModel.attendeeName + "//" + AccountsViewModel.attendeePhone + "//" + AccountsViewModel.attendeeLastName + "//" +  AccountsViewModel.attendeeAddress + "//" + AccountsViewModel.attendeeEmail + "//" +  AccountsViewModel.attendeePassword;
-                    attendeeViewModel.saveUserInfo(userInfo);
-                     */
 
                     //creating attendee obeject
                     Attendee attendee = new Attendee(attendeeName, attendeeLastName, attendeeEmail, attendeePassword, attendeePhone, attendeeAddress, "pending");
@@ -160,11 +122,6 @@ public class Attendee_2 extends AppCompatActivity {
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                //Stores the data of this page into the viewModel class's static variables
-                AccountsViewModel.attendeeEmail = attendEmail.getText().toString().trim();
-                AccountsViewModel.attendeePassword = attendPassword.getText().toString().trim();
-                 */
 
                 //goes back to Attendee_1 activity
                 Intent intent = new Intent(Attendee_2.this, Attendee_1.class);

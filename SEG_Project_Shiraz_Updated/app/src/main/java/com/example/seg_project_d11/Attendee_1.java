@@ -19,13 +19,10 @@ public class Attendee_1 extends AppCompatActivity {
 
     //Back and next buttons
     Button goBack, goNext;
+
     //User input fields
     TextView attendName, attendLastName, attendPhone, attendAddress;
-    /*
-    //ViewModel initialization, hold user information in static variables
-    AccountsViewModel attendeeViewModel;
 
-     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +34,6 @@ public class Attendee_1 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        /*
-        //creates the view model
-        attendeeViewModel = new AccountsViewModel(this);
-
-         */
 
         //Associates each button to variable
         goBack = findViewById(R.id.backButton_A1);
@@ -54,31 +46,10 @@ public class Attendee_1 extends AppCompatActivity {
         attendAddress = findViewById(R.id.attendeeAddress);
 
 
-        /*
-        //Sets the text on each text field to be the user's information,
-        //the default is null (empty) if nothing has been entered yet
-        attendName.setText(AccountsViewModel.attendeeName);
-        attendLastName.setText(AccountsViewModel.attendeeLastName);
-        attendPhone.setText(AccountsViewModel.attendeePhone);
-        attendAddress.setText(AccountsViewModel.attendeeAddress);
-
-         */
-
-
         //On click activity for back button
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                //resets the user info inputs since, thereby cancelling registration
-                AccountsViewModel.attendeeName = null;
-                AccountsViewModel.attendeeLastName = null;
-                AccountsViewModel.attendeePhone = null;
-                AccountsViewModel.attendeeAddress = null;
-                AccountsViewModel.attendeeEmail = null;
-                AccountsViewModel.attendeePassword = null;
-
-                 */
 
                 //opens RegistrationMain
                 Intent intent = new Intent(Attendee_1.this, RegistrationMain.class);
@@ -89,14 +60,7 @@ public class Attendee_1 extends AppCompatActivity {
         goNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                //Stores the data of this page into the viewModel class's static variables
-                AccountsViewModel.attendeeName = attendName.getText().toString().trim();
-                AccountsViewModel.attendeeLastName = attendLastName.getText().toString().trim();
-                AccountsViewModel.attendeePhone = attendPhone.getText().toString().trim();
-                AccountsViewModel.attendeeAddress = attendAddress.getText().toString().trim();
 
-                 */
                 String attendeeName = attendName.getText().toString().trim();
                 String attendeeLastName = attendLastName.getText().toString().trim();
                 String attendeePhone = attendPhone.getText().toString().trim();

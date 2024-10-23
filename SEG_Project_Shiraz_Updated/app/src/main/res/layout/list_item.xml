@@ -97,6 +97,34 @@
 
     </LinearLayout>
 
+    <!-- fifth row -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonApprove"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="90dp"
+            android:textSize="12sp"
+            android:text="Approve" />
+
+        <Button
+            android:id="@+id/buttonReject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="90dp"
+            android:textSize="12sp"
+            android:text="Reject" />
+
+
+    </LinearLayout>
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"

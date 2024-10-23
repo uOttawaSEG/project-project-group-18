@@ -126,13 +126,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //fetch a list of users(attendees and organizers) from the database
-    public List<User> getAll(){
+    public List<User> getPendingRequests(){
         List<User> users = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         //fetch attendees
         //rawQuery returns a cursor
-        Cursor cursorAttendees = db.rawQuery("SELECT * FROM USER_TABLE_ATTENDEES", null);
+        Cursor cursorAttendees = db.rawQuery("SELECT * FROM " + USER_TABLE_ATTENDEES + " WHERE " + COLUMN_STATUS + " = 'Pending'", null);
         //move to the first result in the result set(cursor)
         if(cursorAttendees.moveToFirst()){
             //loop through the result and create a new attendee. put attendee in the list.
@@ -157,7 +157,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursorAttendees.close();
 
         //fetch organizers
-        Cursor cursorOrganizers = db.rawQuery("SELECT * FROM USER_TABLE_ORGANIZERS", null);
+        Cursor cursorOrganizers = db.rawQuery("SELECT * FROM " + USER_TABLE_ORGANIZERS + " WHERE " + COLUMN_STATUS + " = 'Pending'", null);
 
         if(cursorOrganizers.moveToFirst()){
             //loop through the result and create a new attendee. put attendee in the list.
@@ -184,5 +184,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return users;
 
+    }
+
+    //method to update the user's status
+
+    public void updateUserStatus(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_STATUS, user.getStatus());
+
+        if (user instanceof Attendee){
+            //changing the status of the user by finding the matching email in the database
+            db.update(USER_TABLE_ATTENDEES, cv, COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+        } else if(user instanceof Organizer){
+            db.update(USER_TABLE_ORGANIZERS, cv, COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+        }
     }
 }

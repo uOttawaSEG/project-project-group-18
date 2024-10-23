@@ -1,11 +1,17 @@
 package com.example.seg_project_d11;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.Cursor;
+
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -117,5 +123,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }else{
             return true;
         }
+    }
+
+    //fetch a list of users(attendees and organizers) from the database
+    public List<User> getAll(){
+        List<User> users = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //fetch attendees
+        //rawQuery returns a cursor
+        Cursor cursorAttendees = db.rawQuery("SELECT * FROM USER_TABLE_ATTENDEES", null);
+        //move to the first result in the result set(cursor)
+        if(cursorAttendees.moveToFirst()){
+            //loop through the result and create a new attendee. put attendee in the list.
+            do{
+
+                String email = cursorAttendees.getString(0);
+                String firstName = cursorAttendees.getString(1);
+                String lastname = cursorAttendees.getString(2);
+                String phoneNumber =cursorAttendees.getString(3);
+                String address =cursorAttendees.getString(4);
+                String password = cursorAttendees.getString(5);
+                String status = cursorAttendees.getString(6);
+
+                Attendee attendee = new Attendee(firstName, lastname, email, password, phoneNumber, address, status);
+                users.add(attendee);
+
+            } while(cursorAttendees.moveToNext());
+        }else{
+            //failure. do not add anything to the list.
+        }
+
+        cursorAttendees.close();
+
+        //fetch organizers
+        Cursor cursorOrganizers = db.rawQuery("SELECT * FROM USER_TABLE_ORGANIZERS", null);
+
+        if(cursorOrganizers.moveToFirst()){
+            //loop through the result and create a new attendee. put attendee in the list.
+            do{
+
+                String email = cursorOrganizers.getString(0);
+                String firstName = cursorOrganizers.getString(1);
+                String lastname = cursorOrganizers.getString(2);
+                String phoneNumber =cursorOrganizers.getString(3);
+                String address =cursorOrganizers.getString(4);
+                String password = cursorOrganizers.getString(5);
+                String organizationName = cursorOrganizers.getString(6);
+                String status = cursorOrganizers.getString(7);
+
+                Organizer organizer = new Organizer(firstName, lastname, email, password, phoneNumber, address, organizationName, status);
+                users.add(organizer);
+
+            } while(cursorOrganizers.moveToNext());
+        }else{
+            //failure. do not add anything to the list.
+        }
+
+        cursorOrganizers.close();
+        db.close();
+        return users;
+
     }
 }

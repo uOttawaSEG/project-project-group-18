@@ -15,7 +15,10 @@ public class AdminActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
     private ListView listOfRequests;
+
+   // private List<User> rejectedRequests;
     private List<User> pendingRequests;
+
     private UserAdapter adapter;
 
 
@@ -23,7 +26,7 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.pendadmin);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -33,10 +36,12 @@ public class AdminActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         pendingRequests = databaseHelper.getPendingRequests();
 
+
         //assign value to listOfRequests
         listOfRequests = findViewById(R.id.lvPendingList);
+        //listOfRequests = findViewById(R.id.lvRejectList);
 
-        //setting the dapter
+        //setting the adapter
         adapter = new UserAdapter(this, pendingRequests);
         listOfRequests.setAdapter(adapter);
     }

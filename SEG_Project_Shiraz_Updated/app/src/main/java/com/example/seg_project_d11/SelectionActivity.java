@@ -1,6 +1,7 @@
 package com.example.seg_project_d11;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class SelectionActivity extends AppCompatActivity {
+    Button signAtendee;
+    Button signOrganizer;
+    Button signAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +24,9 @@ public class SelectionActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        signAtendee = findViewById(R.id.buttonAttendee);
+        signOrganizer = findViewById(R.id.buttonOrganizer);
+        signAdmin = findViewById(R.id.buttonAdministrator);
     }
+
 }

@@ -1,6 +1,11 @@
 package com.example.seg_project_d11;
 
-public class Administrator {
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Administrator extends AppCompatActivity {
 
     //using a private static instance of the Administrator
 

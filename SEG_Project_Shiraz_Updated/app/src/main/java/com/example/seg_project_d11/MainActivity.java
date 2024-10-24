@@ -2,6 +2,7 @@ package com.example.seg_project_d11;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Selection;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -44,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Intent intent = new Intent(MainActivity.this, WelcomePage.class);
-                    intent.putExtra("user_name", "Guest");
-                    intent.putExtra("user_role", "Guest");
+                    Intent intent = new Intent(MainActivity.this, SelectionActivity.class);
                     startActivity(intent);
             }
         });

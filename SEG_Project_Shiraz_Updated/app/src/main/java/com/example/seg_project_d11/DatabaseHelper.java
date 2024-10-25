@@ -77,7 +77,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Create tables again
         onCreate(db);
 
+
+
     }
+
+
     // add an attendee data to the database
     public boolean addAttendee(Attendee attendee){
 

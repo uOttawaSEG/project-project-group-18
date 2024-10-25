@@ -16,6 +16,8 @@ public class RegistrationMain extends AppCompatActivity {
     Button goToOrgReg;
     Button goToAttendeeReg;
     Button backButton;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +54,13 @@ public class RegistrationMain extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(RegistrationMain.this, MainActivity.class);
+                Intent intent = new Intent(RegistrationMain.this, SignInPage.class);
                 startActivity(intent);
             }
 
         });
+
+
 
     }
 }

@@ -42,6 +42,8 @@ public class SignInPage extends AppCompatActivity {
         submit= findViewById(R.id.nextButton);
         goBack = findViewById(R.id.backButton);
 
+        //initializing the database
+        db = new DatabaseHelper(this);
 
         //Associates each textField to TextView variable
         userName = findViewById(R.id.userName);
@@ -74,26 +76,7 @@ public class SignInPage extends AppCompatActivity {
                     startActivity(intent);
                 }else{
                     if (db.checkUserPending(username,password)){
-                        AlertDialog.Builder message = new AlertDialog.Builder(SignInPage.this);
-                        message.setCancelable(true);
-                        message.setTitle("Attention!");
-                        message.setMessage("You're request is still pending. To contact the Admin: - - -");
 
-                        // Cancel Button
-                        message.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface d, int i) {
-                                d.cancel();
-                            }
-                        });
-
-                        // Ok/Redirect  Button
-                        message.setPositiveButton("Return to main", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface d, int i) {
-                                Intent intent = new Intent(SignInPage.this, RegistrationMain.class);
-                                startActivity(intent);
-                            }
-                        });
-                        message.show();
                     } else{
 
                         AlertDialog.Builder message = new AlertDialog.Builder(SignInPage.this);
@@ -102,18 +85,12 @@ public class SignInPage extends AppCompatActivity {
                         message.setMessage("Your account has been rejected.");
 
                         // Cancel Button
-                        message.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface d, int i) {
-                                d.cancel();
-                            }
-                        });
+                        message.setNegativeButton("Cancel", (d, i) -> d.cancel());
 
                         // Ok/Redirect  Button
-                        message.setPositiveButton("Return to main", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface d, int i) {
-                                Intent intent = new Intent(SignInPage.this, RegistrationMain.class);
-                                startActivity(intent);
-                            }
+                        message.setPositiveButton("Return to main", (d,i) -> {
+                            Intent intent = new Intent(SignInPage.this, RegistrationMain.class);
+                            startActivity(intent);
                         });
                         message.show();
 

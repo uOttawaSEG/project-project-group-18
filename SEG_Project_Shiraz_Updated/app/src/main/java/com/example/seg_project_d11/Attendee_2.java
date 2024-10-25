@@ -41,8 +41,6 @@ public class Attendee_2 extends AppCompatActivity {
             return insets;
         });
 
-
-
         //initializes the Back and submit buttons
         submit= findViewById(R.id.submitButton);
         goBack = findViewById(R.id.backButton_A2);
@@ -96,9 +94,8 @@ public class Attendee_2 extends AppCompatActivity {
 
 
                 if (allValid){
-
                     //creating attendee obeject
-                    Attendee attendee = new Attendee(attendeeName, attendeeLastName, attendeeEmail, attendeePassword, attendeePhone, attendeeAddress, "pending");
+                    Attendee attendee = new Attendee(attendeeName, attendeeLastName, attendeeEmail, attendeePassword, attendeePhone, attendeeAddress, "Pending");
 
                     //adding attendee to database
                     boolean success = databaseHelper.addAttendee(attendee);

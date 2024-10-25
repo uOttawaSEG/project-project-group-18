@@ -1,8 +1,6 @@
 package com.example.seg_project_d11;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -29,26 +27,6 @@ public class SelectionActivity extends AppCompatActivity {
         signAtendee = findViewById(R.id.buttonAttendee);
         signOrganizer = findViewById(R.id.buttonOrganizer);
         signAdmin = findViewById(R.id.buttonAdministrator);
-
-
-        signAtendee.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(SelectionActivity.this, SignInPage.class);
-                startActivity(intent);
-            }
-
-        });
-
-        signOrganizer.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(SelectionActivity.this, SignInPage.class);
-                startActivity(intent);
-            }
-
-        });
-
     }
 
 }

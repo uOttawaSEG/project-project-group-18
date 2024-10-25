@@ -14,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.Scanner;
 
+//delete this file later before submitting D2
+
 public class AccountsViewModel extends ViewModel{
     public static String organizerName, organizerPhone, organizerLastName, organizerAddress, organizationName, organizerEmail, organizerPassword = null;
     public static String attendeeName, attendeePhone, attendeeLastName, attendeeAddress, attendeeEmail, attendeePassword = null;

@@ -2,7 +2,6 @@ package com.example.seg_project_d11;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.ViewModelProvider;
 
 public class Attendee_1 extends AppCompatActivity {
 
@@ -36,7 +34,7 @@ public class Attendee_1 extends AppCompatActivity {
         });
 
         //Associates each button to variable
-        goBack = findViewById(R.id.backButton_A1);
+        goBack = findViewById(R.id.backButton);
         goNext = findViewById(R.id.nextButton);
 
         //Associates each text field to TextView variable

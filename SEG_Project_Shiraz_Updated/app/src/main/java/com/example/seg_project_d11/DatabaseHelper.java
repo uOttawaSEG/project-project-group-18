@@ -190,8 +190,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    //method to update the user's status
+    //method to check if User is accepted
+    public boolean checkUserAccepted(String email, String password){
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        //Check for user in the Attendee List
+        Cursor findAttendee = db.rawQuery("SELECT * FROM " + USER_TABLE_ATTENDEES + " WHERE " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
+        if (findAttendee.getCount()>0){ //if greater than 0, than account exists
+            findAttendee.close();
+            return true;
+        }
+        findAttendee.close(); //Account isn't found so, close cursor
+
+        //Check for user in the Organizer List
+        Cursor findOrganizer = db.rawQuery("SELECT * FROM " + USER_TABLE_ORGANIZERS + " WHERE " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
+        if (findOrganizer.getCount() >0){//if greater than 0, than account exists
+            findOrganizer.close();
+            return true;
+        }
+        findOrganizer.close();//Account isn't found so, close cursor
+
+        return false;
+
+    }
+
+    //method to check if user is pending (very similar to checking for accepted)
+    public boolean checkUserPending(String email, String password){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //Check for user in the Attendee List
+        Cursor findAttendee = db.rawQuery("SELECT * FROM " + USER_TABLE_ATTENDEES + " WHERE " + COLUMN_STATUS + " = 'Pending'" + " = ? AND " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
+        if (findAttendee.getCount()>0){ //if greater than 0, than account exists
+            findAttendee.close();
+            return true;
+        }
+        findAttendee.close(); //Account isn't found so, close cursor
+
+        //Check for user in the Organizer List
+        Cursor findOrganizer = db.rawQuery("SELECT * FROM " + USER_TABLE_ORGANIZERS + " WHERE " + COLUMN_STATUS + " = 'Pending'" + " = ? AND " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
+        if (findOrganizer.getCount() >0){//if greater than 0, than account exists
+            findOrganizer.close();
+            return true;
+        }
+        findOrganizer.close();//Account isn't found so, close cursor
+        return false;
+    }
+
+
+    //method to update the user's status
     public void updateUserStatus(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();

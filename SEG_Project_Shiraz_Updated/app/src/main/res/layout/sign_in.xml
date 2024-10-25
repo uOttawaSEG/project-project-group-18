@@ -14,6 +14,7 @@
         android:textAlignment="center"
         android:textSize="30dp"
         android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

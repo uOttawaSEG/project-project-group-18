@@ -230,7 +230,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         findOrganizer.close();//Account isn't found so, close cursor
         return false;
-    }s
+    }
 
 
     //method to update the user's status

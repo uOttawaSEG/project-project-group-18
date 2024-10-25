@@ -185,7 +185,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return users;
 
     }
-    /*
+
     //method to check if User is accepted
     public boolean checkUserAccepted(String email, String password){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -230,7 +230,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         findOrganizer.close();//Account isn't found so, close cursor
         return false;
-    }*/
+    }s
 
 
     //method to update the user's status

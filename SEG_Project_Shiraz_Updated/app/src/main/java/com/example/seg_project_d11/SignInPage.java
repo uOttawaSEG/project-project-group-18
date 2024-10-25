@@ -89,7 +89,7 @@ public class SignInPage extends AppCompatActivity {
 
                         // Ok/Redirect  Button
                         message.setPositiveButton("Return to main", (d,i) -> {
-                            Intent intent = new Intent(SignInPage.this, RegistrationMain.class);
+                            Intent intent = new Intent(SignInPage.this, MainActivity.class);
                             startActivity(intent);
                         });
                         message.show();

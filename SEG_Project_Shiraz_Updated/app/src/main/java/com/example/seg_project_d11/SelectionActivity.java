@@ -30,17 +30,11 @@ public class SelectionActivity extends AppCompatActivity {
         signOrganizer = findViewById(R.id.buttonOrganizer);
         signAdmin = findViewById(R.id.buttonAdministrator);
 
-<<<<<<< HEAD
+
         signAdmin.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
 
                 Intent intent = new Intent(SelectionActivity.this, Admin_SignIn_Activity.class);
-=======
-        signAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SelectionActivity.this, adminLogin.class);
->>>>>>> ff78cb718b754e315b0df74bea667d81557736b6
                 startActivity(intent);
             }
         });

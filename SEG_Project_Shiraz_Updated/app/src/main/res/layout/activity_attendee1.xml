@@ -114,7 +114,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/backButton_A1"
+                android:id="@+id/backButton"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:backgroundTint="#3F51B5"

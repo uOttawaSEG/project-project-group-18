@@ -31,7 +31,7 @@ public class RegistrationMain extends AppCompatActivity {
         //Assigns button to variable
         goToOrgReg = findViewById(R.id.amOrganizer);
         goToAttendeeReg = findViewById(R.id.amAttendee);
-        backButton= findViewById(R.id.signInButton);
+        //backButton= findViewById(R.id.signInButton);
         //On button click, open activity Organization_1
         goToOrgReg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,15 +47,6 @@ public class RegistrationMain extends AppCompatActivity {
             public void onClick(View view){
                     Intent intent = new Intent(RegistrationMain.this, Attendee_1.class);
                     startActivity(intent);
-            }
-
-        });
-
-        backButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(RegistrationMain.this, SignInPage.class);
-                startActivity(intent);
             }
 
         });

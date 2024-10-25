@@ -1,6 +1,7 @@
 package com.example.seg_project_d11;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -36,6 +37,8 @@ public class AdminActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         pendingRequests = databaseHelper.getPendingRequests();
 
+        //debugging
+        Log.d("AdminActivity", "Number of pending requests: " + pendingRequests.size());
 
         //assign value to listOfRequests
         listOfRequests = findViewById(R.id.lvPendingList);

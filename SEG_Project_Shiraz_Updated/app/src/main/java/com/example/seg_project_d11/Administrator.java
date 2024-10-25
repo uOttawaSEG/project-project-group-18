@@ -14,6 +14,10 @@ public class Administrator extends AppCompatActivity {
 
     private Administrator(){}
 
+    public static boolean checkCredentials(String username, String password) {
+        return ADMIN_USERNAME.equals(username) && ADMIN_PASSWORD.equals(password);
+    }
+
     //method to approve the registration request from attendee or organizer
     public static void approveRequest(User user, DatabaseHelper databaseHelper){
         user.setStatus("Approved");

@@ -1,5 +1,6 @@
 package com.example.seg_project_d11;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,32 +12,35 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class SelectionActivity extends AppCompatActivity {
-    Button signAtendee;
-    Button signOrganizer;
-    Button signAdmin;
+public class Admin_welcomePage_Activity extends AppCompatActivity {
 
+    Button goToPendingRequest;
+    Button goToRejectedRequests;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_selection);
+        setContentView(R.layout.admin_welcomepage);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        signAtendee = findViewById(R.id.buttonAttendee);
-        signOrganizer = findViewById(R.id.buttonOrganizer);
-        signAdmin = findViewById(R.id.buttonAdministrator);
 
-        signAdmin.setOnClickListener(new View.OnClickListener(){
+        goToPendingRequest = findViewById(R.id.pendingButton);
+        goToRejectedRequests = findViewById(R.id.RejectButton);
+
+        goToPendingRequest.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
 
-                Intent intent = new Intent(SelectionActivity.this, Admin_SignIn_Activity.class);
+                Intent intent = new Intent(Admin_welcomePage_Activity.this, AdminActivity.class);
                 startActivity(intent);
             }
         });
-    }
 
+        //Todo: repeat same idea for the rejected requests button
+
+    }
 }

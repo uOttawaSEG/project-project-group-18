@@ -98,7 +98,7 @@ public class Attendee_2 extends AppCompatActivity {
                 if (allValid){
 
                     //creating attendee obeject
-                    Attendee attendee = new Attendee(attendeeName, attendeeLastName, attendeeEmail, attendeePassword, attendeePhone, attendeeAddress, "pending");
+                    Attendee attendee = new Attendee(attendeeName, attendeeLastName, attendeeEmail, attendeePassword, attendeePhone, attendeeAddress, "Pending");
 
                     //adding attendee to database
                     boolean success = databaseHelper.addAttendee(attendee);

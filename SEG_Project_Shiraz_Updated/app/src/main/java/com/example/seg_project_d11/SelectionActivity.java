@@ -51,7 +51,8 @@ public class SelectionActivity extends AppCompatActivity {
         signAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //goes back to Organizer_1 activity
+                Intent intent = new Intent(SelectionActivity.this,Admin_welcomePage_Activity.class);
+                startActivity(intent);
 
             }
         });

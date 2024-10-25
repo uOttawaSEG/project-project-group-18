@@ -6,7 +6,7 @@
              android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#527689EF"
@@ -76,7 +76,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/backButton_A1"
+                android:id="@+id/backButton"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:backgroundTint="#3F51B5"

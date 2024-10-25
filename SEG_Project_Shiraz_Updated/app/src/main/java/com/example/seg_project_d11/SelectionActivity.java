@@ -1,6 +1,8 @@
 package com.example.seg_project_d11;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -10,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class SelectionActivity extends AppCompatActivity {
-    Button signAtendee;
+    Button signAttendee;
     Button signOrganizer;
     Button signAdmin;
 
@@ -24,9 +26,36 @@ public class SelectionActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        signAtendee = findViewById(R.id.buttonAttendee);
+        signAttendee = findViewById(R.id.buttonAttendee);
         signOrganizer = findViewById(R.id.buttonOrganizer);
         signAdmin = findViewById(R.id.buttonAdministrator);
+
+        signAttendee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //goes back to Organizer_1 activity
+                Intent intent = new Intent(SelectionActivity.this, SignInPage.class);
+                startActivity(intent);
+            }
+        });
+
+        signOrganizer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //goes back to Organizer_1 activity
+                Intent intent = new Intent(SelectionActivity.this, SignInPage.class);
+                startActivity(intent);
+            }
+        });
+
+        signAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //goes back to Organizer_1 activity
+
+            }
+        });
+
     }
 
 }

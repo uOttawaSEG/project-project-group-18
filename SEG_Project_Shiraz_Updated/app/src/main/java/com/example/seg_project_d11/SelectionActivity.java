@@ -33,7 +33,7 @@ public class SelectionActivity extends AppCompatActivity {
         signAttendee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //goes back to Organizer_1 activity
+
                 Intent intent = new Intent(SelectionActivity.this, SignInPage.class);
                 startActivity(intent);
             }
@@ -42,7 +42,7 @@ public class SelectionActivity extends AppCompatActivity {
         signOrganizer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //goes back to Organizer_1 activity
+
                 Intent intent = new Intent(SelectionActivity.this, SignInPage.class);
                 startActivity(intent);
             }
@@ -51,7 +51,7 @@ public class SelectionActivity extends AppCompatActivity {
         signAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SelectionActivity.this,Admin_welcomePage_Activity.class);
+                Intent intent = new Intent(SelectionActivity.this,Admin_SignIn_Activity.class);
                 startActivity(intent);
 
             }

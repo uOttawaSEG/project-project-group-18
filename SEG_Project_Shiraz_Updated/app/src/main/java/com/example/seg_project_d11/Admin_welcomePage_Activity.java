@@ -17,7 +17,6 @@ public class Admin_welcomePage_Activity extends AppCompatActivity {
     Button goToPendingRequest;
     Button goToRejectedRequests;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

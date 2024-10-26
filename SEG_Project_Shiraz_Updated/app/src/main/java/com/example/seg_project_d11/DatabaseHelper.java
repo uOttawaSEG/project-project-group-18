@@ -75,27 +75,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
+        cv.put(COLUMN_EMAIL, user.getEmail());
+        cv.put(COLUMN_FIRSTNAME, user.getFirstName());
+        cv.put(COLUMN_LASTNAME, user.getLastName());
+        cv.put(COLUMN_PHONENUMBER, user.getPhoneNumber());
+        cv.put(COLUMN_ADDRESS, user.getAddress());
+        cv.put(COLUMN_PASSWORD, user.getPassword());
+        cv.put(COLUMN_STATUS, user.getStatus());
+
         if (user instanceof Attendee){
 
-            cv.put(COLUMN_EMAIL, user.getEmail());
-            cv.put(COLUMN_FIRSTNAME, user.getFirstName());
-            cv.put(COLUMN_LASTNAME, user.getLastName());
-            cv.put(COLUMN_PHONENUMBER, user.getPhoneNumber());
-            cv.put(COLUMN_ADDRESS, user.getAddress());
-            cv.put(COLUMN_PASSWORD, user.getPassword());
             cv.put(COLUMN_ORGANIZATIONNAME, "");
-            cv.put(COLUMN_STATUS, user.getStatus());
             cv.put(COLUMN_USERROLE, "Attendee");
 
         }else if (user instanceof Organizer){
-            cv.put(COLUMN_EMAIL, user.getEmail());
-            cv.put(COLUMN_FIRSTNAME, user.getFirstName());
-            cv.put(COLUMN_LASTNAME, user.getLastName());
-            cv.put(COLUMN_PHONENUMBER, user.getPhoneNumber());
-            cv.put(COLUMN_ADDRESS, user.getAddress());
-            cv.put(COLUMN_PASSWORD, user.getPassword());
+
             cv.put(COLUMN_ORGANIZATIONNAME, ((Organizer) user).getOrganizationName());
-            cv.put(COLUMN_STATUS, user.getStatus());
             cv.put(COLUMN_USERROLE,"Organizer");
 
         }
@@ -116,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //fetch attendees
         //rawQuery returns a cursor
-        Cursor cursorUsers= db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_STATUS + " = stat", null);
+        Cursor cursorUsers = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_STATUS + " = ?", new String[]{stat});
         //move to the first result in the result set(cursor)
         if(cursorUsers.moveToFirst()){
             //loop through the result and create a new user and put user in the list.
@@ -147,8 +142,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         cursorUsers.close();
-        db.close();
+        //db.close();
         return users;
+
+    }
+
+    //method to update the user's status
+    public void updateUserStatus(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_STATUS, user.getStatus());
+
+        db.update(USER_TABLE, cv, COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
 
     }
 
@@ -157,21 +162,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         //Check for user in the Attendee List
-        Cursor findAttendee = db.rawQuery("SELECT * FROM " + USER_TABLE_ATTENDEES + " WHERE " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
+        Cursor findAttendee = db.rawQuery("SELECT * FROM " + USER_TABLE+ " WHERE " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
         if (findAttendee.getCount()>0){ //if greater than 0, than account exists
             findAttendee.close();
             return true;
         }
         findAttendee.close(); //Account isn't found so, close cursor
-
-        //Check for user in the Organizer List
-        Cursor findOrganizer = db.rawQuery("SELECT * FROM " + USER_TABLE_ORGANIZERS + " WHERE " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
-        if (findOrganizer.getCount() >0){//if greater than 0, than account exists
-            findOrganizer.close();
-            return true;
-        }
-        findOrganizer.close();//Account isn't found so, close cursor
-
         return false;
 
     }
@@ -181,35 +177,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         //Check for user in the Attendee List
-        Cursor findAttendee = db.rawQuery("SELECT * FROM " + USER_TABLE_ATTENDEES + " WHERE " + COLUMN_STATUS + " = 'Pending'" + " = ? AND " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
+        Cursor findAttendee = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_STATUS + " = 'Pending'" + " = ? AND " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
         if (findAttendee.getCount()>0){ //if greater than 0, than account exists
             findAttendee.close();
             return true;
         }
         findAttendee.close(); //Account isn't found so, close cursor
-
-        //Check for user in the Organizer List
-        Cursor findOrganizer = db.rawQuery("SELECT * FROM " + USER_TABLE_ORGANIZERS + " WHERE " + COLUMN_STATUS + " = 'Pending'" + " = ? AND " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
-        if (findOrganizer.getCount() >0){//if greater than 0, than account exists
-            findOrganizer.close();
-            return true;
-        }
-        findOrganizer.close();//Account isn't found so, close cursor
         return false;
     }
 
 
-    //method to update the user's status
-    public void updateUserStatus(User user){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_STATUS, user.getStatus());
 
-        if (user instanceof Attendee){
-            //changing the status of the user by finding the matching email in the database
-            db.update(USER_TABLE_ATTENDEES, cv, COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
-        } else if(user instanceof Organizer){
-            db.update(USER_TABLE_ORGANIZERS, cv, COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
-        }
-    }
+
+
 }

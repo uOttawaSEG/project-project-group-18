@@ -23,7 +23,7 @@ public class Attendee_1 extends AppCompatActivity {
     //User input fields
     TextView attendName, attendLastName, attendPhone, attendAddress;
     //User initialization, hold user information
-    static Attendee user= new Attendee(null,null, null, null, null, null, null,null);
+    static Attendee user= new Attendee(null,null, null, null, null, null, null);
 
 
     @Override
@@ -58,7 +58,7 @@ public class Attendee_1 extends AppCompatActivity {
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                user =new Attendee(null,null, null, null, null, null, null,null);
+                user =new Attendee(null,null, null, null, null, null, null);
 
                 //opens RegistrationMain
                 Intent intent = new Intent(Attendee_1.this, RegistrationMain.class);

@@ -21,8 +21,9 @@ public class Organizer_1 extends AppCompatActivity {
     Button goBack, goNext;
     //User input fields
     TextView orgName, orgLastName, orgPhone, orgAddress;
-    //ViewModel initialization, hold user information in static variables
-    AccountsViewModel organizationViewModel;
+    //User initialization, hold user information
+    static Organizer user= new Organizer(null,null, null, null, null, null, null, null);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +36,6 @@ public class Organizer_1 extends AppCompatActivity {
             return insets;
         });
 
-        //creates the view model
-        organizationViewModel = new AccountsViewModel(this);
         //Associates each button to variable
         goBack = findViewById(R.id.backButton_o1);
         goNext = findViewById(R.id.nextButton);
@@ -49,23 +48,16 @@ public class Organizer_1 extends AppCompatActivity {
 
         //Sets the text on each text field to be the user's information,
         //the default is null (empty) if nothing has been entered yet
-        orgName.setText(AccountsViewModel.organizerName);
-        orgLastName.setText(AccountsViewModel.organizerLastName);
-        orgPhone.setText(AccountsViewModel.organizerPhone);
-        orgAddress.setText(AccountsViewModel.organizerAddress);
+        orgName.setText(user.getFirstName()); //change
+        orgLastName.setText(user.getLastName());//change
+        orgPhone.setText(user.getPhoneNumber());//change
+        orgAddress.setText(user.getAddress());//change
 
         //On click activity for back button
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //resets the user info inputs since, thereby cancelling registration
-                AccountsViewModel.organizerName = null;
-                AccountsViewModel.organizerLastName = null;
-                AccountsViewModel.organizerPhone = null;
-                AccountsViewModel.organizerAddress = null;
-                AccountsViewModel.organizationName = null;
-                AccountsViewModel.organizerEmail = null;
-                AccountsViewModel.organizerPassword = null;
+                user= new Organizer(null,null, null, null, null, null, null, null);
                 //opens RegistrationMain
                 Intent intent = new Intent(Organizer_1.this, RegistrationMain.class);
                 startActivity(intent);
@@ -75,37 +67,31 @@ public class Organizer_1 extends AppCompatActivity {
         goNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Stores the data of this page into the viewModel class's static variables
-                AccountsViewModel.organizerName = orgName.getText().toString().trim();
-                AccountsViewModel.organizerLastName = orgLastName.getText().toString().trim();
-                AccountsViewModel.organizerPhone = orgPhone.getText().toString().trim();
-                AccountsViewModel.organizerAddress = orgAddress.getText().toString().trim();
-
                 //boolean variable to make sure all user inputs are valid before proceeding to next activity
                 boolean allValid = true;
+                String name = orgName.getText().toString().trim();
+                String lastName = orgLastName.getText().toString().trim();
+                String phone = orgPhone.getText().toString().trim();
 
-                if (!UserValidator.validateName(AccountsViewModel.organizerName)){
-                    orgName.setError("Invalid username! username must contain at least one letter and only letters, numbers and underscore are allowed.");
+                if (!UserValidator.validateName(name)){
+                    orgName.setError("Invalid name! Only letters are allowed.");
                     allValid = false;
                 }
-
-
-                if (!UserValidator.validateLastname(AccountsViewModel.organizerLastName)){
+                if (!UserValidator.validateName(lastName)){
                     orgLastName.setError("Invalid lastname! Only letters are allowed.");
                     allValid = false;
                 }
 
-                if (!UserValidator.validatePhoneNumber(AccountsViewModel.organizerPhone)){
+                if (!UserValidator.validatePhoneNumber(phone)){
                     orgPhone.setError("Invalid phone number! Only numbers are allowed.");
                     allValid = false;
                 }
 
-
-
-                //Tester, ensures the content of organizer name is correct, prints on logCat
-                Log.i("CREATION", AccountsViewModel.organizerName);
-
                 if (allValid){
+                    user.setFirstName(name);
+                    user.setLastName(lastName);
+                    user.setPhoneNumber(phone);
+                    user.setAddress(orgAddress.getText().toString().trim());
                     //Opens Organizer 2
                     Intent intent = new Intent(Organizer_1.this, Organizer_2.class);
                     startActivity(intent);

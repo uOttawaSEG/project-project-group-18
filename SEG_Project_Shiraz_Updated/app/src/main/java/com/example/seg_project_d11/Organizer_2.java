@@ -25,15 +25,10 @@ public class Organizer_2 extends AppCompatActivity {
     //go back and submit buttons
     Button goBack;
     Button submit;
+    DatabaseHelper databaseHelper;
 
     //User input fields
-    TextView orgName, orgEmail, orgPassword, orgConfirmPassword;
-
-    //ViewModel initialization, hold user information in static variables
-    AccountsViewModel organizationViewModel;
-
-    //String, holds the combination of all user input, used in the userInfo txt file
-    String userInfo;
+    TextView organizationName, orgEmail, orgPassword, orgConfirmPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,27 +40,25 @@ public class Organizer_2 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        //Initializes view model
-        organizationViewModel = new AccountsViewModel(this);
 
         //initializes the Back and submit buttons
         submit= findViewById(R.id.submitButton);
         goBack = findViewById(R.id.backButton_o2);
 
-        //initializes the userInfo string
-        userInfo = null;
+        //reference to the databaseHelper
+        databaseHelper = new DatabaseHelper(this);
 
         //Associates each textField to TextView variable
-        orgName= findViewById(R.id.organizationName);
+        organizationName= findViewById(R.id.organizationName);
         orgEmail= findViewById(R.id.organizerEmail);
         orgPassword= findViewById(R.id.organizerPassword);
         orgConfirmPassword= findViewById(R.id.organizerConfirmPassword);
 
         //Sets the text on each text field to be the user's information,
         //the default is null (empty) if nothing has been entered yet
-        orgName.setText(AccountsViewModel.organizationName);
-        orgEmail.setText(AccountsViewModel.organizerEmail);
-        orgPassword.setText(AccountsViewModel.organizerPassword);
+        organizationName.setText(Organizer_1.user.getOrganizationName());
+        orgEmail.setText(Organizer_1.user.getEmail());
+        orgPassword.setText(Organizer_1.user.getPassword());
 
 
         //On click activity for Back button
@@ -74,9 +67,9 @@ public class Organizer_2 extends AppCompatActivity {
             public void onClick(View view) {
 
                 //Stores the data of this page into the viewModel class's static variables
-                AccountsViewModel.organizationName = orgName.getText().toString().trim();
-                AccountsViewModel.organizerEmail = orgEmail.getText().toString().trim();
-                AccountsViewModel.organizerPassword = orgPassword.getText().toString().trim();
+                Organizer_1.user.setOrganizationName(organizationName.getText().toString().trim());
+                Organizer_1.user.setEmail(orgEmail.getText().toString().trim());
+                Organizer_1.user.setPassword(orgPassword.getText().toString().trim());
 
                 //goes back to Organizer_1 activity
                 Intent intent = new Intent(Organizer_2.this, Organizer_1.class);
@@ -84,37 +77,42 @@ public class Organizer_2 extends AppCompatActivity {
             }
         });
 
-        submit = findViewById(R.id.submitButton);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //Stores the data of this page into the viewModel class's static variables
-                AccountsViewModel.organizationName = orgName.getText().toString().trim();
-                AccountsViewModel.organizerEmail = orgEmail.getText().toString().trim();
-                AccountsViewModel.organizerPassword = orgPassword.getText().toString().trim();
-
-
                 //boolean variable to make sure all user inputs are valid before proceeding to next activity
                 boolean allValid = true;
 
-                if (!UserValidator.validateEmail(AccountsViewModel.organizerEmail)){
+                String email = orgEmail.getText().toString().trim();
+                String password = orgPassword.getText().toString().trim();
+                String confirmPassword = orgConfirmPassword.getText().toString().trim();
+
+                if (!UserValidator.validateEmail(email)){
                     orgEmail.setError("Invalid email! email must contain @ and dot.");
                     allValid = false;
                 }
 
-                if (!UserValidator.validatePassword(AccountsViewModel.organizerPassword)){
+                if (!UserValidator.validatePassword(password)){
                     orgPassword.setError("Invalid password! password must contain at least one letter and one number.");
                     allValid = false;
                 }
+
+                if (!password.equals(confirmPassword)){
+                    orgConfirmPassword.setError("Passwords must match!");
+                    allValid = false;
+                }
                 if (allValid){
-                    //Intent intent = new Intent(Organizer_2.this, MainActivity.class);
-                    //This functions should be allocated to the submit button, but in the mean times I will leave it here for testing purposes
-                    userInfo = "Organizer//" + AccountsViewModel.organizerName + "//" + AccountsViewModel.organizerPhone + "//" + AccountsViewModel.organizerLastName + "//" +  AccountsViewModel.organizerAddress + "//" +  AccountsViewModel.organizationName + "//" + AccountsViewModel.organizerEmail + "//" +  AccountsViewModel.organizerPassword;
-                    organizationViewModel.saveUserInfo(userInfo);
+                    //Stores the data of this page into the viewModel class's static variables
+                    Organizer_1.user.setOrganizationName(organizationName.getText().toString().trim());
+                    Organizer_1.user.setEmail(email);
+                    Organizer_1.user.setPassword(password);
+                    Organizer_1.user.setStatus("Pending");
+                    //Moves info to DB
+                    boolean success = databaseHelper.addOrganizer(Organizer_1.user);
                     Intent intent = new Intent(Organizer_2.this, WelcomePage.class);
-                    intent.putExtra("user_name", AccountsViewModel.organizerEmail);
+                    intent.putExtra("user_name", Organizer_1.user.getEmail());
                     intent.putExtra("user_role", "organizer");
+                    Organizer_1.user= new Organizer(null,null, null, null, null, null, null, null);
                     startActivity(intent);
                 }else{
                     //show a message to the user about fixing the errors

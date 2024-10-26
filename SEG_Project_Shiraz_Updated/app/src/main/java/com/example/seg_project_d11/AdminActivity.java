@@ -35,7 +35,7 @@ public class AdminActivity extends AppCompatActivity {
         });
         //fetch pending requests from databse
         databaseHelper = new DatabaseHelper(this);
-        pendingRequests = databaseHelper.getPendingRequests();
+        pendingRequests = databaseHelper.getAllRequests("Pending");
 
         //debugging
         Log.d("AdminActivity", "Number of pending requests: " + pendingRequests.size());

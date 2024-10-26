@@ -22,7 +22,7 @@ public class Organizer_1 extends AppCompatActivity {
     //User input fields
     TextView orgName, orgLastName, orgPhone, orgAddress;
     //User initialization, hold user information
-    static Organizer user= new Organizer(null,null, null, null, null, null, null, null);
+    static Organizer user= new Organizer(null,null, null, null, null, null, null, null, null);
 
 
     @Override
@@ -57,7 +57,7 @@ public class Organizer_1 extends AppCompatActivity {
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                user= new Organizer(null,null, null, null, null, null, null, null);
+                user= new Organizer(null,null, null, null, null, null, null, null, null);
                 //opens RegistrationMain
                 Intent intent = new Intent(Organizer_1.this, RegistrationMain.class);
                 startActivity(intent);

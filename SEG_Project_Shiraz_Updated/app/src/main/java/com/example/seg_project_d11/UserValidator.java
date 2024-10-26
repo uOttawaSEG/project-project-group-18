@@ -12,7 +12,7 @@ public class UserValidator {
      * @param  username username entered by user
      * @return true if name entered is valid, false otherwise
      */
-    public static boolean validateName(String username){
+    /*public static boolean validateName(String username){
 
         if (username.isBlank()){
             return false;
@@ -31,18 +31,18 @@ public class UserValidator {
         Log.i("validateName",Boolean.toString(containsLetter));
         return containsLetter;
 
-    }
+    }*/
 
     /**
      * validates lastname entered by user. It has to contain only letters.
-     * @param lastname lastname entered
+     * @param name lastname entered
      * @return true if lastname entered is valid, false otherwise
      */
-    public static boolean validateLastname(String lastname){
-        if (lastname.isBlank()){
+    public static boolean validateName(String name){
+        if (name.isBlank()){
             return false;
         }
-        for (char c: lastname.toCharArray()){
+        for (char c: name.toCharArray()){
 
             if (!Character.isLetter(c)){
                 return false;
@@ -95,9 +95,9 @@ public class UserValidator {
 
         for(char c: password.toCharArray()){
 
-            if (!Character.isLetterOrDigit(c)){
-                return false;
-            }
+            //if (!Character.isLetterOrDigit(c)){
+            //    return false;
+            //}
             if (Character.isLetter(c)){
                 containsLetter = true;
             }

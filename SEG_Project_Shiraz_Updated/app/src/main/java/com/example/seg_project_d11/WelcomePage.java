@@ -58,21 +58,6 @@ public class WelcomePage extends AppCompatActivity {
         logOut.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 //clears user information from the machine if attendee
-                AccountsViewModel.attendeeName = null;
-                AccountsViewModel.attendeeLastName = null;
-                AccountsViewModel.attendeePhone = null;
-                AccountsViewModel.attendeeAddress = null;
-                AccountsViewModel.attendeeEmail = null;
-                AccountsViewModel.attendeePassword = null;
-
-                //clears user information from the machine if organizer
-                AccountsViewModel.organizerName = null;
-                AccountsViewModel.organizerLastName = null;
-                AccountsViewModel.organizerPhone = null;
-                AccountsViewModel.organizerAddress = null;
-                AccountsViewModel.organizationName = null;
-                AccountsViewModel.organizerEmail = null;
-                AccountsViewModel.organizerPassword = null;
                 Intent intentLogout = new Intent(WelcomePage.this, MainActivity.class);
                 startActivity(intentLogout);
             }

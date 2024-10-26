@@ -28,8 +28,6 @@ public class Attendee_2 extends AppCompatActivity {
     //User input fields
     TextView attendEmail, attendPassword, attendConfirmPassword;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,24 +46,31 @@ public class Attendee_2 extends AppCompatActivity {
         //reference to the databaseHelper
         databaseHelper = new DatabaseHelper(this);
 
-
         //Associates each textField to TextView variable
         attendEmail= findViewById(R.id.attendeeEmail);
         attendPassword= findViewById(R.id.attendeePassword);
         attendConfirmPassword= findViewById(R.id.attendeeConfirmPassword);
 
+        //Sets the text on each text field to be the user's information,
+        //the default is null (empty) if nothing has been entered yet
+        attendEmail.setText(Attendee_1.user.getEmail());
+        attendPassword.setText(Attendee_1.user.getPassword());
 
-        // Retrieve the Intent that started this Activity
-        Intent intent = getIntent();
+        //On click activity for Back button
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        // Get the extras from the Intent
-        String attendeeName = intent.getStringExtra("attendeeName");
-        String attendeeLastName = intent.getStringExtra("attendeeLastName");
-        String attendeePhone = intent.getStringExtra("attendeePhone");
-        String attendeeAddress = intent.getStringExtra("attendeeAddress");
+                //Stores the data of this page into the viewModel class's static variables
+                Attendee_1.user.setEmail(attendEmail.getText().toString().trim());
+                Attendee_1.user.setPassword(attendPassword.getText().toString().trim());
 
-        Log.d("Attendee_2","Attendee Name: " + attendeeName);
+                //goes back to Attendee_1 activity
+                Intent intent = new Intent(Attendee_2.this, Attendee_1.class);
+                startActivity(intent);
 
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,16 +99,20 @@ public class Attendee_2 extends AppCompatActivity {
 
 
                 if (allValid){
-                    //creating attendee obeject
-                    Attendee attendee = new Attendee(attendeeName, attendeeLastName, attendeeEmail, attendeePassword, attendeePhone, attendeeAddress, "Pending");
-
-                    //adding attendee to database
-                    boolean success = databaseHelper.addAttendee(attendee);
+                    //creating attendee object
+                    //Stores the data of this page into the viewModel class's static variables
+                    Attendee_1.user.setEmail(attendeeEmail);
+                    Attendee_1.user.setPassword(attendeePassword);
+                    Attendee_1.user.setStatus("Pending");
+                    //Moves info to DB
+                    boolean success = databaseHelper.addAttendee(Attendee_1.user);
                     Toast.makeText(Attendee_2.this, "Success = " + success, Toast.LENGTH_SHORT).show();
 
                     Intent intent1= new Intent(Attendee_2.this, WelcomePage.class);
                     intent1.putExtra("user_name", attendeeEmail);
                     intent1.putExtra("user_role", "Attendee");
+                    Attendee_1.user =new Attendee(null,null, null, null, null, null, null);
+
                     startActivity(intent1);
 
                 }else{
@@ -114,18 +123,5 @@ public class Attendee_2 extends AppCompatActivity {
 
             }
         });
-
-        //On click activity for Back button
-        goBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //goes back to Attendee_1 activity
-                Intent intent = new Intent(Attendee_2.this, Attendee_1.class);
-                startActivity(intent);
-
-            }
-        });
-
     }
 }

@@ -2,6 +2,7 @@ package com.example.seg_project_d11;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 public class Attendee_1 extends AppCompatActivity {
 
@@ -20,6 +22,8 @@ public class Attendee_1 extends AppCompatActivity {
 
     //User input fields
     TextView attendName, attendLastName, attendPhone, attendAddress;
+    //User initialization, hold user information
+    static Attendee user= new Attendee(null,null, null, null, null, null, null);
 
 
     @Override
@@ -43,11 +47,18 @@ public class Attendee_1 extends AppCompatActivity {
         attendPhone = findViewById(R.id.attendeePhone);
         attendAddress = findViewById(R.id.attendeeAddress);
 
+        //Sets the text on each text field to be the user's information,
+        //the default is null (empty) if nothing has been entered yet
+        attendName.setText(user.getFirstName()); //change
+        attendLastName.setText(user.getLastName());//change
+        attendPhone.setText(user.getPhoneNumber());//change
+        attendAddress.setText(user.getAddress());//change
 
         //On click activity for back button
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                user =new Attendee(null,null, null, null, null, null, null);
 
                 //opens RegistrationMain
                 Intent intent = new Intent(Attendee_1.this, RegistrationMain.class);
@@ -58,27 +69,24 @@ public class Attendee_1 extends AppCompatActivity {
         goNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String attendeeName = attendName.getText().toString().trim();
-                String attendeeLastName = attendLastName.getText().toString().trim();
-                String attendeePhone = attendPhone.getText().toString().trim();
-                String attendeeAddress = attendAddress.getText().toString().trim();
-
-
                 //boolean variable to make sure all user inputs are valid before proceeding to next activity
                 boolean allValid = true;
 
-                if (!UserValidator.validateName(attendeeName)){
-                    attendName.setError("Invalid username! username must contain at least one letter and only letters, numbers and underscore are allowed.");
+                String name = attendName.getText().toString().trim();
+                String lastName = attendLastName.getText().toString().trim();
+                String phone = attendPhone.getText().toString().trim();
+
+                if (!UserValidator.validateName(name)){
+                    attendName.setError("Invalid name! Only letters are allowed.");
                     allValid = false;
                 }
 
-                if (!UserValidator.validateLastname(attendeeLastName)){
+                if (!UserValidator.validateName(lastName)){
                     attendLastName.setError("Invalid lastname! Only letters are allowed.");
                     allValid = false;
                 }
 
-                if (!UserValidator.validatePhoneNumber(attendeePhone)){
+                if (!UserValidator.validatePhoneNumber(phone)){
                     attendPhone.setError("Invalid phone number! Only numbers are allowed.");
                     allValid = false;
                 }
@@ -86,11 +94,13 @@ public class Attendee_1 extends AppCompatActivity {
 
                 //Opens Attendee 2
                 if (allValid){
+                    //sets user info
+                    user.setFirstName(name);
+                    user.setLastName(lastName);
+                    user.setPhoneNumber(phone);
+                    user.setAddress(attendAddress.getText().toString().trim());
+                    //opens next page
                     Intent intent = new Intent(Attendee_1.this, Attendee_2.class);
-                    intent.putExtra("attendeeName", attendeeName);
-                    intent.putExtra("attendeeLastName", attendeeLastName);
-                    intent.putExtra("attendeePhone", attendeePhone);
-                    intent.putExtra("attendeeAddress", attendeeAddress);
                     startActivity(intent);
                 }else{
                     //show a message to the user about fixing the errors

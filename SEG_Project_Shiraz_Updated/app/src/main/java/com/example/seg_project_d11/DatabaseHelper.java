@@ -22,8 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     //user table
-    private static final String USER_TABLE_ATTENDEES = "USER_TABLE_ATTENDEES";
-    private static final String USER_TABLE_ORGANIZERS = "USER_TABLE_ORGANIZERS";
+    private static final String USER_TABLE = "USER_TABLE";
 
     private static final String COLUMN_FIRSTNAME = "firstName";
     private static final String COLUMN_LASTNAME = "lastname";
@@ -33,6 +32,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ADDRESS = "address";
     public static final String COLUMN_STATUS = "status";
     public static final String COLUMN_ORGANIZATIONNAME = "organizationName";
+    public static final String COLUMN_USERROLE = "userRole";
+
 
 
     public DatabaseHelper(@Nullable Context context) {
@@ -42,19 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //create Attendees table
-        String CREATE_ATTENDEES_TABLE = "CREATE TABLE " + USER_TABLE_ATTENDEES + "("
-                + COLUMN_EMAIL + " TEXT PRIMARY KEY,"
-                + COLUMN_FIRSTNAME + " TEXT,"
-                + COLUMN_LASTNAME + " TEXT,"
-                +COLUMN_PHONENUMBER + " TEXT, "
-                +COLUMN_ADDRESS + " TEXT, "
-                +COLUMN_PASSWORD + " TEXT, "
-                +COLUMN_STATUS + " TEXT DEFAULT 'Pending');";
-
-        db.execSQL(CREATE_ATTENDEES_TABLE);
-
-        //create Organizers table
-        String CREATE_ORGANIZERS_TABLE = "CREATE TABLE " + USER_TABLE_ORGANIZERS + "("
+        String CREATE_USERS_TABLE = "CREATE TABLE " + USER_TABLE + "("
                 + COLUMN_EMAIL + " TEXT PRIMARY KEY,"
                 + COLUMN_FIRSTNAME + " TEXT,"
                 + COLUMN_LASTNAME + " TEXT,"
@@ -62,9 +51,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +COLUMN_ADDRESS + " TEXT, "
                 +COLUMN_PASSWORD + " TEXT, "
                 +COLUMN_ORGANIZATIONNAME + " TEXT, "
+                +COLUMN_USERROLE + " TEXT, "
                 +COLUMN_STATUS + " TEXT DEFAULT 'Pending');";
 
-        db.execSQL(CREATE_ORGANIZERS_TABLE);
+        db.execSQL(CREATE_USERS_TABLE);
+
 
     }
 
@@ -72,32 +63,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_ATTENDEES);
-        db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_ORGANIZERS);
+        db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
         // Create tables again
         onCreate(db);
 
-
-
     }
 
-
     // add an attendee data to the database
-    public boolean addAttendee(Attendee attendee){
+    public boolean addUser(User user){
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(COLUMN_EMAIL, attendee.getEmail());
-        cv.put(COLUMN_FIRSTNAME, attendee.getFirstName());
-        cv.put(COLUMN_LASTNAME, attendee.getLastName());
-        cv.put(COLUMN_PHONENUMBER, attendee.getPhoneNumber());
-        cv.put(COLUMN_ADDRESS, attendee.getAddress());
-        cv.put(COLUMN_PASSWORD, attendee.getPassword());
-        cv.put(COLUMN_STATUS, attendee.getStatus());
+        if (user instanceof Attendee){
 
+            cv.put(COLUMN_EMAIL, user.getEmail());
+            cv.put(COLUMN_FIRSTNAME, user.getFirstName());
+            cv.put(COLUMN_LASTNAME, user.getLastName());
+            cv.put(COLUMN_PHONENUMBER, user.getPhoneNumber());
+            cv.put(COLUMN_ADDRESS, user.getAddress());
+            cv.put(COLUMN_PASSWORD, user.getPassword());
+            cv.put(COLUMN_ORGANIZATIONNAME, "");
+            cv.put(COLUMN_STATUS, user.getStatus());
+            cv.put(COLUMN_USERROLE, "Attendee");
 
-        long insert = db.insert(USER_TABLE_ATTENDEES, null, cv); //if insert is -1, adding failed
+        }else if (user instanceof Organizer){
+            cv.put(COLUMN_EMAIL, user.getEmail());
+            cv.put(COLUMN_FIRSTNAME, user.getFirstName());
+            cv.put(COLUMN_LASTNAME, user.getLastName());
+            cv.put(COLUMN_PHONENUMBER, user.getPhoneNumber());
+            cv.put(COLUMN_ADDRESS, user.getAddress());
+            cv.put(COLUMN_PASSWORD, user.getPassword());
+            cv.put(COLUMN_ORGANIZATIONNAME, ((Organizer) user).getOrganizationName());
+            cv.put(COLUMN_STATUS, user.getStatus());
+            cv.put(COLUMN_USERROLE,"Organizer");
+
+        }
+        long insert = db.insert(USER_TABLE, null, cv); //if insert is -1, adding failed
 
         if(insert ==-1){
             return false;
@@ -106,85 +108,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    //add an organizer to the database
-    public boolean addOrganizer(Organizer organizer){
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-
-        cv.put(COLUMN_EMAIL, organizer.getEmail());
-        cv.put(COLUMN_FIRSTNAME, organizer.getFirstName());
-        cv.put(COLUMN_LASTNAME, organizer.getLastName());
-        cv.put(COLUMN_PHONENUMBER, organizer.getPhoneNumber());
-        cv.put(COLUMN_ADDRESS, organizer.getAddress());
-        cv.put(COLUMN_PASSWORD, organizer.getPassword());
-        cv.put(COLUMN_STATUS, organizer.getStatus());
-
-        long insert = db.insert(USER_TABLE_ORGANIZERS, null, cv);
-
-        if(insert == -1){
-            return false;
-        }else{
-            return true;
-        }
-    }
-
     //fetch a list of users(attendees and organizers) from the database
-    public List<User> getPendingRequests(){
+
+    public List<User> getAllRequests(String stat){
         List<User> users = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         //fetch attendees
         //rawQuery returns a cursor
-        Cursor cursorAttendees = db.rawQuery("SELECT * FROM " + USER_TABLE_ATTENDEES + " WHERE " + COLUMN_STATUS + " = 'Pending'", null);
+        Cursor cursorUsers= db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_STATUS + " = stat", null);
         //move to the first result in the result set(cursor)
-        if(cursorAttendees.moveToFirst()){
-            //loop through the result and create a new attendee. put attendee in the list.
+        if(cursorUsers.moveToFirst()){
+            //loop through the result and create a new user and put user in the list.
             do{
 
-                String email = cursorAttendees.getString(0);
-                String firstName = cursorAttendees.getString(1);
-                String lastname = cursorAttendees.getString(2);
-                String phoneNumber =cursorAttendees.getString(3);
-                String address =cursorAttendees.getString(4);
-                String password = cursorAttendees.getString(5);
-                String status = cursorAttendees.getString(6);
+                String email = cursorUsers.getString(0);
+                String firstName = cursorUsers.getString(1);
+                String lastname = cursorUsers.getString(2);
+                String phoneNumber =cursorUsers.getString(3);
+                String address =cursorUsers.getString(4);
+                String password = cursorUsers.getString(5);
+                String organizationName = cursorUsers.getString(6);
+                String userRole = cursorUsers.getString(7);
+                String status = cursorUsers.getString(8);
 
-                Attendee attendee = new Attendee(firstName, lastname, email, password, phoneNumber, address, status);
-                users.add(attendee);
+                User user;
+                if(userRole.equals("Attendee")){
+                    user = new Attendee(firstName, lastname, email, password, phoneNumber, address, status, userRole);
+                }else{
+                    user = new Organizer(firstName, lastname, email, password, phoneNumber, address, organizationName, status, userRole);
+                }
 
-            } while(cursorAttendees.moveToNext());
+                users.add(user);
+
+            } while(cursorUsers.moveToNext());
         }else{
             //failure. do not add anything to the list.
         }
 
-        cursorAttendees.close();
-
-        //fetch organizers
-        Cursor cursorOrganizers = db.rawQuery("SELECT * FROM " + USER_TABLE_ORGANIZERS + " WHERE " + COLUMN_STATUS + " = 'Pending'", null);
-
-        if(cursorOrganizers.moveToFirst()){
-            //loop through the result and create a new attendee. put attendee in the list.
-            do{
-
-                String email = cursorOrganizers.getString(0);
-                String firstName = cursorOrganizers.getString(1);
-                String lastname = cursorOrganizers.getString(2);
-                String phoneNumber =cursorOrganizers.getString(3);
-                String address =cursorOrganizers.getString(4);
-                String password = cursorOrganizers.getString(5);
-                String organizationName = cursorOrganizers.getString(6);
-                String status = cursorOrganizers.getString(7);
-
-                Organizer organizer = new Organizer(firstName, lastname, email, password, phoneNumber, address, organizationName, status);
-                users.add(organizer);
-
-            } while(cursorOrganizers.moveToNext());
-        }else{
-            //failure. do not add anything to the list.
-        }
-
-        cursorOrganizers.close();
+        cursorUsers.close();
         db.close();
         return users;
 

@@ -9,8 +9,9 @@ public class User {
     private String phoneNumber;
     private String address;
     private String status; //to keep track of user status: pending,approved or rejected
+    private String userRole;
 
-    public User(String firstName, String lastName, String email, String password, String phoneNumber, String address, String status) {
+    public User(String firstName, String lastName, String email, String password, String phoneNumber, String address, String status, String userRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -18,8 +19,18 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.status = status;
+        this.userRole = userRole;
     }
 //getters and setters
+
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
 
     public String getStatus() {
         return status;

@@ -42,10 +42,10 @@ public class WelcomePage extends AppCompatActivity {
         // Set the user name and role
         userNameDisplay.setText(userName);
 
-        if (role.equals("organizer")) {
+        if (role.equals("Organizer")) {
             welcomeRoleText.setText("Welcome, organizer!");
             userRoleDisplay.setText("Organizer");
-        } else if (role.equals("attendee")) {
+        } else if (role.equals("Attendee")) {
             welcomeRoleText.setText("Welcome, attendee!");
             userRoleDisplay.setText("Attendee");
         }else{

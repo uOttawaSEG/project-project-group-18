@@ -53,6 +53,7 @@ public class UserAdapter extends BaseAdapter {
         TextView tv_status = listItem.findViewById(R.id.textViewStatus);
         TextView tv_organizationName= listItem.findViewById(R.id.textViewOrganizationName);
 
+
         User user = (User) this.getItem(position);
 
         if (user instanceof Attendee){

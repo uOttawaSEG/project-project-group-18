@@ -161,8 +161,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+
+    public String getUserStatus(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String status = null;
+
+
+        Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = email", null);
+
+
+        //check if there exists a staus/if user even exits:
+        if (findUser.moveToFirst()){
+            status = findUser.getString(8);;
+            findUser.close();
+        }
+        return status;
+
+    }
+
+
     //method to check if User is accepted
-    public boolean checkUserAccepted(String email, String password){
+    /*public boolean checkUserAccepted(String email, String password){
         SQLiteDatabase db = this.getReadableDatabase();
 
         //Check for user in the Attendee List
@@ -182,7 +201,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         //Check for user in the Attendee List
-        Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_STATUS + " = 'Pending'" + " = ? AND " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
+        Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_STATUS + " = 'Pending'" + " = ? AND " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?");
         if (findUser.getCount()>0){ //if greater than 0, than account exists
             findUser.close();
             return true;
@@ -190,7 +209,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         findUser.close(); //Account isn't found so, close cursor
         return false;
     }
-
+*/
 
 
 }

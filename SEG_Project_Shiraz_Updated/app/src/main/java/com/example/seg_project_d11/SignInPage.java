@@ -67,53 +67,52 @@ public class SignInPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String username = userName.getText().toString().trim();
-                String password = passWord.getText().toString().trim();
 
                 // Use the database helper to check if the user exists
-                if (db.checkUserAccepted(username,password)) {
+                String username = userName.getText().toString().trim();
+                String status =db.getUserStatus(username);
+
+                // Use the database helper to check if the user exists
+
+                if (status=="Accepted"){
                     Intent intent = new Intent(SignInPage.this, WelcomePage.class);
                     startActivity(intent);
-                }else{
-                    if (db.checkUserPending(username,password)){
 
-                        AlertDialog.Builder message = new AlertDialog.Builder(SignInPage.this);
-                        message.setCancelable(true);
-                        message.setTitle("Attention!");
-                        message.setMessage("Your account request is pending. Please contact the Administrator: admin@example.com");
+                } else if(status =="Pending"){
+                    AlertDialog.Builder message = new AlertDialog.Builder(SignInPage.this);
+                    message.setCancelable(true);
+                    message.setTitle("Attention!");
+                    message.setMessage("Your account request is pending. Please contact the Administrator: admin@example.com");
 
-                        // Cancel Button
-                        message.setNegativeButton("Cancel", (d, i) -> d.cancel());
+                    // Cancel Button
+                    message.setNegativeButton("Cancel", (d, i) -> d.cancel());
 
-                        // Ok/Redirect  Button
-                        message.setPositiveButton("Return to main", (d,i) -> {
-                            Intent intent = new Intent(SignInPage.this, MainActivity.class);
-                            startActivity(intent);
-                        });
-                        message.show();
+                    // Ok/Redirect  Button
+                    message.setPositiveButton("Return to main", (d,i) -> {
+                        Intent intent = new Intent(SignInPage.this, MainActivity.class);
+                        startActivity(intent);
+                    });
+                    message.show();
 
-                    } else{
+                } else{
+                    AlertDialog.Builder message = new AlertDialog.Builder(SignInPage.this);
+                    message.setCancelable(true);
+                    message.setTitle("Attention!");
+                    message.setMessage("Your account has been rejected.");
 
-                        AlertDialog.Builder message = new AlertDialog.Builder(SignInPage.this);
-                        message.setCancelable(true);
-                        message.setTitle("Attention!");
-                        message.setMessage("Your account has been rejected.");
+                    // Cancel Button
+                    message.setNegativeButton("Cancel", (d, i) -> d.cancel());
 
-                        // Cancel Button
-                        message.setNegativeButton("Cancel", (d, i) -> d.cancel());
-
-                        // Ok/Redirect  Button
-                        message.setPositiveButton("Return to main", (d,i) -> {
-                            Intent intent = new Intent(SignInPage.this, MainActivity.class);
-                            startActivity(intent);
-                        });
-                        message.show();
-
-
-                    }
-
+                    // Ok/Redirect  Button
+                    message.setPositiveButton("Return to main", (d,i) -> {
+                        Intent intent = new Intent(SignInPage.this, MainActivity.class);
+                        startActivity(intent);
+                    });
+                    message.show();
                 }
+
             }
+
         });
 
     }

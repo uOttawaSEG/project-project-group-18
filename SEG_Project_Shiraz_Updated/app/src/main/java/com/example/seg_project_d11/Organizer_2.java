@@ -108,11 +108,11 @@ public class Organizer_2 extends AppCompatActivity {
                     Organizer_1.user.setPassword(password);
                     Organizer_1.user.setStatus("Pending");
                     //Moves info to DB
-                    boolean success = databaseHelper.addOrganizer(Organizer_1.user);
+                    boolean success = databaseHelper.addUser(Organizer_1.user);
                     Intent intent = new Intent(Organizer_2.this, WelcomePage.class);
                     intent.putExtra("user_name", Organizer_1.user.getEmail());
                     intent.putExtra("user_role", "organizer");
-                    Organizer_1.user= new Organizer(null,null, null, null, null, null, null, null);
+                    Organizer_1.user= new Organizer(null,null, null, null, null, null, null, null,null);
                     startActivity(intent);
                 }else{
                     //show a message to the user about fixing the errors

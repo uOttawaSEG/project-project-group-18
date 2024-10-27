@@ -19,10 +19,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Userdata.db";
 
     //database version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     //user table
-    private static final String USER_TABLE = "USER_TABLE";
+    private static final String USER_TABLE = "USERS_TABLE";
 
     private static final String COLUMN_FIRSTNAME = "firstName";
     private static final String COLUMN_LASTNAME = "lastname";
@@ -61,10 +61,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
-        // Create tables again
+        db.execSQL("DROP TABLE IF EXISTS Attendees");
+        db.execSQL("DROP TABLE IF EXISTS Organizers");
         onCreate(db);
 
     }
@@ -116,7 +114,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //fetch attendees
         //rawQuery returns a cursor
-        Cursor cursorUsers= db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_STATUS + " = stat", null);
+        Cursor cursorUsers = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_STATUS + " = ?", new String[] {stat});
+
         //move to the first result in the result set(cursor)
         if(cursorUsers.moveToFirst()){
             //loop through the result and create a new user and put user in the list.
@@ -152,25 +151,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    //method to update the user's status
+    public void updateUserStatus(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_STATUS, user.getStatus());
+
+        db.update(USER_TABLE, cv, COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+
+    }
+
     //method to check if User is accepted
     public boolean checkUserAccepted(String email, String password){
         SQLiteDatabase db = this.getReadableDatabase();
 
         //Check for user in the Attendee List
-        Cursor findAttendee = db.rawQuery("SELECT * FROM " + USER_TABLE_ATTENDEES + " WHERE " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
-        if (findAttendee.getCount()>0){ //if greater than 0, than account exists
-            findAttendee.close();
+        Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
+        if (findUser.getCount()>0){ //if greater than 0, than account exists
+            findUser.close();
             return true;
         }
-        findAttendee.close(); //Account isn't found so, close cursor
-
-        //Check for user in the Organizer List
-        Cursor findOrganizer = db.rawQuery("SELECT * FROM " + USER_TABLE_ORGANIZERS + " WHERE " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
-        if (findOrganizer.getCount() >0){//if greater than 0, than account exists
-            findOrganizer.close();
-            return true;
-        }
-        findOrganizer.close();//Account isn't found so, close cursor
+        findUser.close(); //Account isn't found so, close cursor
 
         return false;
 
@@ -181,35 +182,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         //Check for user in the Attendee List
-        Cursor findAttendee = db.rawQuery("SELECT * FROM " + USER_TABLE_ATTENDEES + " WHERE " + COLUMN_STATUS + " = 'Pending'" + " = ? AND " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
-        if (findAttendee.getCount()>0){ //if greater than 0, than account exists
-            findAttendee.close();
+        Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_STATUS + " = 'Pending'" + " = ? AND " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
+        if (findUser.getCount()>0){ //if greater than 0, than account exists
+            findUser.close();
             return true;
         }
-        findAttendee.close(); //Account isn't found so, close cursor
-
-        //Check for user in the Organizer List
-        Cursor findOrganizer = db.rawQuery("SELECT * FROM " + USER_TABLE_ORGANIZERS + " WHERE " + COLUMN_STATUS + " = 'Pending'" + " = ? AND " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
-        if (findOrganizer.getCount() >0){//if greater than 0, than account exists
-            findOrganizer.close();
-            return true;
-        }
-        findOrganizer.close();//Account isn't found so, close cursor
+        findUser.close(); //Account isn't found so, close cursor
         return false;
     }
 
 
-    //method to update the user's status
-    public void updateUserStatus(User user){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_STATUS, user.getStatus());
 
-        if (user instanceof Attendee){
-            //changing the status of the user by finding the matching email in the database
-            db.update(USER_TABLE_ATTENDEES, cv, COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
-        } else if(user instanceof Organizer){
-            db.update(USER_TABLE_ORGANIZERS, cv, COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
-        }
-    }
 }

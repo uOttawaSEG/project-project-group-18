@@ -1,12 +1,17 @@
 package com.example.seg_project_d11;
 
 
+import static com.example.seg_project_d11.Administrator.approveRequest;
+import static com.example.seg_project_d11.Administrator.rejectRequest;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -15,10 +20,12 @@ import java.util.List;
 public class UserAdapter extends BaseAdapter {
     private Context context;
     private List<User> myUsers;
+    private DatabaseHelper dbHelper;
 
     public UserAdapter(Context context, List<User> myUsers) {
         this.context = context;
         this.myUsers = myUsers;
+        this.dbHelper = dbHelper;
     }
 
     @Override
@@ -55,6 +62,27 @@ public class UserAdapter extends BaseAdapter {
 
 
         User user = (User) this.getItem(position);
+
+        Button approveButton = listItem.findViewById(R.id.buttonApprove);
+        Button rejectButton = listItem.findViewById(R.id.buttonReject);
+        String firstName = user.getFirstName();
+        String lastname = user.getLastName();
+
+        approveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, firstName + " " + lastname + " is approved!", Toast.LENGTH_SHORT).show();
+                approveRequest(user, dbHelper);
+            }
+        });
+
+        rejectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v){
+                Toast.makeText(context, firstName + " " + lastname + "is rejected!", Toast.LENGTH_SHORT).show();
+                rejectRequest(user, dbHelper);
+            }
+        });
 
         if (user instanceof Attendee){
             tv_firstName.setText(user.getFirstName());

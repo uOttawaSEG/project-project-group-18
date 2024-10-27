@@ -45,7 +45,7 @@ public class AdminActivity extends AppCompatActivity {
         //listOfRequests = findViewById(R.id.lvRejectList);
 
         //setting the adapter
-        adapter = new UserAdapter(this, pendingRequests);
+        adapter = new UserAdapter(this, pendingRequests, databaseHelper);
         listOfRequests.setAdapter(adapter);
     }
 }

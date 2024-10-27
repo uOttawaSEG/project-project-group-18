@@ -22,7 +22,7 @@ public class UserAdapter extends BaseAdapter {
     private List<User> myUsers;
     private DatabaseHelper dbHelper;
 
-    public UserAdapter(Context context, List<User> myUsers) {
+    public UserAdapter(Context context, List<User> myUsers, DatabaseHelper dbHelper) {
         this.context = context;
         this.myUsers = myUsers;
         this.dbHelper = dbHelper;
@@ -73,6 +73,8 @@ public class UserAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Toast.makeText(context, firstName + " " + lastname + " is approved!", Toast.LENGTH_SHORT).show();
                 approveRequest(user, dbHelper);
+                myUsers.remove(user);
+                notifyDataSetChanged(); // Refresh the ListView
             }
         });
 
@@ -81,6 +83,8 @@ public class UserAdapter extends BaseAdapter {
             public void onClick (View v){
                 Toast.makeText(context, firstName + " " + lastname + "is rejected!", Toast.LENGTH_SHORT).show();
                 rejectRequest(user, dbHelper);
+                myUsers.remove(user);
+                notifyDataSetChanged(); // Refresh the ListView
             }
         });
 

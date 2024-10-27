@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     //only the registration button works
     Button goToRegPage;
     Button signIn;
+    DatabaseHelper databaseHelper;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        ///add some attendees and organizers to the database to populate it
+        databaseHelper = new DatabaseHelper(this);
+        PopulateDatabase populateDatabase = new PopulateDatabase(databaseHelper);
+        populateDatabase.addSampleData();
+
         //Creates button variable
         goToRegPage= findViewById(R.id.registerButton);
         signIn= findViewById(R.id.buttonSignIn);

@@ -3,6 +3,7 @@ package com.example.seg_project_d11;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -71,14 +72,16 @@ public class SignInPage extends AppCompatActivity {
                 // Use the database helper to check if the user exists
                 String username = userName.getText().toString().trim();
                 String status =db.getUserStatus(username);
+                Log.i("Email", username);
+                Log.i("Status of request", status);
 
                 // Use the database helper to check if the user exists
 
-                if (status=="Accepted"){
+                if (status.equals("Accepted")){
                     Intent intent = new Intent(SignInPage.this, WelcomePage.class);
                     startActivity(intent);
 
-                } else if(status =="Pending"){
+                } else if(status.equals("Pending")){
                     AlertDialog.Builder message = new AlertDialog.Builder(SignInPage.this);
                     message.setCancelable(true);
                     message.setTitle("Attention!");
@@ -94,7 +97,7 @@ public class SignInPage extends AppCompatActivity {
                     });
                     message.show();
 
-                } else{
+                } else if (status==""){
                     AlertDialog.Builder message = new AlertDialog.Builder(SignInPage.this);
                     message.setCancelable(true);
                     message.setTitle("Attention!");

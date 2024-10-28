@@ -19,6 +19,8 @@ public class PopulateDatabase {
         databaseHelper.addUser(org2);
         databaseHelper.addUser(attendee1);
         databaseHelper.addUser(attendee2);
+
+        databaseHelper.close();
     }
 
 

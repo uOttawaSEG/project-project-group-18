@@ -69,7 +69,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // add an attendee data to the database
     public boolean addUser(User user){
-
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 

@@ -1,5 +1,4 @@
 package com.example.seg_project_d11;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -12,12 +11,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.List;
 
-public class AdminActivity extends AppCompatActivity {
 
+
+
+public class RejectAdminActivity extends AppCompatActivity{
     private DatabaseHelper databaseHelper;
     private ListView listOfRequests;
 
-    private List<User> pendingRequests;
+    private List<User> rejectedRequests;
 
     private UserAdapter adapter;
 
@@ -26,26 +27,26 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.pendadmin);
+        setContentView(R.layout.rejectadmin);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        //fetch pending requests from database
+        //fetch rejected requests from database
         databaseHelper = new DatabaseHelper(this);
-        pendingRequests = databaseHelper.getAllRequests("Pending");
-
+        rejectedRequests=databaseHelper.getAllRequests("Rejected");
 
         //debugging
-        Log.d("AdminActivity", "Number of pending requests: " + pendingRequests.size());
+        Log.d("AdminActivity", "Number of rejected requests: " + rejectedRequests.size());
 
         //assign value to listOfRequests
-        listOfRequests = findViewById(R.id.lvPendingList);
-
+        listOfRequests = findViewById(R.id.lvRejectList);
 
         //setting the adapter
-        adapter = new UserAdapter(this, pendingRequests, databaseHelper);
+        adapter = new UserAdapter(this, rejectedRequests, databaseHelper);
         listOfRequests.setAdapter(adapter);
     }
 }
+
+

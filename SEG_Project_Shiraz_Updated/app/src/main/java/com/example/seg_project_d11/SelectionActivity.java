@@ -15,6 +15,7 @@ public class SelectionActivity extends AppCompatActivity {
     Button signAttendee;
     Button signOrganizer;
     Button signAdmin;
+    Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class SelectionActivity extends AppCompatActivity {
         signAttendee = findViewById(R.id.buttonAttendee);
         signOrganizer = findViewById(R.id.buttonOrganizer);
         signAdmin = findViewById(R.id.buttonAdministrator);
+        back = findViewById(R.id.buttonback);
 
         signAttendee.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +54,15 @@ public class SelectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectionActivity.this,Admin_SignIn_Activity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SelectionActivity.this, MainActivity.class);
                 startActivity(intent);
 
             }

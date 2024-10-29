@@ -165,16 +165,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String status = null;
 
-
-        Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = email", null);
+        Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = ?", new String[]{email});
 
 
         //check if there exists a staus/if user even exits:
         if (findUser.moveToFirst()){
             status = findUser.getString(8);;
-            findUser.close();
+
         }
+        findUser.close();
         return status;
+
+    }
+
+    public String getUserRole(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String userRole = null;
+
+        Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = ?", new String[]{email});
+
+
+
+        if (findUser.moveToFirst()){
+            userRole = findUser.getString(7);;
+
+        }
+        findUser.close();
+        return userRole;
 
     }
 

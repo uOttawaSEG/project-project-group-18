@@ -62,7 +62,7 @@ public class SignInPage extends AppCompatActivity {
             }
         });
 
-        submit = findViewById(R.id.nextButton);
+
         submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -72,13 +72,16 @@ public class SignInPage extends AppCompatActivity {
                 // Use the database helper to check if the user exists
                 String username = userName.getText().toString().trim();
                 String status =db.getUserStatus(username);
+                String userRole = db.getUserRole(username);
                 Log.i("Email", username);
                 Log.i("Status of request", status);
 
                 // Use the database helper to check if the user exists
 
-                if (status.equals("Accepted")){
+                if (status.equals("Approved")){
                     Intent intent = new Intent(SignInPage.this, WelcomePage.class);
+                    intent.putExtra("user_name",username);
+                    intent.putExtra("user_role", userRole);
                     startActivity(intent);
 
                 } else if(status.equals("Pending")){
@@ -97,7 +100,7 @@ public class SignInPage extends AppCompatActivity {
                     });
                     message.show();
 
-                } else if (status==""){
+                } else if (status.equals("Rejected")){
                     AlertDialog.Builder message = new AlertDialog.Builder(SignInPage.this);
                     message.setCancelable(true);
                     message.setTitle("Attention!");

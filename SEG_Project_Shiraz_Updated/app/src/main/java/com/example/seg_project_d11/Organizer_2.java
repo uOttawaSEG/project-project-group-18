@@ -121,9 +121,6 @@ public class Organizer_2 extends AppCompatActivity {
                     message.setTitle("Registration complete");
                     message.setMessage("The admin has received your registration request. Please return to the home page to await approval.");
 
-                    // Cancel Button
-                    message.setNegativeButton("Cancel", (d, i) -> d.cancel());
-
                     // Ok/Redirect  Button
                     message.setPositiveButton("Return to main", (d,i) -> {
                         Intent intent = new Intent(Organizer_2.this, MainActivity.class);

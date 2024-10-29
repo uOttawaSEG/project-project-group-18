@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -109,11 +110,26 @@ public class Organizer_2 extends AppCompatActivity {
                     Organizer_1.user.setStatus("Pending");
                     //Moves info to DB
                     boolean success = databaseHelper.addUser(Organizer_1.user);
-                    Intent intent = new Intent(Organizer_2.this, WelcomePage.class);
-                    intent.putExtra("user_name", Organizer_1.user.getEmail());
-                    intent.putExtra("user_role", "Organizer");
+                    //Intent intent = new Intent(Organizer_2.this, WelcomePage.class);
+                    //intent.putExtra("user_name", Organizer_1.user.getEmail());
+                    //intent.putExtra("user_role", "Organizer");
                     Organizer_1.user= new Organizer(null,null, null, null, null, null, null, null,null);
-                    startActivity(intent);
+                    //startActivity(intent);
+
+                    AlertDialog.Builder message = new AlertDialog.Builder(Organizer_2.this);
+                    message.setCancelable(true);
+                    message.setTitle("Registration complete");
+                    message.setMessage("The admin has received your registration request. Please return to the home page to await approval.");
+
+                    // Cancel Button
+                    message.setNegativeButton("Cancel", (d, i) -> d.cancel());
+
+                    // Ok/Redirect  Button
+                    message.setPositiveButton("Return to main", (d,i) -> {
+                        Intent intent = new Intent(Organizer_2.this, MainActivity.class);
+                        startActivity(intent);
+                    });
+                    message.show();
                 }else{
                     //show a message to the user about fixing the errors
                     Toast.makeText(Organizer_2.this, "Please correct the errors before proceeding.", Toast.LENGTH_SHORT).show();

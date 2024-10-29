@@ -47,8 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
-            android:text="UserName" />
+            android:inputType="text" />
 
         <Space
             android:layout_width="match_parent"
@@ -65,8 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
-            android:text="Password" />
+            android:inputType="textPassword" />
 
         <Space
             android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -108,12 +109,26 @@ public class Attendee_2 extends AppCompatActivity {
                     boolean success = databaseHelper.addUser(Attendee_1.user);
                     Toast.makeText(Attendee_2.this, "Success = " + success, Toast.LENGTH_SHORT).show();
 
-                    Intent intent1= new Intent(Attendee_2.this, WelcomePage.class);
-                    intent1.putExtra("user_name", attendeeEmail);
-                    intent1.putExtra("user_role", "Attendee");
+                    //Intent intent1= new Intent(Attendee_2.this, WelcomePage.class);
+                    //intent1.putExtra("user_name", attendeeEmail);
+                    //intent1.putExtra("user_role", "Attendee");
                     Attendee_1.user =new Attendee(null,null, null, null, null, null, null,null);
 
-                    startActivity(intent1);
+                    //startActivity(intent1);
+                    AlertDialog.Builder message = new AlertDialog.Builder(Attendee_2.this);
+                    message.setCancelable(true);
+                    message.setTitle("Registration complete");
+                    message.setMessage("The admin has received your registration request. Please return to the home page to await approval.");
+
+                    // Cancel Button
+                    message.setNegativeButton("Cancel", (d, i) -> d.cancel());
+
+                    // Ok/Redirect  Button
+                    message.setPositiveButton("Return to main", (d,i) -> {
+                        Intent intent = new Intent(Attendee_2.this, MainActivity.class);
+                        startActivity(intent);
+                    });
+                    message.show();
 
                 }else{
                     //show a message to the user about fixing the errors

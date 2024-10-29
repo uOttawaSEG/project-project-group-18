@@ -1,6 +1,7 @@
 package com.example.seg_project_d11;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.PixelCopy;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -21,7 +22,6 @@ public class RejectAdminActivity extends AppCompatActivity{
     private List<User> rejectedRequests;
 
     private UserAdapter adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

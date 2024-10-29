@@ -6,12 +6,16 @@ import static com.example.seg_project_d11.Administrator.rejectRequest;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.PixelCopy;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -81,10 +85,15 @@ public class UserAdapter extends BaseAdapter {
         rejectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v){
-                Toast.makeText(context, firstName + " " + lastname + "is rejected!", Toast.LENGTH_SHORT).show();
-                rejectRequest(user, dbHelper);
-                myUsers.remove(user);
-                notifyDataSetChanged(); // Refresh the ListView
+                if(user.getStatus().equals("Pending")) {
+                    Toast.makeText(context, firstName + " " + lastname + "is rejected!", Toast.LENGTH_SHORT).show();
+                    rejectRequest(user, dbHelper);
+                    myUsers.remove(user);
+                    notifyDataSetChanged(); // Refresh the ListView
+                }
+                else{
+                    Toast.makeText(context, "This request has been rejected already", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

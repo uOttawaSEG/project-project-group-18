@@ -1,7 +1,9 @@
 package com.example.seg_project_d11;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.PixelCopy;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +24,8 @@ public class RejectAdminActivity extends AppCompatActivity{
     private List<User> rejectedRequests;
 
     private UserAdapter adapter;
+    Button backButton1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,16 @@ public class RejectAdminActivity extends AppCompatActivity{
         //setting the adapter
         adapter = new UserAdapter(this, rejectedRequests, databaseHelper);
         listOfRequests.setAdapter(adapter);
+
+        backButton1 = findViewById(R.id.backButton);
+
+        backButton1.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+
+                Intent intent = new Intent(RejectAdminActivity.this, Admin_welcomePage_Activity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
 

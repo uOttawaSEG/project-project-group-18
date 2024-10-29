@@ -63,6 +63,7 @@ public class UserAdapter extends BaseAdapter {
         TextView tv_address = listItem.findViewById(R.id.textViewAddress);
         TextView tv_status = listItem.findViewById(R.id.textViewStatus);
         TextView tv_organizationName= listItem.findViewById(R.id.textViewOrganizationName);
+        TextView tv_userRole = listItem.findViewById(R.id.textViewUserRole);
 
 
         User user = (User) this.getItem(position);
@@ -97,25 +98,17 @@ public class UserAdapter extends BaseAdapter {
             }
         });
 
-        if (user instanceof Attendee){
-            tv_firstName.setText(user.getFirstName());
-            tv_lastname.setText(user.getLastName());
-            tv_email.setText(user.getEmail());
-            tv_phoneNumber.setText(user.getPhoneNumber());
-            tv_address.setText(user.getAddress());
-            tv_status.setText(user.getStatus());
+        tv_firstName.setText("firstName: "+user.getFirstName());
+        tv_lastname.setText("lastName: "+user.getLastName());
+        tv_email.setText("Email: "+user.getEmail());
+        tv_phoneNumber.setText("PhoneNumber: "+user.getPhoneNumber());
+        tv_address.setText("Address: "+user.getAddress());
+        tv_status.setText("Status: "+user.getStatus());
+        tv_userRole.setText("UserRole: "+user.getUserRole());
 
-        } else if(user instanceof Organizer){
-            tv_firstName.setText(user.getFirstName());
-            tv_lastname.setText(user.getLastName());
-            tv_email.setText(user.getEmail());
-            tv_phoneNumber.setText(user.getPhoneNumber());
-            tv_address.setText(user.getAddress());
-            tv_status.setText(user.getStatus());
+        if (user instanceof Organizer){
             tv_organizationName.setText(((Organizer) user).getOrganizationName());
         }
-
-
 
         return listItem;
     }

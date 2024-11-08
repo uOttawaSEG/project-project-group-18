@@ -40,60 +40,23 @@ public class EventAdapter extends BaseAdapter {
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         //send back a view that we can use in the individual list item
 
-        View listItem;
+        View eventItem;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        listItem= inflater.inflate(R.layout.list_item, parent, false);
-
-        TextView tv_title = listItem.findViewById(R.id.textview_eventTitle);
-        TextView tv_description = listItem.findViewById(R.id.textview_eventDescription);
-        TextView tv_date = listItem.findViewById(R.id.textview_eventDate);
-
-
+        eventItem= inflater.inflate(R.layout.event_item, parent, false);
         Event event = (Event) this.getItem(position);
 
-        /*Button approveButton = listItem.findViewById(R.id.buttonApprove);
-        Button rejectButton = listItem.findViewById(R.id.buttonReject);
-        String firstName = user.getFirstName();
-        String lastname = user.getLastName();
+        TextView tv_title = eventItem.findViewById(R.id.textview_eventTitle);
+        TextView tv_description = eventItem.findViewById(R.id.textview_eventDescription);
+        TextView tv_date = eventItem.findViewById(R.id.textview_eventDate);
 
-        approveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, firstName + " " + lastname + " is approved!", Toast.LENGTH_SHORT).show();
-                approveRequest(user, dbHelper);
-                myUsers.remove(user);
-                notifyDataSetChanged(); // Refresh the ListView
-            }
-        });
+        String title = event.getTitle();
+        String description = event.getDescription();
+        String date = event.getDate();
 
-        rejectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick (View v){
-                if(user.getStatus().equals("Pending")) {
-                    Toast.makeText(context, firstName + " " + lastname + "is rejected!", Toast.LENGTH_SHORT).show();
-                    rejectRequest(user, dbHelper);
-                    myUsers.remove(user);
-                    notifyDataSetChanged(); // Refresh the ListView
-                }
-                else{
-                    Toast.makeText(context, "This request has been rejected already", Toast.LENGTH_SHORT).show();}
-                }
-            });
+        tv_title.setText("Event Title: " + title);
+        tv_description.setText("Event description: " + description);
+        tv_date.setText("Event date: " + date);
 
-            tv_firstName.setText("firstName: "+user.getFirstName());
-            tv_lastname.setText("lastName: "+user.getLastName());
-            tv_email.setText("Email: "+user.getEmail());
-            tv_phoneNumber.setText("PhoneNumber: "+user.getPhoneNumber());
-            tv_address.setText("Address: "+user.getAddress());
-            tv_status.setText("Status: "+user.getStatus());
-            tv_userRole.setText("UserRole: "+user.getUserRole());
-
-            if (user instanceof Organizer){
-                tv_organizationName.setText(((Organizer) user).getOrganizationName());
-            }
-
-
-        }*/
-        return listItem;
+        return eventItem;
     }
 }

@@ -37,6 +37,7 @@
 
     <!-- Role-Specific Text -->
     <TableRow
+        android:id="@+id/tableRow3"
         android:layout_width="411dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
@@ -124,18 +125,21 @@
     </TableLayout>
 
     <Button
-        android:id="@+id/goToEventsButton"
+        android:id="@+id/createEvent_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
         android:text="Create Event"
-        tools:layout_editor_absoluteX="144dp"
-        tools:layout_editor_absoluteY="183dp" />
+        app:layout_constraintTop_toBottomOf="@+id/tableRow3"
+        tools:layout_editor_absoluteX="141dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/seeEvents_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="See event list"
-        tools:layout_editor_absoluteX="129dp"
-        tools:layout_editor_absoluteY="287dp" />
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintTop_toBottomOf="@+id/createEvent_button"
+        app:layout_constraintVertical_bias="0.501"
+        tools:layout_editor_absoluteX="139dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

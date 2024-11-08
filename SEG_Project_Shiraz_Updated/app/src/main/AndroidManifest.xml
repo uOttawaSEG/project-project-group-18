@@ -16,6 +16,9 @@
             android:name=".CreateEvent"
             android:exported="false" />
         <activity
+            android:name=".EventList"
+            android:exported="false" />
+        <activity
             android:name=".RejectAdminActivity"
             android:exported="false" />
         <activity

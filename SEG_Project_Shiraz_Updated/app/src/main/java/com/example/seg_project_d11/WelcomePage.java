@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class WelcomePage extends AppCompatActivity {
 
-    Button logOut;
+    Button logOut, createEvent, viewEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,9 @@ public class WelcomePage extends AppCompatActivity {
             userRoleDisplay.setText("Guest");
         }
 
-        Button logOut = findViewById(R.id.logOut);
+        logOut = findViewById(R.id.logOut);
+        createEvent = findViewById(R.id.createEvent_button);
+        viewEvents = findViewById(R.id.seeEvents_button);
 
         logOut.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
@@ -63,10 +65,17 @@ public class WelcomePage extends AppCompatActivity {
             }
         });
 
-        Button goToEvents = findViewById(R.id.goToEventsButton);
-        goToEvents.setOnClickListener(new View.OnClickListener(){
+        createEvent.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent intent = new Intent(WelcomePage.this, CreateEvent.class);
+                intent.putExtra("user_name", userName);
+                startActivity(intent);
+            }
+        });
+
+        viewEvents.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent intent = new Intent(WelcomePage.this, EventList.class);
                 intent.putExtra("user_name", userName);
                 startActivity(intent);
             }

@@ -2,6 +2,7 @@ package com.example.seg_project_d11;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,7 +31,7 @@ public class CreateEvent extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        cancelEvent= findViewById(R.id.buttonCreate);
+        cancelEvent= findViewById(R.id.buttonCancel);
         createEvent = findViewById(R.id.buttonCreate);
         databaseHelper = new DatabaseHelper(this);
 
@@ -62,11 +63,14 @@ public class CreateEvent extends AppCompatActivity {
                 startTime= newStartTime.getText().toString().trim();
                 endTime= newEndTime.getText().toString().trim();
                 eventAddress= newEventAddress.getText().toString().trim();
+
                 Event event = new Event(title, description, date, startTime, endTime, eventAddress);
+                Log.i("EVENT CREATED", "Title: " + event.getTitle() + " Description: " + event.getDescription());
                 databaseHelper.updateEventList(organizerUserName, event);
 
                 AlertDialog.Builder message = new AlertDialog.Builder(CreateEvent.this);
                 message.setCancelable(true);
+
                 message.setTitle("Event created");
                 message.setMessage("The event had been successfully created, please go back to the home page.");
 

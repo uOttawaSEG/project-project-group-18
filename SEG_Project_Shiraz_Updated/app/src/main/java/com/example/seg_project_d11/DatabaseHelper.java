@@ -6,11 +6,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
+import android.util.Log;
 
 
 import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Userdata.db";
 
     //database version
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     //user table
     private static final String USER_TABLE = "USERS_TABLE";
@@ -63,10 +66,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {  // Check if the version is lower than the current version
-            // Add new column for storing the event list
-            String ADD_EVENTS_COLUMN = "ALTER TABLE " + USER_TABLE + " ADD COLUMN " + COLUMN_ORGANIZATIONEVENTS + " TEXT;";
-            db.execSQL(ADD_EVENTS_COLUMN);
+        if (oldVersion < 3) { // Check if upgrading from version 2 to version 3
+            // Alter the table to add the new column
+            db.execSQL("ALTER TABLE " + USER_TABLE + " ADD COLUMN " + COLUMN_ORGANIZATIONEVENTS + " TEXT;");
         }
     }
 
@@ -159,9 +161,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void updateEventList(String username, Event event){
         SQLiteDatabase db = this.getWritableDatabase();
-
+        Log.i("Checkpoint", "before cursor");
         Cursor cursor = db.rawQuery("SELECT " + COLUMN_ORGANIZATIONEVENTS + " FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = ?", new String[]{username});
         String updatedEventList = null;
+        Log.i("Checkpoint", "after cursor");
         //check if there exists a staus/if user even exits:
         if (cursor.moveToFirst()){
             @SuppressLint("Range") String eventsJson = cursor.getString(cursor.getColumnIndex(COLUMN_ORGANIZATIONEVENTS));
@@ -197,6 +200,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cursor.close();
         db.close();
+    }
+
+    public ArrayList<Event> getEventList(String username){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_ORGANIZATIONEVENTS + " FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = ?", new String[]{username});
+        //check if there exists a staus/if user even exits:
+        ArrayList<Event> eventList = new ArrayList<>();
+        if (cursor.moveToFirst()){
+            @SuppressLint("Range") String eventsJson = cursor.getString(cursor.getColumnIndex(COLUMN_ORGANIZATIONEVENTS));
+            // Deserialize the existing event list (if any)
+            if (eventsJson != null && !eventsJson.isEmpty()) {
+                // Deserialize the JSON string into an ArrayList<Event>
+                Gson gson = new Gson();
+                eventList = gson.fromJson(eventsJson, new TypeToken<ArrayList<Event>>() {
+                }.getType());
+            }
+        }
+        return eventList;
     }
 
     //method to update the user's status

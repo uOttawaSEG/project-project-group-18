@@ -68,7 +68,6 @@ public class SignInPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
                 // Use the database helper to check if the user exists
                 String username = userName.getText().toString().trim();
                 String status =db.getUserStatus(username);
@@ -79,12 +78,14 @@ public class SignInPage extends AppCompatActivity {
                 // Use the database helper to check if the user exists
 
                 if (status.equals("Approved")){
+                    Log.i("Reach", "Approved");
                     Intent intent = new Intent(SignInPage.this, WelcomePage.class);
                     intent.putExtra("user_name",username);
                     intent.putExtra("user_role", userRole);
                     startActivity(intent);
 
                 } else if(status.equals("Pending")){
+                    Log.i("Reach", "Pending");
                     AlertDialog.Builder message = new AlertDialog.Builder(SignInPage.this);
                     message.setCancelable(true);
                     message.setTitle("Attention!");
@@ -101,6 +102,7 @@ public class SignInPage extends AppCompatActivity {
                     message.show();
 
                 } else if (status.equals("Rejected")){
+                    Log.i("Reach", "Rejected");
                     AlertDialog.Builder message = new AlertDialog.Builder(SignInPage.this);
                     message.setCancelable(true);
                     message.setTitle("Attention!");

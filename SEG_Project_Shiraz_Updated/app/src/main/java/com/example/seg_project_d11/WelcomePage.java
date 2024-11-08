@@ -29,11 +29,13 @@ public class WelcomePage extends AppCompatActivity {
         });
 
         //get the role and userName from the previous intent
+        String userName = getIntent().getStringExtra("user_name");
         String role = getIntent().getStringExtra("user_role");
+
         //for debugging purpose
         Log.d("WelcomePage", "User role received: " + role);
 
-        String userName = getIntent().getStringExtra("user_name");
+
 
         TextView welcomeRoleText = findViewById(R.id.welcomeRoleText);
         TextView userNameDisplay = findViewById(R.id.userNameDisplay);
@@ -75,9 +77,11 @@ public class WelcomePage extends AppCompatActivity {
 
         viewEvents.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent intent = new Intent(WelcomePage.this, EventList.class);
-                intent.putExtra("user_name", userName);
-                startActivity(intent);
+                Intent new_intent = new Intent(WelcomePage.this, Event_list_2.class);
+                new_intent.putExtra("user_name", userName);
+                Log.i("UserName", userName);
+                Log.i("Checkpoint", "onCLick-viewEvents");
+                startActivity(new_intent);
             }
         });
     }

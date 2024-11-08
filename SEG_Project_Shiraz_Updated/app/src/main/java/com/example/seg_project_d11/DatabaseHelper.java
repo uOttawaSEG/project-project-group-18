@@ -128,7 +128,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(cursorUsers.moveToFirst()){
             //loop through the result and create a new user and put user in the list.
             do{
-
                 String email = cursorUsers.getString(0);
                 String firstName = cursorUsers.getString(1);
                 String lastname = cursorUsers.getString(2);
@@ -136,8 +135,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String address =cursorUsers.getString(4);
                 String password = cursorUsers.getString(5);
                 String organizationName = cursorUsers.getString(6);
-                String userRole = cursorUsers.getString(7);
-                String status = cursorUsers.getString(8);
+                String userRole = cursorUsers.getString(8);
+                String status = cursorUsers.getString(9);
 
                 User user;
                 if(userRole.equals("Attendee")){
@@ -241,7 +240,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //check if there exists a staus/if user even exits:
         if (findUser.moveToFirst()){
-            status = findUser.getString(8);;
+            status = findUser.getString(9);;
 
         }
         findUser.close();
@@ -258,7 +257,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         if (findUser.moveToFirst()){
-            userRole = findUser.getString(7);;
+            userRole = findUser.getString(8);;
 
         }
         findUser.close();

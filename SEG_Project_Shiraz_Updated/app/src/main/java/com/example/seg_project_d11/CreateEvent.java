@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -63,9 +64,19 @@ public class CreateEvent extends AppCompatActivity {
                 eventAddress= newEventAddress.getText().toString().trim();
                 Event event = new Event(title, description, date, startTime, endTime, eventAddress);
                 databaseHelper.updateEventList(organizerUserName, event);
-                //goes back to Organizer homepage
-                Intent intent = new Intent(CreateEvent.this, WelcomePage.class);
-                startActivity(intent);
+
+                AlertDialog.Builder message = new AlertDialog.Builder(CreateEvent.this);
+                message.setCancelable(true);
+                message.setTitle("Event created");
+                message.setMessage("The event had been successfully created, please go back to the home page.");
+
+                // Ok/Redirect  Button
+                message.setPositiveButton("Return to main", (d,i) -> {
+                    Intent intent = new Intent(CreateEvent.this, WelcomePage.class);
+                    startActivity(intent);
+                });
+                message.show();
+
             }
         });
     }

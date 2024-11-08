@@ -127,7 +127,15 @@
         android:id="@+id/goToEventsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="See events"
+        android:text="Create Event"
         tools:layout_editor_absoluteX="144dp"
         tools:layout_editor_absoluteY="183dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See event list"
+        tools:layout_editor_absoluteX="129dp"
+        tools:layout_editor_absoluteY="287dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

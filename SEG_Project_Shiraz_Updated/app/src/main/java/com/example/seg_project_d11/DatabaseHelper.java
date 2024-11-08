@@ -9,7 +9,8 @@ import android.database.Cursor;
 
 
 import androidx.annotation.Nullable;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +33,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ADDRESS = "address";
     public static final String COLUMN_STATUS = "status";
     public static final String COLUMN_ORGANIZATIONNAME = "organizationName";
+    public static final String COLUMN_ORGANIZATIONEVENTS = "organizationEvents";
     public static final String COLUMN_USERROLE = "userRole";
-
 
 
     public DatabaseHelper(@Nullable Context context) {
@@ -51,6 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +COLUMN_ADDRESS + " TEXT, "
                 +COLUMN_PASSWORD + " TEXT, "
                 +COLUMN_ORGANIZATIONNAME + " TEXT, "
+                +COLUMN_ORGANIZATIONEVENTS + " TEXT, "
                 +COLUMN_USERROLE + " TEXT, "
                 +COLUMN_STATUS + " TEXT DEFAULT 'Pending');";
 
@@ -61,10 +63,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS Attendees");
-        db.execSQL("DROP TABLE IF EXISTS Organizers");
-        onCreate(db);
-
+        if (oldVersion < 2) {  // Check if the version is lower than the current version
+            // Add new column for storing the event list
+            String ADD_EVENTS_COLUMN = "ALTER TABLE " + USER_TABLE + " ADD COLUMN " + COLUMN_ORGANIZATIONEVENTS + " TEXT;";
+            db.execSQL(ADD_EVENTS_COLUMN);
+        }
     }
 
     // add an attendee data to the database
@@ -81,10 +84,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cv.put(COLUMN_ADDRESS, user.getAddress());
             cv.put(COLUMN_PASSWORD, user.getPassword());
             cv.put(COLUMN_ORGANIZATIONNAME, "");
+            cv.put(COLUMN_ORGANIZATIONEVENTS, "");
             cv.put(COLUMN_STATUS, user.getStatus());
             cv.put(COLUMN_USERROLE, "Attendee");
 
         }else if (user instanceof Organizer){
+            // Serialize the Event list to JSON
+            ArrayList<Event> eventList = ((Organizer) user).getEventList();
+            String eventListJson = new Gson().toJson(eventList);  // Convert ArrayList<Event> to JSON string
             cv.put(COLUMN_EMAIL, user.getEmail());
             cv.put(COLUMN_FIRSTNAME, user.getFirstName());
             cv.put(COLUMN_LASTNAME, user.getLastName());
@@ -92,9 +99,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cv.put(COLUMN_ADDRESS, user.getAddress());
             cv.put(COLUMN_PASSWORD, user.getPassword());
             cv.put(COLUMN_ORGANIZATIONNAME, ((Organizer) user).getOrganizationName());
+            cv.put(COLUMN_ORGANIZATIONEVENTS, eventListJson);
             cv.put(COLUMN_STATUS, user.getStatus());
             cv.put(COLUMN_USERROLE,"Organizer");
-
         }
         long insert = db.insert(USER_TABLE, null, cv); //if insert is -1, adding failed
 
@@ -148,6 +155,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return users;
 
+    }
+
+    public void updateEventList(String username, Event event){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_ORGANIZATIONEVENTS + " FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = ?", new String[]{username});
+        String updatedEventList = null;
+        //check if there exists a staus/if user even exits:
+        if (cursor.moveToFirst()){
+            @SuppressLint("Range") String eventsJson = cursor.getString(cursor.getColumnIndex(COLUMN_ORGANIZATIONEVENTS));
+            // Deserialize the existing event list (if any)
+            ArrayList<Event> eventList = new ArrayList<>();
+            if (eventsJson != null && !eventsJson.isEmpty()) {
+                // Deserialize the JSON string into an ArrayList<Event>
+                Gson gson = new Gson();
+                eventList = gson.fromJson(eventsJson, new TypeToken<ArrayList<Event>>(){}.getType());
+            }
+
+            // Add the new event to the list
+            eventList.add(event);
+
+            // Serialize the updated list back to a JSON string
+            updatedEventList = new Gson().toJson(eventList);
+
+        }
+        // Update the database with the new event list
+        if (updatedEventList != null) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COLUMN_ORGANIZATIONEVENTS, updatedEventList);  // Store the updated event list as a JSON string
+
+            // Update the user's event list in the database
+            int rowsAffected = db.update(USER_TABLE, contentValues, COLUMN_EMAIL + " = ?", new String[]{username});
+
+            if (rowsAffected > 0) {
+                System.out.println("Event list updated successfully for user: " + username);
+            } else {
+                System.out.println("No user found with the email: " + username);
+            }
+        }
+
+        cursor.close();
+        db.close();
     }
 
     //method to update the user's status

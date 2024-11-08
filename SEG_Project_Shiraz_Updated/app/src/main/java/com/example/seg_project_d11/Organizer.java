@@ -1,8 +1,11 @@
 package com.example.seg_project_d11;
 
+import java.util.ArrayList;
+
 public class Organizer extends User{
 
     private String organizationName;
+    private ArrayList<Event> events = new ArrayList<Event>();
 
     public Organizer(String firstName, String lastName, String email, String password, String phoneNumber, String address, String organizationName, String status, String userRole) {
         super(firstName, lastName, email, password, phoneNumber, address, status, userRole);
@@ -18,5 +21,12 @@ public class Organizer extends User{
 
     public void setOrganizationName(String organizationName) {
         this.organizationName = organizationName;
+    }
+    public ArrayList<Event> getEventList() {
+        return events;
+    }
+
+    public void addEvent(Event event) {
+        events.add(event);
     }
 }

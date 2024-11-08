@@ -122,4 +122,12 @@
                 android:text="Log Out" />
         </TableRow>
     </TableLayout>
+
+    <Button
+        android:id="@+id/goToEventsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See events"
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="183dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

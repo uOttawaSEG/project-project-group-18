@@ -62,5 +62,14 @@ public class WelcomePage extends AppCompatActivity {
                 startActivity(intentLogout);
             }
         });
+
+        Button goToEvents = findViewById(R.id.goToEventsButton);
+        goToEvents.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent intent = new Intent(WelcomePage.this, CreateEvent.class);
+                intent.putExtra("user_name", userName);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -205,11 +205,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_EVENT_END_TIME, event.getEndTime());
         cv.put(COLUMN_ORGANIZER_EMAIL, email);
 
-        long insert = db.insert(TABLE_EVENTS, null, cv); //if insert is -1, adding failed
+        // Insert the event into the database and get the generated eventID
+        long insertID = db.insert(TABLE_EVENTS, null, cv); // insertID is the generated eventID
+
         db.close();
-        if(insert ==-1){
+
+        // If the insertion failed (insertID is -1), return false
+        if (insertID == -1) {
             return false;
-        }else{
+        } else {
+            // If insertion is successful, set the eventID on the Event object
+            event.setEventID((int) insertID); // Ensure eventID is updated with the auto-incremented ID
             return true;
         }
 
@@ -353,6 +359,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
     }
+    //checks if there is any events created or not/ used in populate database class
+    public boolean areEventsInitialized() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT 1 FROM " + TABLE_EVENTS + " LIMIT 1";
+        Cursor cursor = db.rawQuery(query, null);
+        boolean hasData = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return hasData;
+    }
+
 
 
     //delete the commneted out methods later

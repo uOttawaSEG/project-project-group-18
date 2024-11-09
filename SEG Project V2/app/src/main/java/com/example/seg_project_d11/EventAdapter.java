@@ -68,7 +68,6 @@ public class EventAdapter extends BaseAdapter {
         String date = event.getDate();
         Integer eventID= event.getEventID();
 
-        Log.d("EventAdapter" , "eventID: "+ eventID);
 
         tv_title.setText("Event Title: " + title);
         tv_description.setText("Event description: " + description);
@@ -86,6 +85,7 @@ public class EventAdapter extends BaseAdapter {
             public void onClick(View v) {
                 //TODO: complete this
                 if (userType.equals("Attendee")){
+                    Log.d("EventAdapter" , "eventID: "+ eventID);
                     dbHelper.addEventRequest(userName, eventID);
                     Toast.makeText(context, "Your request is now sent!", Toast.LENGTH_SHORT).show();
 

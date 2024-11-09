@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Event {
     private String title, description, date, startTime, endTime, eventAddress;
-    private int eventID;
+    private Integer eventID;
 
 
     // Constructor for a new event, without eventID (since it's auto-incremented)
@@ -18,7 +18,7 @@ public class Event {
         this.eventAddress = eventAddress;
     }
     // Constructor for retrieving events from the database (includes eventID)
-    public Event(int eventID, String title, String description, String date, String startTime, String endTime, String eventAddress) {
+    public Event(Integer eventID, String title, String description, String date, String startTime, String endTime, String eventAddress) {
         this.eventID = eventID;
         this.title = title;
         this.description = description;
@@ -28,7 +28,7 @@ public class Event {
         this.eventAddress = eventAddress;
     }
 
-    public int getEventID() {
+    public Integer getEventID() {
         return eventID;
     }
 

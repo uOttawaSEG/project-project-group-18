@@ -1,6 +1,7 @@
 package com.example.seg_project_d11;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
 
@@ -63,9 +66,26 @@ public class AttendeeAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 //TODO: show details about the attendee
+         String username = attendee.getEmail();
 
+
+String AttendeeInfo ="Firstname: "+ attendee.getFirstName()+"\n"+
+        "Lastname: " + attendee.getLastName() +"\n"+
+        "PhoneNumber: "+attendee.getPhoneNumber()+"\n"+
+        "Address: "+attendee.getAddress() +"\n"+
+         "UserRole: "+attendee.getUserRole();
+
+                new AlertDialog.Builder(context)
+                        .setMessage(AttendeeInfo)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    // Action when OK is clicked (if any)
+                    dialog.dismiss();
+                })
+                        .show();
 
             }
+
+
         });
 
         btn_approve.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +94,7 @@ public class AttendeeAdapter extends BaseAdapter{
                 //TODO: approve the attendee request for event
                 String attendeeEmail = attendee.getEmail();
                 dbHelper.updateEventRequestStatus(attendeeEmail,eventID ,"Approved");
-                Toast.makeText(context, "Attendee's request has been apporved!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Attendee's request has been approved!", Toast.LENGTH_SHORT).show();
 
 
 

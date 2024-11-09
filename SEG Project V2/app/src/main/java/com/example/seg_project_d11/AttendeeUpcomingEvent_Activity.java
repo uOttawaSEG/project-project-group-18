@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//show all events to attendee
 public class AttendeeUpcomingEvent_Activity extends AppCompatActivity {
     DatabaseHelper dbHelper;
     ListView lvUpcomingEvents;

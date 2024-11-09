@@ -15,13 +15,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//shows the list of attendees
 public class OrganizerSeeAttendeeEventRequestsActivity extends AppCompatActivity {
     DatabaseHelper dbHelper;
     ListView listViewAttendeeRequests;
     List<Attendee> attendees;
     AttendeeAdapter adapter;
     Button backButton;
+    Button approveAll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,8 @@ public class OrganizerSeeAttendeeEventRequestsActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        approveAll = findViewById(R.id.button_approveAll);
 
 
     }

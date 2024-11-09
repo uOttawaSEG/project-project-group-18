@@ -7,26 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".Event_list_2">
 
-    <TextView
-        android:id="@+id/textView26"
-        android:layout_width="425dp"
-        android:layout_height="68dp"
-        android:layout_marginTop="60dp"
-        android:background="#527689EF"
-        android:text="Upcoming Events"
-        android:textAlignment="center"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
     <ListView
         android:id="@+id/lvUpcomingEvents"
         android:layout_width="319dp"
         android:layout_height="487dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+        app:layout_constraintTop_toBottomOf="@+id/textView26" >
+
+        <TextView
+            android:id="@+id/textView26"
+            android:layout_width="425dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="60dp"
+            android:background="#527689EF"
+            android:text="Upcoming Events"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+    </ListView>
 
     <Button
         android:id="@+id/button_goBack"

@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//organizer can see events they create
 public class Event_list_2 extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     ListView listOfEvents;

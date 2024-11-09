@@ -18,14 +18,14 @@ public class Event {
         this.eventAddress = eventAddress;
     }
     // Constructor for retrieving events from the database (includes eventID)
-    public Event(String title, String description, String date, String startTime, String endTime, String eventAddress, int eventID) {
+    public Event(int eventID, String title, String description, String date, String startTime, String endTime, String eventAddress) {
+        this.eventID = eventID;
         this.title = title;
         this.description = description;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.eventAddress = eventAddress;
-        this.eventID = eventID;
     }
 
     public int getEventID() {

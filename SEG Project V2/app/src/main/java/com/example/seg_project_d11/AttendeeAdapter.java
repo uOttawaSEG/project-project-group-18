@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -15,15 +16,13 @@ public class AttendeeAdapter extends BaseAdapter{
     private Context context;
     private List<Attendee> attendees; // Refers to the list of attendees
     private DatabaseHelper dbHelper;
-    private String userType;
-    private String userName;
+    private Integer eventID;
 
-    public AttendeeAdapter(Context context, List<Attendee> attendees, DatabaseHelper dbHelper, String userType, String userName) {
+    public AttendeeAdapter(Context context, List<Attendee> attendees, DatabaseHelper dbHelper, int eventID) {
         this.context = context;
         this.attendees = attendees;
         this.dbHelper = dbHelper;
-        this.userType = userType;
-        this.userName = userName;
+        this.eventID= eventID;
     }
 
     @Override
@@ -73,6 +72,11 @@ public class AttendeeAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 //TODO: approve the attendee request for event
+                String attendeeEmail = attendee.getEmail();
+                dbHelper.updateEventRequestStatus(attendeeEmail,eventID ,"Approved");
+                Toast.makeText(context, "Attendee's request has been apporved!", Toast.LENGTH_SHORT).show();
+
+
 
             }
         });
@@ -81,6 +85,9 @@ public class AttendeeAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 // TODO: Reject the attendee request for event
+                String attendeeEmail = attendee.getEmail();
+                dbHelper.updateEventRequestStatus(attendeeEmail,eventID ,"Rejected");
+                Toast.makeText(context, "Attendee's request has been rejected!", Toast.LENGTH_SHORT).show();
 
             }
         });

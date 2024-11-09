@@ -2,6 +2,7 @@ package com.example.seg_project_d11;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -37,16 +38,18 @@ public class OrganizerSeeAttendeeEventRequestsActivity extends AppCompatActivity
         //get the userName and role from the previous intent
         String username = getIntent().getStringExtra("user_name");
         String userRole = getIntent().getStringExtra("user_role");
-        int eventID = getIntent().getIntExtra("eventID", -1); // Default value is -1
+        Integer eventID = getIntent().getIntExtra("eventID", -1); // Default value is -1
 
         dbHelper = new DatabaseHelper(this);
         attendees = dbHelper.getAllAttendeeEventRequests(eventID);
+
+        Log.d("OrganizerSeeEventRequest", "eventID: "+eventID);
 
 
         listViewAttendeeRequests= findViewById(R.id.lvAttendeeRequests);
 
         //setting the adapter
-        adapter = new AttendeeAdapter(this, attendees, dbHelper, userRole, username);
+        adapter = new AttendeeAdapter(this, attendees, dbHelper, eventID);
         listViewAttendeeRequests.setAdapter(adapter);
 
 

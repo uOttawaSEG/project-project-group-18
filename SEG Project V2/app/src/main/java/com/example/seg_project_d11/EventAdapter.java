@@ -44,7 +44,8 @@ public class EventAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-            return 0;//don't care for now
+            return position;
+
     }
 
     @Override
@@ -65,7 +66,7 @@ public class EventAdapter extends BaseAdapter {
         String title = event.getTitle();
         String description = event.getDescription();
         String date = event.getDate();
-        int eventID= event.getEventID();
+        Integer eventID= event.getEventID();
 
         Log.d("EventAdapter" , "eventID: "+ eventID);
 
@@ -85,7 +86,7 @@ public class EventAdapter extends BaseAdapter {
             public void onClick(View v) {
                 //TODO: complete this
                 if (userType.equals("Attendee")){
-                    dbHelper.addEvenRequest(userName, eventID);
+                    dbHelper.addEventRequest(userName, eventID);
                     Toast.makeText(context, "Your request is now sent!", Toast.LENGTH_SHORT).show();
 
 

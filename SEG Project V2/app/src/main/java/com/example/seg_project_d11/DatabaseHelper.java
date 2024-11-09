@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 
@@ -149,8 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    //fetch a list of users(attendees and organizers) from the database
-
+    //fetch a list of users(attendees and organizers) from the database based on their status
     public List<User> getAllRequests(String stat){
         List<User> users = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -201,7 +201,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_EVENT_ADDRESS, event.getEventAddress());
         cv.put(COLUMN_EVENT_DATE, event.getDate());
         cv.put(COLUMN_EVENT_DESCRIPTION, event.getDescription());
-        cv.put(COLUMN_EVENT_END_TIME, event.getStartTime());
+        cv.put(COLUMN_EVENT_START_TIME, event.getStartTime());
         cv.put(COLUMN_EVENT_END_TIME, event.getEndTime());
         cv.put(COLUMN_ORGANIZER_EMAIL, email);
 
@@ -215,20 +215,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
     //add an event request to EventRequests table by specifying an attendee email and the requested Event ID
-    public boolean addEvenRequest(String emailAttendee,int requestedEventID){
+    public boolean addEventRequest(String attendeeEmail,Integer requestedEventID){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_ATTENDEE_EMAIL,emailAttendee );
-        cv.put(COLUMN_REQUESTED_EVENT_ID,requestedEventID);
+        cv.put(COLUMN_ATTENDEE_EMAIL, attendeeEmail);
+        cv.put(COLUMN_REQUESTED_EVENT_ID, requestedEventID);
 
-        long insert = db.insert(TABLE_EVENT_REQUESTS, null, cv); //if insert is -1, adding failed
+        long insert = db.insert(TABLE_EVENT_REQUESTS, null, cv);
         db.close();
-        if(insert ==-1){
-            return false;
-        }else{
-            return true;
-        }
-
+        return insert != -1;
     }
 
     //get all events for a specific organizer by specifying their user name(email)
@@ -241,7 +236,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursorEvent.moveToFirst()){
 
             do{
-
+                int eventID = cursorEvent.getInt(0);
                 String title= cursorEvent.getString(1);
                 String description= cursorEvent.getString(2);
                 String date= cursorEvent.getString(3);
@@ -249,7 +244,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String endTime= cursorEvent.getString(5);
                 String eventAddress= cursorEvent.getString(6);
 
-                Event event = new Event(title, description, date, startTime, endTime, eventAddress);
+                Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress);
                 events.add(event);
 
             }while(cursorEvent.moveToNext());
@@ -273,6 +268,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()){
             do{
+                int eventID = cursor.getInt(0);
                 String title= cursor.getString(1);
                 String description= cursor.getString(2);
                 String date= cursor.getString(3);
@@ -280,7 +276,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String endTime= cursor.getString(5);
                 String eventAddress= cursor.getString(6);
 
-                Event event = new Event(title, description, date, startTime, endTime, eventAddress);
+                Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress);
                 events.add(event);
             }while(cursor.moveToNext());
         }else{
@@ -292,7 +288,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
     //returns a list of Attendees who have requested for a specific event (passed as eventID)
-    public List<Attendee> getAllAttendeeEventRequests(int eventID){
+    public List<Attendee> getAllAttendeeEventRequests(Integer eventID){
         List<Attendee> attendees= new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -338,8 +334,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    //updates the status of the event request given an attendee Email and the eventID and the new Status
+    public void updateEventRequestStatus(String attendeeEmail, Integer eventID, String newStatus){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String updateQuery = "UPDATE " + TABLE_EVENT_REQUESTS + " SET " + COLUMN_REQUEST_STATUS + " = ? "
+                + "WHERE " + COLUMN_ATTENDEE_EMAIL + " = ? AND " + COLUMN_REQUESTED_EVENT_ID + " = ?";
+
+        // Execute the query
+        //method bindString() binds a string value to corresponding ? placeholder in SQL query
+        SQLiteStatement statement = db.compileStatement(updateQuery);
+        statement.bindString(1, newStatus); // Bind the new status (Accepted or Rejected)
+        statement.bindString(2, attendeeEmail); // Bind the attendee's email
+        statement.bindLong(3, eventID); // Bind the event
+
+        statement.executeUpdateDelete(); // Execute the update query
+
+        db.close();
+
+    }
 
 
+    //delete the commneted out methods later
     /*
 
     public void updateEventList(String username, Event event){
@@ -481,36 +497,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    //method to check if User is accepted
-    /*public boolean checkUserAccepted(String email, String password){
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        //Check for user in the Attendee List
-        Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{email, password});
-        if (findUser.getCount()>0){ //if greater than 0, than account exists
-            findUser.close();
-            return true;
-        }
-        findUser.close(); //Account isn't found so, close cursor
-
-        return false;
-
-    }
-
-    //method to check if user is pending (very similar to checking for accepted)
-    public boolean checkUserPending(String email, String password){
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        //Check for user in the Attendee List
-        Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_STATUS + " = 'Pending'" + " = ? AND " + COLUMN_EMAIL + " = ? AND " + COLUMN_PASSWORD + " = ?");
-        if (findUser.getCount()>0){ //if greater than 0, than account exists
-            findUser.close();
-            return true;
-        }
-        findUser.close(); //Account isn't found so, close cursor
-        return false;
-    }
-*/
 
 
 }

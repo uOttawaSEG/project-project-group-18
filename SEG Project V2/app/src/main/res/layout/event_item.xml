@@ -33,10 +33,29 @@
             android:layout_width="match_parent"
             android:layout_height="15dp" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="160dp"
+        <!-- Horizontal layout for buttons -->
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Details" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="Details" />
+            <View
+                android:layout_width="30dp"
+                android:layout_height="wrap_content" />
+
+
+            <Button
+                android:id="@+id/button_attendees"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="See List of Attendees" />
+
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

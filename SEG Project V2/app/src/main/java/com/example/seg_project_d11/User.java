@@ -1,4 +1,7 @@
 package com.example.seg_project_d11;
+
+import java.util.ArrayList;
+
 //this is the user parentclass that holds the common attributes for attendee and organizer
 public class User {
 
@@ -10,6 +13,7 @@ public class User {
     private String address;
     private String status; //to keep track of user status: pending,approved or rejected
     private String userRole;
+    private ArrayList<Event> events;
 
     public User(String firstName, String lastName, String email, String password, String phoneNumber, String address, String status, String userRole) {
         this.firstName = firstName;
@@ -21,7 +25,20 @@ public class User {
         this.status = status;
         this.userRole = userRole;
     }
-//getters and setters
+
+    public User(String firstName, String lastName, String email, String password, String phoneNumber, String address, String status, String userRole, ArrayList<Event> events) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.status = status;
+        this.userRole = userRole;
+        this.events = events;
+    }
+
+    //getters and setters
 
 
     public String getUserRole() {

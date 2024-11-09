@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,21 +22,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Userdata.db";
 
     //database version
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
-    //user table
+    //user table and columns
     private static final String USER_TABLE = "USERS_TABLE";
 
     private static final String COLUMN_FIRSTNAME = "firstName";
     private static final String COLUMN_LASTNAME = "lastname";
-    private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_EMAIL = "email"; //primary key
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_PHONENUMBER = "phoneNumber";
     private static final String COLUMN_ADDRESS = "address";
     public static final String COLUMN_STATUS = "status";
     public static final String COLUMN_ORGANIZATIONNAME = "organizationName";
-    public static final String COLUMN_ORGANIZATIONEVENTS = "organizationEvents";
     public static final String COLUMN_USERROLE = "userRole";
+
+    //Events table and columns
+    private static final String TABLE_EVENTS= "Events";
+    private static final String COLUMN_EVENT_ID = "event_id";
+    private static final String COLUMN_EVENT_TITLE = "title";
+    private static final String COLUMN_EVENT_DESCRIPTION = "description";
+    private static final String COLUMN_EVENT_DATE = "date";
+    private static final String COLUMN_EVENT_START_TIME = "start_time";
+    private static final String COLUMN_EVENT_END_TIME = "end_time";
+    private static final String COLUMN_EVENT_ADDRESS = "address";
+    private static final String COLUMN_ORGANIZER_EMAIL = "organizer_email"; // Foreign key to Users table
+
+
+    //EventRequests table and columns
+    private static final String TABLE_EVENT_REQUESTS = "EventRequests";
+    private static final String COLUMN_REQUEST_ID = "request_id";
+    private static final String COLUMN_ATTENDEE_EMAIL = "attendee_email";  // Foreign key to Users table for attendee
+    private static final String COLUMN_REQUESTED_EVENT_ID = "requested_event_id";  // Foreign key to Events table
+    private static final String COLUMN_REQUEST_STATUS = "status"; // "Pending", "Approved", "Rejected"
 
 
     public DatabaseHelper(@Nullable Context context) {
@@ -46,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //create Attendees table
+        //create Users table
         String CREATE_USERS_TABLE = "CREATE TABLE " + USER_TABLE + "("
                 + COLUMN_EMAIL + " TEXT PRIMARY KEY,"
                 + COLUMN_FIRSTNAME + " TEXT,"
@@ -55,58 +72,74 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +COLUMN_ADDRESS + " TEXT, "
                 +COLUMN_PASSWORD + " TEXT, "
                 +COLUMN_ORGANIZATIONNAME + " TEXT, "
-                +COLUMN_ORGANIZATIONEVENTS + " TEXT, "
                 +COLUMN_USERROLE + " TEXT, "
                 +COLUMN_STATUS + " TEXT DEFAULT 'Pending');";
 
         db.execSQL(CREATE_USERS_TABLE);
+
+        //create Events table
+        String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
+                + COLUMN_EVENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_EVENT_TITLE + " TEXT, "
+                + COLUMN_EVENT_DESCRIPTION + " TEXT, "
+                + COLUMN_EVENT_DATE + " TEXT, "
+                + COLUMN_EVENT_START_TIME + " TEXT, "
+                + COLUMN_EVENT_END_TIME + " TEXT, "
+                + COLUMN_EVENT_ADDRESS + " TEXT, "
+                + COLUMN_ORGANIZER_EMAIL + " TEXT, "
+                + "FOREIGN KEY(" + COLUMN_ORGANIZER_EMAIL + ") REFERENCES " + USER_TABLE + "(" + COLUMN_EMAIL + ")"
+                + " ON DELETE CASCADE" // If the organizer is deleted, their events will be deleted
+                + ");";
+
+        db.execSQL(CREATE_EVENTS_TABLE);
+
+        //create EventRequest table
+        String CREATE_EVENT_REQUESTS_TABLE = "CREATE TABLE " + TABLE_EVENT_REQUESTS + "("
+                + COLUMN_REQUEST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_ATTENDEE_EMAIL + " TEXT, " // Foreign key to Users table (email) for attendee
+                + COLUMN_REQUESTED_EVENT_ID + " INTEGER, " // Foreign key to Events table
+                + COLUMN_REQUEST_STATUS + " TEXT DEFAULT 'Pending', " // Default to 'Pending'
+                + "FOREIGN KEY(" + COLUMN_ATTENDEE_EMAIL + ") REFERENCES " + USER_TABLE + "(" + COLUMN_EMAIL + ")"
+                + " ON DELETE CASCADE, "
+                + "FOREIGN KEY(" + COLUMN_REQUESTED_EVENT_ID + ") REFERENCES " + TABLE_EVENTS + "(" + COLUMN_EVENT_ID + ")"
+                + " ON DELETE CASCADE"
+                + ");";
+        db.execSQL(CREATE_EVENT_REQUESTS_TABLE);
 
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 3) { // Check if upgrading from version 2 to version 3
-            // Alter the table to add the new column
-            db.execSQL("ALTER TABLE " + USER_TABLE + " ADD COLUMN " + COLUMN_ORGANIZATIONEVENTS + " TEXT;");
-        }
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENT_REQUESTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
+        onCreate(db);
     }
 
-    // add an attendee data to the database
+    // add a user to the user table
     public boolean addUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        if (user instanceof Attendee){
+        cv.put(COLUMN_EMAIL, user.getEmail());
+        cv.put(COLUMN_FIRSTNAME, user.getFirstName());
+        cv.put(COLUMN_LASTNAME, user.getLastName());
+        cv.put(COLUMN_PHONENUMBER, user.getPhoneNumber());
+        cv.put(COLUMN_ADDRESS, user.getAddress());
+        cv.put(COLUMN_PASSWORD, user.getPassword());
+        cv.put(COLUMN_STATUS, user.getStatus());
 
-            cv.put(COLUMN_EMAIL, user.getEmail());
-            cv.put(COLUMN_FIRSTNAME, user.getFirstName());
-            cv.put(COLUMN_LASTNAME, user.getLastName());
-            cv.put(COLUMN_PHONENUMBER, user.getPhoneNumber());
-            cv.put(COLUMN_ADDRESS, user.getAddress());
-            cv.put(COLUMN_PASSWORD, user.getPassword());
+        if (user instanceof Attendee){
             cv.put(COLUMN_ORGANIZATIONNAME, "");
-            cv.put(COLUMN_ORGANIZATIONEVENTS, "");
-            cv.put(COLUMN_STATUS, user.getStatus());
             cv.put(COLUMN_USERROLE, "Attendee");
 
         }else if (user instanceof Organizer){
-            // Serialize the Event list to JSON
-            ArrayList<Event> eventList = ((Organizer) user).getEventList();
-            String eventListJson = new Gson().toJson(eventList);  // Convert ArrayList<Event> to JSON string
-            cv.put(COLUMN_EMAIL, user.getEmail());
-            cv.put(COLUMN_FIRSTNAME, user.getFirstName());
-            cv.put(COLUMN_LASTNAME, user.getLastName());
-            cv.put(COLUMN_PHONENUMBER, user.getPhoneNumber());
-            cv.put(COLUMN_ADDRESS, user.getAddress());
-            cv.put(COLUMN_PASSWORD, user.getPassword());
             cv.put(COLUMN_ORGANIZATIONNAME, ((Organizer) user).getOrganizationName());
-            cv.put(COLUMN_ORGANIZATIONEVENTS, eventListJson);
-            cv.put(COLUMN_STATUS, user.getStatus());
             cv.put(COLUMN_USERROLE,"Organizer");
         }
         long insert = db.insert(USER_TABLE, null, cv); //if insert is -1, adding failed
-
+        db.close();
         if(insert ==-1){
             return false;
         }else{
@@ -135,8 +168,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String address =cursorUsers.getString(4);
                 String password = cursorUsers.getString(5);
                 String organizationName = cursorUsers.getString(6);
-                String userRole = cursorUsers.getString(8);
-                String status = cursorUsers.getString(9);
+                String userRole = cursorUsers.getString(7);
+                String status = cursorUsers.getString(8);
 
                 User user;
                 if(userRole.equals("Attendee")){
@@ -155,8 +188,95 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursorUsers.close();
         db.close();
         return users;
+    }
+
+    //add an event to the Event table
+    public boolean addEvent(Event event, String email){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_EVENT_TITLE, event.getTitle());
+        cv.put(COLUMN_EVENT_ADDRESS, event.getEventAddress());
+        cv.put(COLUMN_EVENT_DATE, event.getDate());
+        cv.put(COLUMN_EVENT_DESCRIPTION, event.getDescription());
+        cv.put(COLUMN_EVENT_END_TIME, event.getStartTime());
+        cv.put(COLUMN_EVENT_END_TIME, event.getEndTime());
+        cv.put(COLUMN_ORGANIZER_EMAIL, email);
+
+        long insert = db.insert(TABLE_EVENTS, null, cv); //if insert is -1, adding failed
+        db.close();
+        if(insert ==-1){
+            return false;
+        }else{
+            return true;
+        }
 
     }
+
+    //get all events for a specific organizer by specifying their user name(email)
+    public List<Event> getEventsForOrganizer(String email){
+        List<Event> events = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursorEvent = db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ORGANIZER_EMAIL + " = ?", new String[]{email});
+
+        if (cursorEvent.moveToFirst()){
+
+            do{
+
+                String title= cursorEvent.getString(1);
+                String description= cursorEvent.getString(2);
+                String date= cursorEvent.getString(3);
+                String startTime= cursorEvent.getString(4);
+                String endTime= cursorEvent.getString(5);
+                String eventAddress= cursorEvent.getString(6);
+
+                Event event = new Event(title, description, date, startTime, endTime, eventAddress);
+                events.add(event);
+
+            }while(cursorEvent.moveToNext());
+        }else{
+            //there is no events associated with the organizer email given
+        }
+        cursorEvent.close();
+        db.close();
+        return events;
+    }
+
+
+    //get all events created by all organizers
+    public List<Event> getAllEvents(){
+        List<Event> events = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_EVENTS;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()){
+            do{
+                String title= cursor.getString(1);
+                String description= cursor.getString(2);
+                String date= cursor.getString(3);
+                String startTime= cursor.getString(4);
+                String endTime= cursor.getString(5);
+                String eventAddress= cursor.getString(6);
+
+                Event event = new Event(title, description, date, startTime, endTime, eventAddress);
+                events.add(event);
+            }while(cursor.moveToNext());
+        }else{
+            //no events have been created yet
+        }
+        cursor.close();
+        db.close();
+        return events;
+
+    }
+
+
+
+    /*
 
     public void updateEventList(String username, Event event){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -201,6 +321,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
+
+    public ArrayList<Event> getAllUpcomingEvents(){
+        ArrayList<Event> upcomingEvents = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //Query to get all organizers
+        String query = "SELECT " + COLUMN_ORGANIZATIONEVENTS + " FROM " + USER_TABLE +
+                " WHERE " + COLUMN_USERROLE + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[] { "Organizer" });
+
+        if (cursor.moveToFirst()){
+            do{
+                String eventsJson = cursor.getString(0); // get the organizationEvents column
+                // Deserialize the JSON string to ArrayList<Event>
+                if (eventsJson != null && !eventsJson.isEmpty()) {
+                    ArrayList<Event> events = new Gson().fromJson(eventsJson, new TypeToken<List<Event>>(){}.getType());
+                    // Add each event to the combined list
+                    if (events != null) {
+                        upcomingEvents.addAll(events);
+                    }
+                }
+
+            } while (cursor.moveToNext());
+
+        }
+        cursor.close();
+        db.close();
+        return upcomingEvents;
+
+    }
+
     public ArrayList<Event> getEventList(String username){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -219,6 +371,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return eventList;
     }
+
+     */
 
     //method to update the user's status
     public void updateUserStatus(User user){
@@ -240,7 +394,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //check if there exists a staus/if user even exits:
         if (findUser.moveToFirst()){
-            status = findUser.getString(9);;
+            status = findUser.getString(8);;
 
         }
         findUser.close();
@@ -257,7 +411,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         if (findUser.moveToFirst()){
-            userRole = findUser.getString(8);;
+            userRole = findUser.getString(7);;
 
         }
         findUser.close();

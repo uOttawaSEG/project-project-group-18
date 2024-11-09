@@ -56,7 +56,6 @@ public class SignInPage extends AppCompatActivity {
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //goes back to Organizer_1 activity
                 Intent intent = new Intent(SignInPage.this, SelectionActivity.class);
                 startActivity(intent);
             }

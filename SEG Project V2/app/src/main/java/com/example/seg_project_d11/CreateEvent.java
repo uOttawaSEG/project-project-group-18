@@ -64,9 +64,10 @@ public class CreateEvent extends AppCompatActivity {
                 endTime= newEndTime.getText().toString().trim();
                 eventAddress= newEventAddress.getText().toString().trim();
 
+
                 Event event = new Event(title, description, date, startTime, endTime, eventAddress);
                 Log.i("EVENT CREATED", "Title: " + event.getTitle() + " Description: " + event.getDescription());
-                databaseHelper.updateEventList(organizerUserName, event);
+                databaseHelper.addEvent(event,organizerUserName);
 
                 AlertDialog.Builder message = new AlertDialog.Builder(CreateEvent.this);
                 message.setCancelable(true);
@@ -80,6 +81,8 @@ public class CreateEvent extends AppCompatActivity {
                     startActivity(intent);
                 });
                 message.show();
+
+
 
             }
         });

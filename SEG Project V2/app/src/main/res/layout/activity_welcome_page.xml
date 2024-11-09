@@ -130,8 +130,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
         android:text="Create Event"
-        app:layout_constraintTop_toBottomOf="@+id/tableRow3"
-        tools:layout_editor_absoluteX="141dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/tableRow3" />
 
     <Button
         android:id="@+id/seeEvents_button"
@@ -139,7 +141,20 @@
         android:layout_height="wrap_content"
         android:text="See event list"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createEvent_button"
         app:layout_constraintVertical_bias="0.501"
-        tools:layout_editor_absoluteX="139dp" />
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/upcomingEventsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See Upcoming Events"
+        app:layout_constraintBottom_toTopOf="@+id/seeEvents_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createEvent_button"
+        android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

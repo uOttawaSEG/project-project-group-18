@@ -14,10 +14,10 @@ import java.util.List;
 
 public class EventAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<Event> events;
+    private List<Event> events;
     private DatabaseHelper dbHelper;
 
-    public EventAdapter(Context context, ArrayList<Event> events, DatabaseHelper dbHelper) {
+    public EventAdapter(Context context, List<Event> events, DatabaseHelper dbHelper) {
         this.context = context;
         this.events = events;
         this.dbHelper = dbHelper;

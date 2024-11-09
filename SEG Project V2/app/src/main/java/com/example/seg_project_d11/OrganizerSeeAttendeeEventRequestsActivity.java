@@ -13,13 +13,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrganizerSeeAttendeeEventRequestsActivity extends AppCompatActivity {
     DatabaseHelper dbHelper;
     ListView listViewAttendeeRequests;
-    ArrayList<Event> AttendeeEventRequests;
-    EventAdapter adapter;
+    List<Attendee> attendees;
+    AttendeeAdapter adapter;
     Button backButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,12 +33,21 @@ public class OrganizerSeeAttendeeEventRequestsActivity extends AppCompatActivity
             return insets;
         });
 
+
+        //get the userName and role from the previous intent
+        String username = getIntent().getStringExtra("user_name");
+        String userRole = getIntent().getStringExtra("user_role");
+        int eventID = getIntent().getIntExtra("eventID", -1); // Default value is -1
+
         dbHelper = new DatabaseHelper(this);
+        attendees = dbHelper.getAllAttendeeEventRequests(eventID);
 
 
         listViewAttendeeRequests= findViewById(R.id.lvAttendeeRequests);
 
         //setting the adapter
+        adapter = new AttendeeAdapter(this, attendees, dbHelper, userRole, username);
+        listViewAttendeeRequests.setAdapter(adapter);
 
 
         backButton = findViewById(R.id.button_goBack);
@@ -44,8 +55,12 @@ public class OrganizerSeeAttendeeEventRequestsActivity extends AppCompatActivity
         backButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent intent = new Intent(OrganizerSeeAttendeeEventRequestsActivity.this, WelcomePage.class);
+                intent.putExtra("user_name", username);
+                intent.putExtra("user_role", userRole);
                 startActivity(intent);
             }
         });
+
+
     }
 }

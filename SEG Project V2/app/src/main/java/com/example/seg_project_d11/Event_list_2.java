@@ -38,10 +38,18 @@ public class Event_list_2 extends AppCompatActivity {
 
         //get the role and userName from the previous intent
         String username = getIntent().getStringExtra("user_name");
+        String userRole = getIntent().getStringExtra("user_role");
+
+
+        Log.d("EventList2", "User_name: "+ username);
+        Log.d("EventList2", "User_role: "+ userRole);
+
+
 
 
         databaseHelper = new DatabaseHelper(this);
         events = databaseHelper.getEventsForOrganizer(username);
+
 
 
         //debugging
@@ -52,7 +60,7 @@ public class Event_list_2 extends AppCompatActivity {
 
 
         //setting the adapter
-        adapter = new EventAdapter(this, events, databaseHelper);
+        adapter = new EventAdapter(this, events, databaseHelper, userRole, username);
         listOfEvents.setAdapter(adapter);
 
         backButton = findViewById(R.id.button_goBack);

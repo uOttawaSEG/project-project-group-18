@@ -32,8 +32,10 @@ public class AttendeeUpcomingEvent_Activity extends AppCompatActivity {
             return insets;
         });
 
-        //get the role and userName from the previous intent
+
+        //get the userName and role from the previous intent
         String username = getIntent().getStringExtra("user_name");
+        String userRole = getIntent().getStringExtra("user_role");
 
         dbHelper = new DatabaseHelper(this);
         upcomingEventsList = dbHelper.getAllEvents();
@@ -41,7 +43,7 @@ public class AttendeeUpcomingEvent_Activity extends AppCompatActivity {
         lvUpcomingEvents= findViewById(R.id.lvUpcomingEvents);
 
         //setting the adapter
-        adapter = new EventAdapter(this, upcomingEventsList, dbHelper);
+        adapter = new EventAdapter(this, upcomingEventsList, dbHelper, userRole, username);
         lvUpcomingEvents.setAdapter(adapter);
 
         backButton = findViewById(R.id.button_goBack);
@@ -54,6 +56,8 @@ public class AttendeeUpcomingEvent_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
 
     }

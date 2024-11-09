@@ -94,6 +94,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_EVENTS_TABLE);
 
         //create EventRequest table
+        //each time an attendee wants to request for an event, it gets saved to this table
+        //so for each event request there can be zero to many attendees and it is also linked to a unique event ID
         String CREATE_EVENT_REQUESTS_TABLE = "CREATE TABLE " + TABLE_EVENT_REQUESTS + "("
                 + COLUMN_REQUEST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_ATTENDEE_EMAIL + " TEXT, " // Foreign key to Users table (email) for attendee
@@ -190,7 +192,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return users;
     }
 
-    //add an event to the Event table
+    //add an event to the Event table by specifying the event object and the organizer email
     public boolean addEvent(Event event, String email){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -204,6 +206,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_ORGANIZER_EMAIL, email);
 
         long insert = db.insert(TABLE_EVENTS, null, cv); //if insert is -1, adding failed
+        db.close();
+        if(insert ==-1){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+    //add an event request to EventRequests table by specifying an attendee email and the requested Event ID
+    public boolean addEvenRequest(String emailAttendee,int requestedEventID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_ATTENDEE_EMAIL,emailAttendee );
+        cv.put(COLUMN_REQUESTED_EVENT_ID,requestedEventID);
+
+        long insert = db.insert(TABLE_EVENT_REQUESTS, null, cv); //if insert is -1, adding failed
         db.close();
         if(insert ==-1){
             return false;
@@ -271,6 +289,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return events;
+
+    }
+    //returns a list of Attendees who have requested for a specific event (passed as eventID)
+    public List<Attendee> getAllAttendeeEventRequests(int eventID){
+        List<Attendee> attendees= new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_REQUESTED_EVENT_ID + " = ?", new String[]{String.valueOf(eventID)});
+
+        if (cursor.moveToFirst()){
+
+            do{
+                String attendeeUserName = cursor.getString(1);
+                Attendee attendee = getAttendee(attendeeUserName);
+                attendees.add(attendee);
+
+            }while(cursor.moveToNext());
+        }else{
+            //there is no event requests yet made for this specific event
+        }
+        cursor.close();
+        db.close();
+        return attendees;
+
+    }
+    //returns an Attendee objbect by specifying the attendee username(email)
+    public Attendee getAttendee(String userName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE+ " WHERE " + COLUMN_EMAIL + " = ?", new String[]{userName});
+
+        if (cursor.moveToFirst()){
+            String email = cursor.getString(0);
+            String firstName = cursor.getString(1);
+            String lastname = cursor.getString(2);
+            String phoneNumber =cursor.getString(3);
+            String address =cursor.getString(4);
+            String password = cursor.getString(5);
+            String userRole = cursor.getString(7);
+            String status = cursor.getString(8);
+
+            Attendee attendee = new Attendee(firstName, lastname, email, password, phoneNumber, address, status, userRole);
+            return attendee;
+        }else{
+            //attendee with this username does not exist in the database
+            return null;
+        }
 
     }
 
@@ -405,15 +469,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public String getUserRole(String email){
         SQLiteDatabase db = this.getReadableDatabase();
         String userRole = null;
-
         Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = ?", new String[]{email});
-
-
 
         if (findUser.moveToFirst()){
             userRole = findUser.getString(7);;
-
         }
+        Log.d("databaseHelper: ", "UserRole:"+ userRole);
         findUser.close();
         return userRole;
 

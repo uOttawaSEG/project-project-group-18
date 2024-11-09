@@ -4,10 +4,11 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Event {
-    String title, description, date, startTime, endTime, eventAddress;
-    ArrayList<Attendee> attendeeList = new ArrayList<Attendee>();
+    private String title, description, date, startTime, endTime, eventAddress;
+    private int eventID;
 
 
+    // Constructor for a new event, without eventID (since it's auto-incremented)
     public Event(String title, String description, String date, String startTime, String endTime, String eventAddress){
         this.title = title;
         this.description = description;
@@ -15,6 +16,24 @@ public class Event {
         this.startTime = startTime;
         this.endTime = endTime;
         this.eventAddress = eventAddress;
+    }
+    // Constructor for retrieving events from the database (includes eventID)
+    public Event(String title, String description, String date, String startTime, String endTime, String eventAddress, int eventID) {
+        this.title = title;
+        this.description = description;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.eventAddress = eventAddress;
+        this.eventID = eventID;
+    }
+
+    public int getEventID() {
+        return eventID;
+    }
+
+    public void setEventID(int eventID) {
+        this.eventID = eventID;
     }
 
     public void setTitle(String title){
@@ -59,11 +78,6 @@ public class Event {
         return eventAddress;
     }
 
-    public void addAttendee(Attendee attendee){
-        attendeeList.add(attendee);
-    }
-    public ArrayList<Attendee> getAttendeeList(){
-        return attendeeList;
-    }
+
 
 }

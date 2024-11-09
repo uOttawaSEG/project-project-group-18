@@ -70,7 +70,7 @@ public class WelcomePage extends AppCompatActivity {
                 startActivity(intentLogout);
             }
         });
-
+        //if userrole is organizer, display this button
         createEvent.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent intent = new Intent(WelcomePage.this, CreateEvent.class);
@@ -78,21 +78,25 @@ public class WelcomePage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        //if userrole is organizer, display this button
         viewEvents.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent new_intent = new Intent(WelcomePage.this, Event_list_2.class);
                 new_intent.putExtra("user_name", userName);
+                new_intent.putExtra("user_role",role);
+
                 Log.i("UserName", userName);
+                Log.i("UserName", role);
                 Log.i("Checkpoint", "onCLick-viewEvents");
                 startActivity(new_intent);
             }
         });
-
+        //if userrole is Attendee, display this button
         viewUpcomingEvents.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent new_intent = new Intent(WelcomePage.this, AttendeeUpcomingEvent_Activity.class);
                 new_intent.putExtra("user_name", userName);
+                new_intent.putExtra("user_role",role);
                 Log.i("Checkpoint", "onCLick-viewUpcomingEvents");
                 startActivity(new_intent);
             }

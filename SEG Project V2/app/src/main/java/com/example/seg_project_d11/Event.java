@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Event {
     private String title, description, date, startTime, endTime, eventAddress;
     private Integer eventID;
-    private int choiceAccept;
+    private Integer choiceAccept;
 
 
     // Constructor for a new event, without eventID (since it's auto-incremented)
@@ -82,5 +82,4 @@ public class Event {
     }
 
     public int getAcceptChoice(){ return choiceAccept;}
-
 }

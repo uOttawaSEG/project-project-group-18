@@ -88,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_EVENT_END_TIME + " TEXT, "
                 + COLUMN_EVENT_ADDRESS + " TEXT, "
                 + COLUMN_ORGANIZER_EMAIL + " TEXT, "
-                + COLUMN_EVENT_CHOICE + " INTEGER DEFAULT 0, "
+                + COLUMN_EVENT_CHOICE + " INTEGER, "
                 + "FOREIGN KEY(" + COLUMN_ORGANIZER_EMAIL + ") REFERENCES " + USER_TABLE + "(" + COLUMN_EMAIL + ")"
                 + " ON DELETE CASCADE" // If the organizer is deleted, their events will be deleted
                 + ");";

@@ -88,8 +88,6 @@ String AttendeeInfo ="Firstname: "+ attendee.getFirstName()+"\n"+
                         .show();
 
             }
-
-
         });
 
         btn_approve.setOnClickListener(new View.OnClickListener() {
@@ -98,9 +96,14 @@ String AttendeeInfo ="Firstname: "+ attendee.getFirstName()+"\n"+
                 //TODO: approve the attendee request for event
                 String attendeeEmail = attendee.getEmail();
                 dbHelper.updateEventRequestStatus(attendeeEmail,eventID ,"Approved");
+                for (Attendee item : attendees) {
+                    if (item.getEmail().equals(attendeeEmail)) {
+                        attendees.remove(item);
+                        break;
+                    }
+                }
+                notifyDataSetChanged();
                 Toast.makeText(context, "Attendee's request has been approved!", Toast.LENGTH_SHORT).show();
-
-
 
             }
         });

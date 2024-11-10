@@ -47,7 +47,7 @@ public class OrganizerSeeAttendeeEventRequestsActivity extends AppCompatActivity
         Integer eventID = getIntent().getIntExtra("eventID", -1); // Default value is -1
 
         dbHelper = new DatabaseHelper(this);
-        attendees = dbHelper.getAllAttendeeEventRequests(eventID);
+        attendees = dbHelper.getAllAttendeeEventRequests(eventID, "Pending");
 
         Log.d("OrganizerSeeEventRequest", "eventID: "+eventID);
 
@@ -81,8 +81,6 @@ public class OrganizerSeeAttendeeEventRequestsActivity extends AppCompatActivity
 
                 // Clear and refresh the attendee list
                 attendees.clear();
-                List<Attendee> newAttendees = dbHelper.getAllAttendeeEventRequests(eventID);
-                attendees.addAll(newAttendees);
                 adapter.notifyDataSetChanged();
 
                 // Optional: Show success message to user

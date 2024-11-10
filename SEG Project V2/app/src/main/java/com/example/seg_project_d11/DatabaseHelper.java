@@ -294,11 +294,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
     //returns a list of Attendees who have requested for a specific event (passed as eventID)
-    public List<Attendee> getAllAttendeeEventRequests(Integer eventID){
+    public List<Attendee> getAllAttendeeEventRequests(Integer eventID, String status){
         List<Attendee> attendees= new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_REQUESTED_EVENT_ID + " = ?", new String[]{String.valueOf(eventID)});
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_REQUESTED_EVENT_ID + " = ? AND status = ?",
+                new String[]{String.valueOf(eventID), status}
+        );
 
         if (cursor.moveToFirst()){
 

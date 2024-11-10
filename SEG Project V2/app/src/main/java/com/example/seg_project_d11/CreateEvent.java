@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -19,7 +21,9 @@ public class CreateEvent extends AppCompatActivity {
     String title, description, date, startTime, endTime, eventAddress;
     Button cancelEvent;
     Button createEvent;
+    CheckBox autoAccept, manualAccept;
     DatabaseHelper databaseHelper;
+    Boolean choice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,7 @@ public class CreateEvent extends AppCompatActivity {
         cancelEvent= findViewById(R.id.buttonCancel);
         createEvent = findViewById(R.id.buttonCreate);
         databaseHelper = new DatabaseHelper(this);
+        autoAccept = findViewById(R.id.checkBox2);
 
         //Associates each textField to TextView variable
         newTitle= findViewById(R.id.eventTitle);
@@ -42,6 +47,20 @@ public class CreateEvent extends AppCompatActivity {
         newStartTime= findViewById(R.id.eventStart);
         newEndTime= findViewById(R.id.eventEnd);
         newEventAddress= findViewById(R.id.eventAddress);
+
+
+        autoAccept.setOnCheckedChangeListener((buttonView, isChecked) ->  {
+            if (isChecked) {
+                // Checkbox is checked
+                choice = true;
+            } else {
+                // Checkbox is unchecked
+                choice = false;
+            }
+        });
+
+
+
 
         //On click activity for cancel button
         cancelEvent.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +84,9 @@ public class CreateEvent extends AppCompatActivity {
                 eventAddress= newEventAddress.getText().toString().trim();
 
 
-                Event event = new Event(title, description, date, startTime, endTime, eventAddress);
+
+
+                Event event = new Event(title, description, date, startTime, endTime, eventAddress, choice);
                 Log.i("EVENT CREATED", "Title: " + event.getTitle() + " Description: " + event.getDescription());
                 databaseHelper.addEvent(event,organizerUserName);
 

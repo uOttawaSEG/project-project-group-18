@@ -1,6 +1,8 @@
 package com.example.seg_project_d11;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -66,6 +68,18 @@ public class OrganizerSeeAttendeeEventRequestsActivity extends AppCompatActivity
         });
 
         approveAll = findViewById(R.id.button_approveAll);
+
+        approveAll.setOnClickListener(new View.OnClickListener(){
+           public void onClick(View view){
+               dbHelper.approveAllAttendees(eventID); //changes status of all attendees associated to an event
+               attendees.clear(); // since they were accepted, they need to be cleeared
+               List<Attendee> newAttendees = dbHelper.getAllAttendeeEventRequests(eventID);
+               attendees.addAll(newAttendees);
+               adapter.notifyDataSetChanged(); //update the attendee list
+
+           }
+
+        });
 
 
     }

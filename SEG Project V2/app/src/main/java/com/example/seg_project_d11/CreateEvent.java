@@ -23,7 +23,7 @@ public class CreateEvent extends AppCompatActivity {
     Button createEvent;
     CheckBox autoAccept, manualAccept;
     DatabaseHelper databaseHelper;
-    Boolean choice;
+    int choice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +52,10 @@ public class CreateEvent extends AppCompatActivity {
         autoAccept.setOnCheckedChangeListener((buttonView, isChecked) ->  {
             if (isChecked) {
                 // Checkbox is checked
-                choice = true;
+                choice = 1;
             } else {
                 // Checkbox is unchecked
-                choice = false;
+                choice = 0;
             }
         });
 

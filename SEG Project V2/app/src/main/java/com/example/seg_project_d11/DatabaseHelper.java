@@ -48,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_EVENT_END_TIME = "end_time";
     private static final String COLUMN_EVENT_ADDRESS = "address";
     private static final String COLUMN_ORGANIZER_EMAIL = "organizer_email"; // Foreign key to Users table
-
+    private static final String COLUMN_EVENT_CHOICE = "choice";
 
     //EventRequests table and columns
     private static final String TABLE_EVENT_REQUESTS = "EventRequests";
@@ -88,6 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_EVENT_END_TIME + " TEXT, "
                 + COLUMN_EVENT_ADDRESS + " TEXT, "
                 + COLUMN_ORGANIZER_EMAIL + " TEXT, "
+                + COLUMN_EVENT_CHOICE + " INTEGER DEFAULT 0, "
                 + "FOREIGN KEY(" + COLUMN_ORGANIZER_EMAIL + ") REFERENCES " + USER_TABLE + "(" + COLUMN_EMAIL + ")"
                 + " ON DELETE CASCADE" // If the organizer is deleted, their events will be deleted
                 + ");";
@@ -132,6 +133,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_ADDRESS, user.getAddress());
         cv.put(COLUMN_PASSWORD, user.getPassword());
         cv.put(COLUMN_STATUS, user.getStatus());
+
 
         if (user instanceof Attendee){
             cv.put(COLUMN_ORGANIZATIONNAME, "");
@@ -204,6 +206,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_EVENT_START_TIME, event.getStartTime());
         cv.put(COLUMN_EVENT_END_TIME, event.getEndTime());
         cv.put(COLUMN_ORGANIZER_EMAIL, email);
+        cv.put(COLUMN_EVENT_CHOICE, event.getAcceptChoice());
 
         // Insert the event into the database and get the generated eventID
         long insertID = db.insert(TABLE_EVENTS, null, cv); // insertID is the generated eventID
@@ -249,8 +252,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String startTime= cursorEvent.getString(4);
                 String endTime= cursorEvent.getString(5);
                 String eventAddress= cursorEvent.getString(6);
+                int choice = cursorEvent.getInt(7);
 
-                Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress);
+                Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
                 events.add(event);
 
             }while(cursorEvent.moveToNext());
@@ -281,8 +285,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String startTime= cursor.getString(4);
                 String endTime= cursor.getString(5);
                 String eventAddress= cursor.getString(6);
+                int choice = cursor.getInt(7);
 
-                Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress);
+
+                Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
                 events.add(event);
             }while(cursor.moveToNext());
         }else{

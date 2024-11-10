@@ -6,19 +6,21 @@ import java.util.ArrayList;
 public class Event {
     private String title, description, date, startTime, endTime, eventAddress;
     private Integer eventID;
+    private Boolean choiceAccept;
 
 
     // Constructor for a new event, without eventID (since it's auto-incremented)
-    public Event(String title, String description, String date, String startTime, String endTime, String eventAddress){
+    public Event(String title, String description, String date, String startTime, String endTime, String eventAddress, Boolean choiceAccept){
         this.title = title;
         this.description = description;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.eventAddress = eventAddress;
+        this.choiceAccept = choiceAccept;
     }
     // Constructor for retrieving events from the database (includes eventID)
-    public Event(Integer eventID, String title, String description, String date, String startTime, String endTime, String eventAddress) {
+    public Event(Integer eventID, String title, String description, String date, String startTime, String endTime, String eventAddress, Boolean choiceAccept) {
         this.eventID = eventID;
         this.title = title;
         this.description = description;
@@ -26,6 +28,7 @@ public class Event {
         this.startTime = startTime;
         this.endTime = endTime;
         this.eventAddress = eventAddress;
+        this.choiceAccept = choiceAccept;
     }
 
     public Integer getEventID() {
@@ -78,6 +81,6 @@ public class Event {
         return eventAddress;
     }
 
-
+    public Boolean getAcceptChoice(){ return choiceAccept;}
 
 }

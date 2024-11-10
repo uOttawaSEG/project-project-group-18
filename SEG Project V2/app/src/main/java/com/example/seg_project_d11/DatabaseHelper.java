@@ -101,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_REQUEST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_ATTENDEE_EMAIL + " TEXT, " // Foreign key to Users table (email) for attendee
                 + COLUMN_REQUESTED_EVENT_ID + " INTEGER, " // Foreign key to Events table
-                + COLUMN_REQUEST_STATUS + " TEXT DEFAULT 'Pending', " // Default to 'Pending'
+                + COLUMN_REQUEST_STATUS + " TEXT DEFAULT 'Pending' , " // Default to 'Pending'
                 + "FOREIGN KEY(" + COLUMN_ATTENDEE_EMAIL + ") REFERENCES " + USER_TABLE + "(" + COLUMN_EMAIL + ")"
                 + " ON DELETE CASCADE, "
                 + "FOREIGN KEY(" + COLUMN_REQUESTED_EVENT_ID + ") REFERENCES " + TABLE_EVENTS + "(" + COLUMN_EVENT_ID + ")"
@@ -514,11 +514,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void approveAllAttendees(int eventID){
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_STATUS, "accepted");
-        db.update(USER_TABLE, cv, TABLE_EVENTS + " = ?" + COLUMN_STATUS + " = ?", new String[]{String.valueOf(eventID), "accepted"});
+        cv.put( COLUMN_REQUEST_STATUS , "accepted");
+        db.update(TABLE_EVENT_REQUESTS, cv, COLUMN_REQUESTED_EVENT_ID + " = ?", new String[]{String.valueOf(eventID)});
+        db.close();
     }
+
 
 
 

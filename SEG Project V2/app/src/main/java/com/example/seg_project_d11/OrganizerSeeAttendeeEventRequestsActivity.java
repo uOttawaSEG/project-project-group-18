@@ -1,5 +1,7 @@
 package com.example.seg_project_d11;
 
+import static java.security.AccessController.getContext;
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -67,20 +70,25 @@ public class OrganizerSeeAttendeeEventRequestsActivity extends AppCompatActivity
             }
         });
 
-        approveAll = findViewById(R.id.button_approveAll);
+        // Button initialization
+        Button approveAll = findViewById(R.id.button_approveAll);
 
-        approveAll.setOnClickListener(new View.OnClickListener(){
-           public void onClick(View view){
-               dbHelper.approveAllAttendees(eventID); //changes status of all attendees associated to an event
-               attendees.clear(); // since they were accepted, they need to be cleeared
-               List<Attendee> newAttendees = dbHelper.getAllAttendeeEventRequests(eventID);
-               attendees.addAll(newAttendees);
-               adapter.notifyDataSetChanged(); //update the attendee list
+        approveAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // First, approve all attendees in bulk using the existing method
+                dbHelper.approveAllAttendees(eventID);
 
-           }
+                // Clear and refresh the attendee list
+                attendees.clear();
+                List<Attendee> newAttendees = dbHelper.getAllAttendeeEventRequests(eventID);
+                attendees.addAll(newAttendees);
+                adapter.notifyDataSetChanged();
 
+                // Optional: Show success message to user
+                Toast.makeText(adapter.getContext(), "All attendees approved successfully", Toast.LENGTH_SHORT).show();
+            }
         });
-
 
     }
 }

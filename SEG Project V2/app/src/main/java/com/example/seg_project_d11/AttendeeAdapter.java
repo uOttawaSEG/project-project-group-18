@@ -28,6 +28,10 @@ public class AttendeeAdapter extends BaseAdapter{
         this.eventID= eventID;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     @Override
     public int getCount() {
         return attendees.size(); // Returns the number of items in the list

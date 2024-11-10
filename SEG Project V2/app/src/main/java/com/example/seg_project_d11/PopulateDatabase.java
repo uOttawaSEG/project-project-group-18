@@ -38,7 +38,6 @@ public class PopulateDatabase {
             databaseHelper.addEvent(event5, org1.getEmail());
             databaseHelper.addEvent(event6, org1.getEmail());
 
-
         }
 
 

@@ -83,7 +83,6 @@ public class EventAdapter extends BaseAdapter {
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: complete this
                 if (userType.equals("Attendee")){
                     Log.d("EventAdapter" , "eventID: "+ eventID);
                     dbHelper.addEventRequest(userName, eventID);

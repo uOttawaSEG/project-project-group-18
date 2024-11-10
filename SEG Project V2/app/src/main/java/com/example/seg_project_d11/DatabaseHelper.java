@@ -513,6 +513,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public void approveAllAttendees(int eventID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_STATUS, "accepted");
+        db.update(USER_TABLE, cv, TABLE_EVENTS + " = ?" + COLUMN_STATUS + " = ?", new String[]{String.valueOf(eventID), "accepted"});
+    }
+
 
 
 

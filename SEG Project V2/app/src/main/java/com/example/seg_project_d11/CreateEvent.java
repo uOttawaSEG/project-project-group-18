@@ -113,9 +113,13 @@ public class CreateEvent extends AppCompatActivity {
                     message.setTitle("Event created");
                     message.setMessage("The event had been successfully created, please go back to the home page.");
 
+                    Organizer organizer = databaseHelper.getOrganizer(organizerUserName);
+
                     // Ok/Redirect  Button
                     message.setPositiveButton("Return to main", (d,i) -> {
                         Intent intent = new Intent(CreateEvent.this, WelcomePage.class);
+                        intent.putExtra("user_name", organizerUserName);
+                        intent.putExtra("user_role", organizer.getUserRole());
                         startActivity(intent);
                     });
                     message.show();

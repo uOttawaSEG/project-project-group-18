@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -50,7 +51,7 @@ public class CreateEvent extends AppCompatActivity {
 
 
         autoAccept.setOnCheckedChangeListener((buttonView, isChecked) ->  {
-            if (autoAccept.isChecked()) {
+            if (isChecked) {
                 // Checkbox is checked
                 choice = 1;
             } else {
@@ -82,34 +83,43 @@ public class CreateEvent extends AppCompatActivity {
                 startTime= newStartTime.getText().toString().trim();
                 endTime= newEndTime.getText().toString().trim();
                 eventAddress= newEventAddress.getText().toString().trim();
+                boolean pass = true;
 
+                if (title.isEmpty() || description.isEmpty() || date.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || eventAddress.isEmpty()){
+                    Toast.makeText(CreateEvent.this, "Please fill all the fields before proceeding.", Toast.LENGTH_SHORT).show();
+                    pass = false;
+                }
 
+                if(!UserValidator.validateDate(date)){
+                    newDate.setError("Invalid date, please select a date from tomorrow onward.");
+                    pass = false;
+                }
+                if(!UserValidator.validateTime(startTime)){
+                    newStartTime.setError("Invalid start time, please enter time in 30min increments.");
+                    pass = false;
+                }
+                if(!UserValidator.validateTime(endTime)){
+                    newEndTime.setError("Invalid end time, please enter time in 30min increments.");
+                    pass = false;
+                }
+                if (pass){
+                    Event event = new Event(title, description, date, startTime, endTime, eventAddress, choice);
+                    Log.i("EVENT CREATED", "Title: " + event.getTitle() + " Description: " + event.getDescription() + "Choice: " + event.getAcceptChoice());
+                    databaseHelper.addEvent(event,organizerUserName);
 
+                    AlertDialog.Builder message = new AlertDialog.Builder(CreateEvent.this);
+                    message.setCancelable(true);
 
-                Event event = new Event(title, description, date, startTime, endTime, eventAddress, choice);
-                Log.i("EVENT CREATED", "Title: " + event.getTitle() + " Description: " + event.getDescription());
-                databaseHelper.addEvent(event,organizerUserName);
+                    message.setTitle("Event created");
+                    message.setMessage("The event had been successfully created, please go back to the home page.");
 
-                AlertDialog.Builder message = new AlertDialog.Builder(CreateEvent.this);
-                message.setCancelable(true);
-
-                Log.d("CreateEvent", "Choice value: " + event.getAcceptChoice());
-                message.setTitle("Event created");
-                message.setMessage("The event had been successfully created, please go back to the home page.");
-
-                Organizer organizer = databaseHelper.getOrganizer(organizerUserName);
-
-                // Ok/Redirect  Button
-                message.setPositiveButton("Return to main", (d,i) -> {
-                    Intent intent = new Intent(CreateEvent.this, WelcomePage.class);
-                    intent.putExtra("user_name", organizerUserName);
-                    intent.putExtra("user_role", organizer.getUserRole());
-                    startActivity(intent);
-                });
-                message.show();
-
-
-
+                    // Ok/Redirect  Button
+                    message.setPositiveButton("Return to main", (d,i) -> {
+                        Intent intent = new Intent(CreateEvent.this, WelcomePage.class);
+                        startActivity(intent);
+                    });
+                    message.show();
+                }
             }
         });
     }

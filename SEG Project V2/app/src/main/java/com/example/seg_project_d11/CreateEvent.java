@@ -104,7 +104,7 @@ public class CreateEvent extends AppCompatActivity {
                 }
                 if (pass){
                     Event event = new Event(title, description, date, startTime, endTime, eventAddress, choice);
-                    Log.i("EVENT CREATED", "Title: " + event.getTitle() + " Description: " + event.getDescription());
+                    Log.i("EVENT CREATED", "Title: " + event.getTitle() + " Description: " + event.getDescription() + "Choice: " + event.getAcceptChoice());
                     databaseHelper.addEvent(event,organizerUserName);
 
                     AlertDialog.Builder message = new AlertDialog.Builder(CreateEvent.this);

@@ -190,10 +190,6 @@ public class UserValidator {
             return false;
         }
 
-        if (hour.length()!=2){
-            return false;
-        }
-
         int hourI= Integer.parseInt(hour);
         int minuteI= Integer.parseInt(minute);
 

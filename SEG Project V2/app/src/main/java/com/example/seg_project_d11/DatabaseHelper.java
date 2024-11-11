@@ -222,7 +222,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
 
+
+
     }
+
+    public boolean deleteEvent(int eventId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Delete the event based on the eventId
+        int rowsDeleted = db.delete(TABLE_EVENTS, COLUMN_EVENT_ID + " = ?", new String[]{String.valueOf(eventId)});
+
+        db.close();
+
+        return rowsDeleted != 1;
+    }
+
+
     //add an event request to EventRequests table by specifying an attendee email and the requested Event ID
     public boolean addEventRequest(String attendeeEmail,Integer requestedEventID){
         SQLiteDatabase db = this.getWritableDatabase();

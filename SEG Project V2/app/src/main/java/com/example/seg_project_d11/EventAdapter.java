@@ -77,6 +77,22 @@ public class EventAdapter extends BaseAdapter {
         int acceptChoice = event.getAcceptChoice();
         Log.d("EventAdapter", "Event ID: " + eventID + " - Accept Choice: " + acceptChoice);
 
+        Button deleteButton = eventItem.findViewById(R.id.button_delete_event);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: complete this
+                if (events.contains(event)){
+                    dbHelper.deleteEvent(eventID);
+                    events.remove(event);
+                    Toast.makeText(context, "Event is deleted!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Event has already been deleted", Toast.LENGTH_SHORT).show();
+                }
+                notifyDataSetChanged();
+            }
+        });
+
 
         tv_title.setText("Event Title: " + title);
         tv_description.setText("Event description: " + description);

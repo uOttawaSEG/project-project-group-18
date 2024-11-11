@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -24,7 +25,6 @@ public class CreateEvent extends AppCompatActivity {
     CheckBox autoAccept, manualAccept;
     DatabaseHelper databaseHelper;
     int choice;
-    UserValidator validator = new UserValidator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,16 +85,21 @@ public class CreateEvent extends AppCompatActivity {
                 eventAddress= newEventAddress.getText().toString().trim();
                 boolean pass = true;
 
+                if (title.isEmpty() || description.isEmpty() || date.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || eventAddress.isEmpty()){
+                    Toast.makeText(CreateEvent.this, "Please fill all the fields before proceeding.", Toast.LENGTH_SHORT).show();
+                    pass = false;
+                }
+
                 if(!UserValidator.validateDate(date)){
                     newDate.setError("Invalid date, please select a date from tomorrow onward.");
                     pass = false;
                 }
                 if(!UserValidator.validateTime(startTime)){
-                    newStartTime.setError("Invalid start time, please enter an possible time.");
+                    newStartTime.setError("Invalid start time, please enter time in 30min increments.");
                     pass = false;
                 }
                 if(!UserValidator.validateTime(endTime)){
-                    newEndTime.setError("Invalid end time, please enter an possible time.");
+                    newEndTime.setError("Invalid end time, please enter time in 30min increments.");
                     pass = false;
                 }
                 if (pass){

@@ -106,6 +106,7 @@ public class UserValidator {
     }
 
     public static boolean validateDate(String date){
+        Log.i("Validate date", "YES");
         if (!date.contains("/")){
             return false;
         }
@@ -143,10 +144,14 @@ public class UserValidator {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = sdf.format(today);
 
-        String[] formattedDate_split = date.split("-");
-        int day_today = Integer.parseInt(date_split[2]);
-        int month_today = Integer.parseInt(date_split[1]);
-        int year_today = Integer.parseInt(date_split[0]);
+        String[] formattedDate_split = formattedDate.split("-");
+        int day_today = Integer.parseInt(formattedDate_split[2]);
+        int month_today = Integer.parseInt(formattedDate_split[1]);
+        int year_today = Integer.parseInt(formattedDate_split[0]);
+
+        Log.i("Year Today", String.valueOf(year_today));
+        Log.i("Year I", String.valueOf(yearI));
+
 
         if (dayI >31 || monthI > 12|| yearI > 2030 || yearI < year_today || (monthI < month_today && yearI <= year_today) || (dayI <= day_today && monthI <= month_today && yearI <= year_today)){
             return false;
@@ -156,6 +161,7 @@ public class UserValidator {
     }
 
     public static boolean validateTime(String time){
+        Log.i("Validate time", "YES");
 
         if (!time.contains(":")){
             return false;
@@ -178,6 +184,14 @@ public class UserValidator {
             if (!Character.isDigit(minute.charAt(i))) {
                 return false;
             }
+        }
+
+        if (minute.length()!=2){
+            return false;
+        }
+
+        if (hour.length()!=2){
+            return false;
         }
 
         int hourI= Integer.parseInt(hour);

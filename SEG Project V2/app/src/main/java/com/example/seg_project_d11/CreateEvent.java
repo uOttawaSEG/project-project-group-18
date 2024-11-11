@@ -24,6 +24,7 @@ public class CreateEvent extends AppCompatActivity {
     CheckBox autoAccept, manualAccept;
     DatabaseHelper databaseHelper;
     int choice;
+    UserValidator validator = new UserValidator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,29 +83,38 @@ public class CreateEvent extends AppCompatActivity {
                 startTime= newStartTime.getText().toString().trim();
                 endTime= newEndTime.getText().toString().trim();
                 eventAddress= newEventAddress.getText().toString().trim();
+                boolean pass = true;
 
+                if(!UserValidator.validateDate(date)){
+                    newDate.setError("Invalid date, please select a date from tomorrow onward.");
+                    pass = false;
+                }
+                if(!UserValidator.validateTime(startTime)){
+                    newStartTime.setError("Invalid start time, please enter an possible time.");
+                    pass = false;
+                }
+                if(!UserValidator.validateTime(endTime)){
+                    newEndTime.setError("Invalid end time, please enter an possible time.");
+                    pass = false;
+                }
+                if (pass){
+                    Event event = new Event(title, description, date, startTime, endTime, eventAddress, choice);
+                    Log.i("EVENT CREATED", "Title: " + event.getTitle() + " Description: " + event.getDescription());
+                    databaseHelper.addEvent(event,organizerUserName);
 
+                    AlertDialog.Builder message = new AlertDialog.Builder(CreateEvent.this);
+                    message.setCancelable(true);
 
+                    message.setTitle("Event created");
+                    message.setMessage("The event had been successfully created, please go back to the home page.");
 
-                Event event = new Event(title, description, date, startTime, endTime, eventAddress, choice);
-                Log.i("EVENT CREATED", "Title: " + event.getTitle() + " Description: " + event.getDescription());
-                databaseHelper.addEvent(event,organizerUserName);
-
-                AlertDialog.Builder message = new AlertDialog.Builder(CreateEvent.this);
-                message.setCancelable(true);
-
-                message.setTitle("Event created");
-                message.setMessage("The event had been successfully created, please go back to the home page.");
-
-                // Ok/Redirect  Button
-                message.setPositiveButton("Return to main", (d,i) -> {
-                    Intent intent = new Intent(CreateEvent.this, WelcomePage.class);
-                    startActivity(intent);
-                });
-                message.show();
-
-
-
+                    // Ok/Redirect  Button
+                    message.setPositiveButton("Return to main", (d,i) -> {
+                        Intent intent = new Intent(CreateEvent.this, WelcomePage.class);
+                        startActivity(intent);
+                    });
+                    message.show();
+                }
             }
         });
     }

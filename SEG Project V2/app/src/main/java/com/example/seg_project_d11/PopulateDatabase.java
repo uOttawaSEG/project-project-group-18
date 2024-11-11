@@ -24,7 +24,7 @@ public class PopulateDatabase {
 
         if (!databaseHelper.areEventsInitialized()) {
             //create events
-            Event event1 = new Event("Concert","BEST concert ever", "2024/03/21", "15:00", "21:00", "stadium A" ,0);
+            Event event1 = new Event("Concert","BEST concert ever", "2024/03/21", "15:00", "21:00", "stadium A" ,1);
             Event event2 = new Event("Basketball Game","Canada's best team basketball game", "2024/05/21", "12:00", "13:00", "TD place",1 );
             Event event3 = new Event("Bazaar","everything you can find bazaar", "2024/06/25", "16:00", "21:00", "Ottawa",0 );
             Event event4 = new Event("Bake Sale","biggest bake sale", "2024/03/21", "15:00", "21:00", "Ottawa",1 );

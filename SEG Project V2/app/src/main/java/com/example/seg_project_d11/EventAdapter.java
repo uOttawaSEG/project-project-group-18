@@ -23,6 +23,7 @@ public class EventAdapter extends BaseAdapter {
     private String userType;
     private String userName;
 
+
     public EventAdapter(Context context,List<Event> events, DatabaseHelper dbHelper, String userType, String userName) {
         this.context = context;
         this.events = events;
@@ -67,18 +68,28 @@ public class EventAdapter extends BaseAdapter {
         String description = event.getDescription();
         String date = event.getDate();
         Integer eventID= event.getEventID();
+        int acceptChoice = event.getAcceptChoice();
+        Log.d("EventAdapter", "Event ID: " + eventID + " - Accept Choice: " + acceptChoice);
 
 
         tv_title.setText("Event Title: " + title);
         tv_description.setText("Event description: " + description);
         tv_date.setText("Event date: " + date);
 
-        //set Action button based on user role
+
+
         if ("Attendee".equals(userType)) {
             actionButton.setText("Request Registration for Event");
+            actionButton.setVisibility(View.VISIBLE);
         } else if ("Organizer".equals(userType)) {
             actionButton.setText("See Attendee Requests");
+            if ((acceptChoice == 1)) {
+                actionButton.setVisibility(View.INVISIBLE);
+            } else if (acceptChoice == 0) {
+                actionButton.setVisibility(View.VISIBLE);
+            }
         }
+
 
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,15 +98,12 @@ public class EventAdapter extends BaseAdapter {
                     Log.d("EventAdapter" , "eventID: "+ eventID);
                     dbHelper.addEventRequest(userName, eventID);
                     Toast.makeText(context, "Your request is now sent!", Toast.LENGTH_SHORT).show();
-
-
                 }else if (userType.equals("Organizer")){
                     Intent new_intent = new Intent(context, OrganizerSeeAttendeeEventRequestsActivity.class);
                     new_intent.putExtra("user_name", userName);
                     new_intent.putExtra("user_role",userType);
                     new_intent.putExtra("eventID",eventID);
                     Log.d("EventAdapterNextActivity" , "eventID: "+ eventID);
-
                     context.startActivity(new_intent);
                 }
                 notifyDataSetChanged(); // Refresh the ListView

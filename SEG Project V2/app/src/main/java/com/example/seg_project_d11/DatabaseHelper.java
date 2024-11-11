@@ -252,7 +252,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String startTime= cursorEvent.getString(4);
                 String endTime= cursorEvent.getString(5);
                 String eventAddress= cursorEvent.getString(6);
-                int choice = cursorEvent.getInt(7);
+                int choice = cursorEvent.getInt(8);
 
                 Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
                 events.add(event);
@@ -285,7 +285,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String startTime= cursor.getString(4);
                 String endTime= cursor.getString(5);
                 String eventAddress= cursor.getString(6);
-                int choice = cursor.getInt(7);
+                int choice = cursor.getInt(8);
 
 
                 Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
@@ -348,6 +348,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
     }
+
+    public Organizer getOrganizer(String userName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE+ " WHERE " + COLUMN_EMAIL + " = ?", new String[]{userName});
+
+        if (cursor.moveToFirst()){
+            String email = cursor.getString(0);
+            String firstName = cursor.getString(1);
+            String lastname = cursor.getString(2);
+            String phoneNumber =cursor.getString(3);
+            String address =cursor.getString(4);
+            String password = cursor.getString(5);
+            String organizationName = cursor.getString(6);
+            String userRole = cursor.getString(7);
+            String status = cursor.getString(8);
+
+            Organizer organizer = new Organizer(firstName, lastname, email, password, phoneNumber, address,organizationName, status, userRole);
+            return organizer;
+        }else{
+            //attendee with this username does not exist in the database
+            return null;
+        }
+
+    }
+
 
     //updates the status of the event request given an attendee Email and the eventID and the new Status
     public void updateEventRequestStatus(String attendeeEmail, Integer eventID, String newStatus){

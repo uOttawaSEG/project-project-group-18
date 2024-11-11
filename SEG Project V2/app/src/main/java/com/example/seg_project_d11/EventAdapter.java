@@ -50,7 +50,7 @@ public class EventAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-            return position;
+        return position;
 
     }
 

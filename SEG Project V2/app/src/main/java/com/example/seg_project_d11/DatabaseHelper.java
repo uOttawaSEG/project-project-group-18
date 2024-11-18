@@ -340,6 +340,81 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return attendees;
 
     }
+    // takes in an Attendee email, return list of their requested events
+    public List<Event> getAttendeeEvents(String email) {
+        List<Event> events = new ArrayList<>();
+        List<Integer> eventsID = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        /*String query = "SELECT e.* " +
+                "FROM " + TABLE_EVENT_REQUESTS + " er " +
+                "INNER JOIN " + TABLE_EVENTS + " e ON er." + COLUMN_REQUESTED_EVENT_ID + " = e." + COLUMN_EVENT_ID + " " +
+                "WHERE er." + COLUMN_ATTENDEE_EMAIL + " = ? AND er." + COLUMN_REQUEST_STATUS + " = ?";
+*/
+        //Cursor cursor = db.rawQuery(query, new String[]{email, "Pending"});
+
+        Cursor cursorRequest = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ? AND " + COLUMN_REQUEST_STATUS + " = ?", new String[]{email, "Pending"});
+
+        if (cursorRequest.moveToFirst()) {
+            do {
+                int requestEventID = cursorRequest.getInt(2);
+                eventsID.add(requestEventID);
+
+            } while (cursorRequest.moveToNext());
+        } else {
+            // No events found for the attendee
+        }
+        cursorRequest.close();
+
+        for (int i = 0; i < eventsID.size(); i++){
+            String query = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENT_ID + " = ?";
+            Cursor cursorEvent = db.rawQuery(query, new String[]{String.valueOf(eventsID.get(i))});
+
+            if (cursorEvent.moveToFirst()) {
+                do {
+                    int eventID = cursorEvent.getInt(0);
+                    String title= cursorEvent.getString(1);
+                    String description= cursorEvent.getString(2);
+                    String date= cursorEvent.getString(3);
+                    String startTime= cursorEvent.getString(4);
+                    String endTime= cursorEvent.getString(5);
+                    String eventAddress= cursorEvent.getString(6);
+                    int choice = cursorEvent.getInt(8);
+               /* @SuppressLint("Range")int eventID = cursor.getInt(cursor.getColumnIndex("event_id"));
+                @SuppressLint("Range")String title = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_TITLE));
+                @SuppressLint("Range") String de
+                scription = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DESCRIPTION));
+                @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DATE));
+                @SuppressLint("Range") String startTime = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_START_TIME));
+                @SuppressLint("Range") String endTime = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_END_TIME));
+                @SuppressLint("Range") String eventAddress = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_ADDRESS));
+                @SuppressLint("Range") int choice = cursor.getInt(cursor.getColumnIndex(COLUMN_EVENT_CHOICE));*/
+                    Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress, choice);
+                    events.add(event);
+
+                } while (cursorRequest.moveToNext());
+            } else {
+                // No events found for the attendee
+            }
+            cursorEvent.close();
+        }
+        db.close();
+
+        return events;
+    }
+
+    /* Enah needs help here:
+
+    // updates an Attendee's list of requested events
+    public List<Event> updateAttendeeEvents(String email) {
+
+    }
+
+    public deleteAttendeeEvents(Event event) {
+
+    }
+
+    */
     //returns an Attendee objbect by specifying the attendee username(email)
     public Attendee getAttendee(String userName){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -565,7 +640,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void approveAllAttendees(int eventID){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put( COLUMN_REQUEST_STATUS , "accepted");
+        cv.put( COLUMN_REQUEST_STATUS , "Accepted");
         db.update(TABLE_EVENT_REQUESTS, cv, COLUMN_REQUESTED_EVENT_ID + " = ?", new String[]{String.valueOf(eventID)});
         db.close();
     }

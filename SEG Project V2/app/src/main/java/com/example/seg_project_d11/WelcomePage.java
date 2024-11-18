@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class WelcomePage extends AppCompatActivity {
 
-    Button logOut, createEvent, viewEvents, viewUpcomingEvents;
+    Button logOut, createEvent, viewEvents, viewUpcomingEvents,viewMyEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +48,19 @@ public class WelcomePage extends AppCompatActivity {
         createEvent = findViewById(R.id.createEvent_button);
         viewEvents = findViewById(R.id.seeEvents_button);
         viewUpcomingEvents = findViewById(R.id.upcomingEventsButton);
+        viewMyEvents = findViewById(R.id.attendeeEventsButton);
 
         if (role.equals("Organizer")) {
             welcomeRoleText.setText("Welcome, organizer!");
             userRoleDisplay.setText("Organizer");
             createEvent.setVisibility(View.VISIBLE);
             viewEvents.setVisibility(View.VISIBLE);
+
         } else if (role.equals("Attendee")) {
             welcomeRoleText.setText("Welcome, attendee!");
             userRoleDisplay.setText("Attendee");
             viewUpcomingEvents.setVisibility(View.VISIBLE);
+            viewMyEvents.setVisibility(View.VISIBLE);
         }else{
             welcomeRoleText.setText("Welcome, guest!");
             userRoleDisplay.setText("Guest");
@@ -98,6 +101,16 @@ public class WelcomePage extends AppCompatActivity {
                 new_intent.putExtra("user_name", userName);
                 new_intent.putExtra("user_role",role);
                 Log.i("Checkpoint", "onCLick-viewUpcomingEvents");
+                startActivity(new_intent);
+            }
+        });
+        //if userrole is Attendee, display this button
+        viewMyEvents.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent new_intent = new Intent(WelcomePage.this, Event_list_Attendee.class);
+                new_intent.putExtra("user_name", userName);
+                new_intent.putExtra("user_role",role);
+                Log.i("Checkpoint", "onCLick-viewMyEvents");
                 startActivity(new_intent);
             }
         });

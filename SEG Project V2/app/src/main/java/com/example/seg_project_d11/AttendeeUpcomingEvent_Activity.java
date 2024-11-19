@@ -38,7 +38,7 @@ public class AttendeeUpcomingEvent_Activity extends AppCompatActivity {
         String userRole = getIntent().getStringExtra("user_role");
 
         dbHelper = new DatabaseHelper(this);
-        upcomingEventsList = dbHelper.getAllEvents();
+        upcomingEventsList = dbHelper.getUpcomingEvents(username); // enah: why isn't this working?
 
         lvUpcomingEvents= findViewById(R.id.lvUpcomingEvents);
 

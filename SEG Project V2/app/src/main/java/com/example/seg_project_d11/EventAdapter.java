@@ -1,6 +1,7 @@
 package com.example.seg_project_d11;
 
 import static com.example.seg_project_d11.Administrator.approveRequest;
+import static com.example.seg_project_d11.Administrator.rejectRequest;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -119,7 +120,12 @@ public class EventAdapter extends BaseAdapter {
                 if (userType.equals("Attendee")){
                     Log.d("EventAdapter" , "eventID: "+ eventID);
                     dbHelper.addEventRequest(userName, eventID);
+
+                    //rejectRequest(user, dbHelper);
+                    events.remove(event);
+
                     Toast.makeText(context, "Your request is now sent!", Toast.LENGTH_SHORT).show();
+
                 }else if (userType.equals("Organizer")){
                     Intent new_intent = new Intent(context, OrganizerSeeAttendeeEventRequestsActivity.class);
                     new_intent.putExtra("user_name", userName);

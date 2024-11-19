@@ -402,6 +402,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return events;
     }
+    // returns a list of upcoming events an attendee may request for
+
+    public List<Event> getUpcomingEvents(String email){
+        List<Event> upcomingEvents = getAllEvents();
+        List<Event> requestedEvents = getAttendeeEvents(email);
+        if (requestedEvents.size() == 0){
+            return upcomingEvents;
+        }
+        for (int i = 0; i < requestedEvents.size(); i++){
+            if (upcomingEvents.contains(requestedEvents.get(i))){
+                upcomingEvents.remove(requestedEvents.get(i));
+            }
+        }
+
+        return upcomingEvents;
+    }
 
     /* Enah needs help here:
 

@@ -119,7 +119,12 @@ public class EventAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if (userType.equals("Attendee")){
                     Log.d("EventAdapter" , "eventID: "+ eventID);
-                    dbHelper.addEventRequest(userName, eventID);
+                    if (dbHelper.checkEventRegistration(userName,eventID)){
+                        dbHelper.addEventRequest(userName, eventID);
+                    } else{
+                        Toast.makeText(context, "Sorry, the event conflicts with your already requested/registered events", Toast.LENGTH_SHORT).show();
+                    }
+
                     // If the event's time doesn't contradict with an already existing requested/registered
                     // event ==> dbHelper.addEventRequest(userName, eventID);
                     // else: Pop up message : "Sorry, you've already registered for an event at this time"

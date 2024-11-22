@@ -250,6 +250,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return insert != -1;
     }
 
+    public boolean checkEventRegistration(String attendeeEmail, int eventId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        int curStart = 0;
+        int curEnd = 0;
+        Cursor findEvent = db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail,String.valueOf(eventId)});
+        //Set curStart and curEnd to the inputed eventId's event times
+        if (findEvent.moveToFirst()){
+            curStart = findEvent.getInt(4);
+            curEnd = findEvent.getInt(5);
+        }
+        Log.d("databaseHelper: ", "Event Start: "+ curStart + ", Event End: " + curEnd );
+        findEvent.close();
+
+        //Check and compare start/end times of Registered Events
+        //Compare with the inputed eventId's times => if same then return false, else return true
+        Cursor cursorEvent = db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
+        while(cursorEvent.moveToNext()){
+            //find the start/end times of each event
+            int startEvent = findEvent.getInt(4);
+            int endEvent = findEvent.getInt(5);
+
+            if ((startEvent==curStart)||(endEvent==curEnd)) {
+                cursorEvent.close();
+                return false;
+            }
+        }
+        cursorEvent.close();
+
+        //Check and compare start/ent times for Requested Events
+        Cursor cursorEventRequest = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
+        while(cursorEventRequest.moveToNext()){
+            //find the start/end times of each event
+            int startEvent = findEvent.getInt(4);
+            int endEvent = findEvent.getInt(5);
+
+            if ((startEvent==curStart)||(endEvent==curEnd)) {
+                cursorEventRequest.close();
+                return false;
+            }
+        }
+
+        cursorEventRequest.close();
+        return true;
+    //Haven't tested it yet, just committed for now
+
+    }
+
+
     //get all events for a specific organizer by specifying their user name(email)
     public List<Event> getEventsForOrganizer(String email){
         List<Event> events = new ArrayList<>();
@@ -618,7 +666,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_STATUS, user.getStatus());
 
         db.update(USER_TABLE, cv, COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
-
     }
 
 

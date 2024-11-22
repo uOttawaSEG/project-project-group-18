@@ -120,6 +120,12 @@ public class EventAdapter extends BaseAdapter {
                 if (userType.equals("Attendee")){
                     Log.d("EventAdapter" , "eventID: "+ eventID);
                     dbHelper.addEventRequest(userName, eventID);
+                    // If the event's time doesn't contradict with an already existing requested/registered
+                    // event ==> dbHelper.addEventRequest(userName, eventID);
+                    // else: Pop up message : "Sorry, you've already registered for an event at this time"
+                    // Check the starting and ending time of the event => if both are different then true.
+
+
 
                     //rejectRequest(user, dbHelper);
                     events.remove(event);

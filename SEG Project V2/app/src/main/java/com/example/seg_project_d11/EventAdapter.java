@@ -114,14 +114,16 @@ public class EventAdapter extends BaseAdapter {
         }
 
 
+
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (userType.equals("Attendee")){
                     Log.d("EventAdapter" , "eventID: "+ eventID);
-                    dbHelper.addEventRequest(userName, eventID);
+                    //create an RequestEvent object
+                    RequestEvent request = new RequestEvent(userName,eventID,"Pending");
+                    dbHelper.addEventRequest(request);
 
-                    //rejectRequest(user, dbHelper);
                     events.remove(event);
 
                     Toast.makeText(context, "Your request is now sent!", Toast.LENGTH_SHORT).show();

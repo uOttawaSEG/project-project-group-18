@@ -45,7 +45,7 @@ public class EventAdapter_Attendee extends BaseAdapter {
     }
     @Override
     public Object getItem(int position) {
-        return events.get(position); //returns the User at specified position
+        return events.get(position);
     }
 
     @Override
@@ -67,6 +67,7 @@ public class EventAdapter_Attendee extends BaseAdapter {
         TextView tv_title = eventItem.findViewById(R.id.textview_eventTitle);
         TextView tv_description = eventItem.findViewById(R.id.textview_eventDescription);
         TextView tv_date = eventItem.findViewById(R.id.textview_eventDate);
+        TextView tv_requestStatus = eventItem.findViewById(R.id.textview_eventRequestStatus);
         Button details = eventItem.findViewById(R.id.button_details);
 
         String title = event.getTitle();
@@ -75,6 +76,8 @@ public class EventAdapter_Attendee extends BaseAdapter {
         Integer eventID= event.getEventID();
         int acceptChoice = event.getAcceptChoice();
         Log.d("EventAdapter", "Event ID: " + eventID + " - Accept Choice: " + acceptChoice);
+
+        String requestStatus = dbHelper.getEventRequesStatus(userName, eventID);
 
         Button cancelButton = eventItem.findViewById(R.id.button_cancel_event);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +91,7 @@ public class EventAdapter_Attendee extends BaseAdapter {
         tv_title.setText("Event Title: " + title);
         tv_description.setText("Event description: " + description);
         tv_date.setText("Event date: " + date);
+        tv_requestStatus.setText("Status of your request: "+ requestStatus);
 
         details.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,8 +129,6 @@ public class EventAdapter_Attendee extends BaseAdapter {
                 params.width = WindowManager.LayoutParams.MATCH_PARENT;
                 params.height = WindowManager.LayoutParams.WRAP_CONTENT;
                 window.setAttributes(params);
-
-
 
                 dialog.show();
             }

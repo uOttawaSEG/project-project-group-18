@@ -40,6 +40,8 @@ public class Event_list_Attendee extends AppCompatActivity {
         String username = getIntent().getStringExtra("user_name");
         String userRole = getIntent().getStringExtra("user_role");
 
+        Log.i("Event_list_Attendee", "username passed is"+ username);
+
         databaseHelper = new DatabaseHelper(this);
         events = databaseHelper.getAttendeeEvents(username);
 

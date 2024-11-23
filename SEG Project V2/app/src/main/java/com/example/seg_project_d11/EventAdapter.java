@@ -24,7 +24,7 @@ import java.util.List;
 
 public class EventAdapter extends BaseAdapter {
     private Context context;
-    private List<Event> events; //refers to the list of events for an organizer
+    private List<Event> events; //refers to the list of events
     private DatabaseHelper dbHelper;
     private String userType;
     private String userName;

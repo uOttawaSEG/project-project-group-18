@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Userdata.db";
 
     //database version
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     //user table and columns
     private static final String USER_TABLE = "USERS_TABLE";

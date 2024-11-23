@@ -34,6 +34,7 @@ public class WelcomePage extends AppCompatActivity {
 
         //for debugging purpose
         Log.d("WelcomePage", "User role received: " + role);
+        Log.d("WelcomePage", "User name received: " + userName);
 
 
         TextView welcomeRoleText = findViewById(R.id.welcomeRoleText);
@@ -88,9 +89,9 @@ public class WelcomePage extends AppCompatActivity {
                 new_intent.putExtra("user_name", userName);
                 new_intent.putExtra("user_role",role);
 
-                Log.i("UserName", userName);
-                Log.i("UserName", role);
-                Log.i("Checkpoint", "onCLick-viewEvents");
+                Log.i("WelcomePage","UserName:"+userName);
+                Log.i("WelcomePage","UserRole:"+ role);
+                Log.i("WelcomePage", "onCLick-viewEvents");
                 startActivity(new_intent);
             }
         });
@@ -99,8 +100,8 @@ public class WelcomePage extends AppCompatActivity {
             public void onClick(View view){
                 Intent new_intent = new Intent(WelcomePage.this, AttendeeUpcomingEvent_Activity.class);
                 new_intent.putExtra("user_name", userName);
-                new_intent.putExtra("user_role",role);
-                Log.i("Checkpoint", "onCLick-viewUpcomingEvents");
+                new_intent.putExtra("user_role", role);
+                Log.i("WelcomePage", "onCLick-viewUpcomingEvents");
                 startActivity(new_intent);
             }
         });
@@ -109,8 +110,10 @@ public class WelcomePage extends AppCompatActivity {
             public void onClick(View view){
                 Intent new_intent = new Intent(WelcomePage.this, Event_list_Attendee.class);
                 new_intent.putExtra("user_name", userName);
-                new_intent.putExtra("user_role",role);
-                Log.i("Checkpoint", "onCLick-viewMyEvents");
+                new_intent.putExtra("user_role", role);
+
+                Log.i("WelcomePage", "onCLick-viewMyEvents");
+
                 startActivity(new_intent);
             }
         });

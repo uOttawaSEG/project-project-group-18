@@ -587,8 +587,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    //search for events
 
+    /**
+     * @param keyword
+     * @return a list of events that match keyword
+     */
+    public List<Event> searchEvents(String keyword) {
+        List<Event> events = new ArrayList<>();
+       SQLiteDatabase db = this.getReadableDatabase();
 
+        // Query to search for the keyword in title or description
+        String query = "SELECT * FROM events WHERE title LIKE ? OR description LIKE ?";
+        Cursor cursor = db.rawQuery(query, new String[]{"%" + keyword + "%", "%" + keyword + "%"});
 
+        if (cursor.moveToFirst()) {
+            do {
+
+                // Get the data from the cursor
+               String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+               String description= cursor.getString(cursor.getColumnIndexOrThrow("description"));
+               String date =cursor.getString(cursor.getColumnIndexOrThrow("date"));
+               String startTime = cursor.getString(cursor.getColumnIndexOrThrow("start_time"));
+               String endTime = cursor.getString(cursor.getColumnIndexOrThrow("end_time"));
+               String address = cursor.getString(cursor.getColumnIndexOrThrow("address"));
+               Integer choice = cursor.getColumnIndexOrThrow("choice");
+
+                // Create Event objects from information
+                Event event = new Event(title, description, date, startTime, endTime, address,choice);
+                events.add(event); // Add to the list of events
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return events;
+    }
 
 }

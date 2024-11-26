@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class WelcomePage extends AppCompatActivity {
 
-    Button logOut, createEvent, viewEvents, viewUpcomingEvents,viewMyEvents;
+    Button logOut, createEvent, viewEvents, viewUpcomingEvents,viewMyEvents, searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +44,13 @@ public class WelcomePage extends AppCompatActivity {
         // Set the user name and role
         userNameDisplay.setText(userName);
 
-
+//initialize views
         logOut = findViewById(R.id.logOut);
         createEvent = findViewById(R.id.createEvent_button);
         viewEvents = findViewById(R.id.seeEvents_button);
         viewUpcomingEvents = findViewById(R.id.upcomingEventsButton);
         viewMyEvents = findViewById(R.id.attendeeEventsButton);
+        searchButton = findViewById(R.id.searchButton);
 
         if (role.equals("Organizer")) {
             welcomeRoleText.setText("Welcome, organizer!");
@@ -62,6 +63,7 @@ public class WelcomePage extends AppCompatActivity {
             userRoleDisplay.setText("Attendee");
             viewUpcomingEvents.setVisibility(View.VISIBLE);
             viewMyEvents.setVisibility(View.VISIBLE);
+            searchButton.setVisibility(View.VISIBLE);
         }else{
             welcomeRoleText.setText("Welcome, guest!");
             userRoleDisplay.setText("Guest");
@@ -115,6 +117,14 @@ public class WelcomePage extends AppCompatActivity {
                 Log.i("WelcomePage", "onCLick-viewMyEvents");
 
                 startActivity(new_intent);
+            }
+        });
+//change this
+        searchButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                //clears user information from the machine if attendee
+                Intent intentLogout = new Intent(WelcomePage.this, SearchResultsActivity.class);
+                startActivity(intentLogout);
             }
         });
     }

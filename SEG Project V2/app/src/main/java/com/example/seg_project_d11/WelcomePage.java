@@ -124,6 +124,9 @@ public class WelcomePage extends AppCompatActivity {
             public void onClick(View view){
                 //clears user information from the machine if attendee
                 Intent intentLogout = new Intent(WelcomePage.this, SearchResultsActivity.class);
+                intentLogout.putExtra("user_name", userName);
+                intentLogout.putExtra("user_role", role);
+                startActivity(intentLogout);
                 startActivity(intentLogout);
             }
         });

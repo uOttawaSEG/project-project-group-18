@@ -22,7 +22,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private EventAdapter eventAdapter;
     private List<Event> eventList;
     private EditText searchBar; // Search bar input field
-    private Button searchButton; // Button to trigger search
+    private Button searchButton ; // Button to trigger search
 
 
 

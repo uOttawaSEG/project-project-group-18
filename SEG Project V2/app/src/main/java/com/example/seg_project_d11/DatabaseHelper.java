@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -252,50 +253,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean checkEventRegistration(String attendeeEmail, int eventId){
         SQLiteDatabase db = this.getReadableDatabase();
-        int curStart = 0;
-        int curEnd = 0;
-        Cursor findEvent = db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail,String.valueOf(eventId)});
-        //Set curStart and curEnd to the inputed eventId's event times
+        String date = "";
+        String curStart = "";
+        String curEnd = "";
+        Cursor findEvent= db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail,String.valueOf(eventId)});
+
         if (findEvent.moveToFirst()){
-            curStart = findEvent.getInt(4);
-            curEnd = findEvent.getInt(5);
+            curStart = findEvent.getString(4);
+            curEnd = findEvent.getString(5);
+            date = findEvent.getString(3);
         }
         Log.d("databaseHelper: ", "Event Start: "+ curStart + ", Event End: " + curEnd );
         findEvent.close();
 
-        //Check and compare start/end times of Registered Events
-        //Compare with the inputed eventId's times => if same then return false, else return true
         Cursor cursorEvent = db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
         while(cursorEvent.moveToNext()){
             //find the start/end times of each event
-            int startEvent = findEvent.getInt(4);
-            int endEvent = findEvent.getInt(5);
+            String startEvent = findEvent.getString(4);
+            String endEvent = findEvent.getString(5);
+            String otherDate = findEvent.getString(3);
 
-            if ((startEvent==curStart)||(endEvent==curEnd)) {
-                cursorEvent.close();
-                return false;
+            if (otherDate.equals(date)){
+                if ((startEvent==curStart)||(endEvent==curEnd)) {
+                    cursorEvent.close();
+                    return false;
+                }
             }
         }
         cursorEvent.close();
 
         //Check and compare start/ent times for Requested Events
         Cursor cursorEventRequest = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
-        while(cursorEventRequest.moveToNext()){
+        while(cursorEvent.moveToNext()){
             //find the start/end times of each event
-            int startEvent = findEvent.getInt(4);
-            int endEvent = findEvent.getInt(5);
+            String startEvent = findEvent.getString(4);
+            String endEvent = findEvent.getString(5);
+            String otherDate = findEvent.getString(3);
 
-            if ((startEvent==curStart)||(endEvent==curEnd)) {
-                cursorEventRequest.close();
-                return false;
+            if (otherDate.equals(date)){
+                if ((startEvent==curStart)||(endEvent==curEnd)) {
+                    cursorEvent.close();
+                    return false;
+                }
             }
-        }
-
-        cursorEventRequest.close();
-        return true;
     //Haven't tested it yet, just committed for now
-
+        }
+        cursorEvent.close();
+        return true;
     }
+
 
 
     //get all events for a specific organizer by specifying their user name(email)

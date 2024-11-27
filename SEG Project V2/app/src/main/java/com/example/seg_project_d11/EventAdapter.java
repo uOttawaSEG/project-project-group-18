@@ -104,6 +104,7 @@ public class EventAdapter extends BaseAdapter {
         if ("Attendee".equals(userType)) {
             actionButton.setText("Request Registration for Event");
             actionButton.setVisibility(View.VISIBLE);
+            deleteButton.setVisibility(View.INVISIBLE);
         } else if ("Organizer".equals(userType)) {
             actionButton.setText("See Attendee Requests");
             if ((acceptChoice == 1)) {

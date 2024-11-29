@@ -7,30 +7,30 @@
 
     <TextView
         android:id="@+id/main"
-        android:layout_width="414dp"
-        android:layout_height="57dp"
+        android:layout_width="411dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="55dp"
         android:background="#527689EF"
+        android:gravity="center"
         android:text="Sign In"
         android:textAlignment="center"
         android:textSize="30dp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="275dp"
-        android:layout_height="551dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/main">
 
         <Space
             android:layout_width="match_parent"
@@ -40,13 +40,15 @@
             android:id="@+id/textView18"
             android:layout_width="235dp"
             android:layout_height="wrap_content"
-            android:text="Username:" />
+            android:text="Username:"
+            android:textSize="16dp" />
 
         <EditText
             android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Username"
             android:inputType="text" />
 
         <Space
@@ -57,30 +59,33 @@
             android:id="@+id/textView19"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Password:" />
+            android:text="Password:"
+            android:textSize="16dp" />
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Password"
             android:inputType="textPassword" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="327dp" />
+            android:layout_height="246dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/backButton"
-                android:layout_width="100dp"
+                android:layout_width="122dp"
                 android:layout_height="50dp"
                 android:backgroundTint="#3F51B5"
-                android:text="Back" />
+                android:text="Back"
+                android:textSize="16dp" />
 
             <Space
                 android:layout_width="75dp"
@@ -89,10 +94,11 @@
 
             <Button
                 android:id="@+id/nextButton"
-                android:layout_width="100dp"
+                android:layout_width="117dp"
                 android:layout_height="50dp"
                 android:backgroundTint="#3F51B5"
-                android:text="Next" />
+                android:text="Next"
+                android:textSize="16dp" />
         </LinearLayout>
 
     </LinearLayout>

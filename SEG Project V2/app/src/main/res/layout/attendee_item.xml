@@ -11,15 +11,14 @@
     <!-- TextView for Attendee Email -->
 
 
-
     <TextView
         android:id="@+id/textview_attendeeEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:text="Attendee Email"
-        android:textSize="16sp"
         android:textColor="@android:color/black"
-        android:layout_marginBottom="8dp" />
+        android:textSize="18dp" />
 
     <!-- Horizontal LinearLayout for the buttons -->
     <LinearLayout
@@ -34,18 +33,22 @@
             android:id="@+id/button_details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
+            android:backgroundTint="#3F51B5"
             android:text="Details"
-            android:layout_marginEnd="8dp" />
+            android:textSize="16dp" />
 
         <!-- Button to approve the attendee -->
         <Button
             android:id="@+id/button_approve"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
+            android:backgroundTint="#3F51B5"
             android:text="Approve"
-            android:layout_marginEnd="8dp" />
+            android:textSize="16dp" />
 
         <!-- Button to reject the attendee -->
         <Button
@@ -53,7 +56,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Reject" />
+            android:backgroundTint="#3F51B5"
+            android:text="Reject"
+            android:textSize="16dp" />
 
     </LinearLayout>
 

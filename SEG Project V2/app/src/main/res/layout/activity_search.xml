@@ -1,8 +1,8 @@
 <!-- res/layout/activity_search.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <EditText
         android:id="@+id/searchBar"
@@ -10,17 +10,46 @@
         android:layout_height="wrap_content"
         android:hint="Enter keyword to search" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp" />
+
     <Button
         android:id="@+id/searchButton"
-        android:layout_width="423dp"
+        android:layout_width="213dp"
         android:layout_height="wrap_content"
         android:text="Search" />
 
-    <ListView
-        android:id="@+id/eventListView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" />
+        android:orientation="horizontal"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <ListView
+            android:id="@+id/eventListView"
+            android:layout_width="380dp"
+            android:layout_height="431dp"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp" />
+    </LinearLayout>
 
 </LinearLayout>

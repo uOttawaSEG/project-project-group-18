@@ -7,38 +7,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:id="@+id/textView16"
-        android:layout_width="match_parent"
-        android:layout_height="47dp"
-        android:text="List of pending requests"
-        android:textSize="30sp"
+        android:layout_width="411dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="30dp"
+        android:background="#527689EF"
         android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <ListView
-        android:id="@+id/lvPendingList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@id/backButton"
+        android:text="List of Pending Requests"
+        android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/lvPendingList"
+        android:layout_width="307dp"
+        android:layout_height="474dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/backButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView16"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.447"
         tools:listitem="@android:layout/simple_list_item_1" />
 
     <Button
         android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="104dp"
+        android:layout_height="53dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="25dp"
+        android:backgroundTint="#3F51B5"
         android:text="Back"
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="16dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -127,7 +127,7 @@
 
         <Button
             android:id="@+id/buttonReject"
-            android:layout_width="150dp"
+            android:layout_width="167dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#3F51B5"
             android:text="Reject"
@@ -140,12 +140,17 @@
 
         <Button
             android:id="@+id/buttonApprove"
-            android:layout_width="150dp"
+            android:layout_width="163dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#3F51B5"
             android:text="Approve"
             android:textSize="16dp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"></LinearLayout>
 
 
 </LinearLayout>

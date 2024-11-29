@@ -1,4 +1,4 @@
-package com.example.seg_project_d11;
+/*package com.example.seg_project_d11;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -64,4 +64,4 @@ public class AttendeeUpcomingEvent_Activity extends AppCompatActivity {
 
 
 
-}
+}*/

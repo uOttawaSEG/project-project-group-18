@@ -26,8 +26,8 @@
 
     <ListView
         android:id="@+id/lvUpcomingEvents"
-        android:layout_width="337dp"
-        android:layout_height="459dp"
+        android:layout_width="wrap_content"
+        android:layout_height="456dp"
         app:layout_constraintBottom_toTopOf="@+id/button_goBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_default="wrap"

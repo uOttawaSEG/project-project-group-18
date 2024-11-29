@@ -53,11 +53,6 @@ public class ViewEvents extends AppCompatActivity {
             events = databaseHelper.getAvailableEvents();
         }
 
-
-
-        //debugging
-        //Log.d("EventList", "Number of events: " + events.size());
-
         //assign value to listOfRequests
         listOfEvents = findViewById(R.id.lvPendingListEvents);
 

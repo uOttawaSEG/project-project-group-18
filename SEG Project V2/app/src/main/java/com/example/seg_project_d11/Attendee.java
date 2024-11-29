@@ -17,23 +17,4 @@ public class Attendee extends User{
         //this.events = events;
     }
 
-    /*public ArrayList<Event> getEventList() {
-        return events;
-    }
-
-    public void addEvent(Event event) {
-        events.add(event);
-    }*/
-
-    public void cancelEventReg (Event event){
-        Log.d("Attendee", "removing event");
-        events = getEventList();
-        if( events != null){
-            events.remove(event);
-            setEventList(events);
-            Log.d("Attendee", "success)");
-        }else{
-            Log.d("Attendee", "Events not created");
-        }
-    }
 }

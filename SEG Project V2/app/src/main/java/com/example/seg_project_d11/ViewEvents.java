@@ -13,13 +13,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.ArrayList;
 import java.util.List;
 //organizer can see events they create
-public class Event_list_2 extends AppCompatActivity {
+public class ViewEvents extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     ListView listOfEvents;
-    List<Event> events;
+    List<Event> events, pastEvents;
     EventAdapter adapter;
     Button backButton;
 
@@ -39,21 +38,20 @@ public class Event_list_2 extends AppCompatActivity {
         //get the role and userName from the previous intent
         String username = getIntent().getStringExtra("user_name");
         String userRole = getIntent().getStringExtra("user_role");
+        String type = getIntent().getStringExtra("type");
 
 
         Log.d("EventList2", "User_name: "+ username);
         Log.d("EventList2", "User_role: "+ userRole);
-
-
-
+        Log.d("EventList2", "Type: "+ type);
 
         databaseHelper = new DatabaseHelper(this);
-        events = databaseHelper.getEventsForOrganizer(username);
 
-
-
-        //debugging
-        Log.d("EventList", "Number of events: " + events.size());
+        if(type.equals("Upcoming") || type.equals("Past")){
+            events = databaseHelper.getEventsForOrganizer(username, type);
+        }else{
+            events = databaseHelper.getAvailableEvents();
+        }
 
         //assign value to listOfRequests
         listOfEvents = findViewById(R.id.lvPendingListEvents);
@@ -67,14 +65,12 @@ public class Event_list_2 extends AppCompatActivity {
 
         backButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent intent = new Intent(Event_list_2.this, WelcomePage.class);
+                Intent intent = new Intent(ViewEvents.this, WelcomePage.class);
                 intent.putExtra("user_name",username);
                 intent.putExtra("user_role", databaseHelper.getUserRole(username));
                 startActivity(intent);
             }
         });
-
-
 
     }
 }

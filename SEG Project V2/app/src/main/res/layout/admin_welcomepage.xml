@@ -8,59 +8,17 @@
     tools:context=".Admin_welcomePage_Activity">
 
     <!-- Welcome Banner -->
-    <TableRow
-        android:id="@+id/tableRow"
-        android:layout_width="417dp"
-        android:layout_height="81dp"
-        android:background="#B193E7"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#D8C5FD"
-            android:fontFamily="serif"
-            android:text="Welcome!"
-            android:textAlignment="center"
-            android:textColor="#4F4545"
-            android:textSize="48sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </TableRow>
 
     <!-- Role-Specific Text -->
-    <TableRow
-        android:id="@+id/tableRow2"
-        android:layout_width="411dp"
-        android:layout_height="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableRow">
-
-        <TextView
-            android:id="@+id/welcomeRoleText"
-            android:layout_width="match_parent"
-            android:layout_height="27dp"
-            android:fontFamily="sans-serif-smallcaps"
-            android:text="Welcome, Administrator!"
-            android:textAlignment="center"
-            android:textColor="#4F4545"
-            android:textSize="18sp" />
-
-    </TableRow>
 
     <!-- User Info Table -->
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -75,7 +33,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
-                android:text="User Name:"
                 android:textColor="#4F4545"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -98,6 +55,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
+                android:gravity="center"
                 android:text="User Role:"
                 android:textColor="#4F4545"
                 android:textSize="20sp"
@@ -108,44 +66,89 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:textSize="16sp"
+                android:gravity="center"
                 android:text="Administrator"
+                android:textSize="18dp"
+                android:textStyle="bold"
                 android:visibility="visible" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/logOut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Log Out" />
+                android:backgroundTint="#3F51B5"
+                android:text="Log Out"
+                android:textSize="16dp" />
         </TableRow>
     </TableLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_width="295dp"
+        android:layout_height="376dp"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableRow2">
+        app:layout_constraintTop_toBottomOf="@+id/welcomeRoleText">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
 
         <Button
             android:id="@+id/pendingButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Pending Registration Requests" />
+            android:layout_height="90dp"
+            android:backgroundTint="#3F51B5"
+            android:text="View Pending Registration Requests"
+            android:textSize="18dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
 
         <Button
             android:id="@+id/RejectButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Rejected Registration requests" />
+            android:layout_height="90dp"
+            android:backgroundTint="#3F51B5"
+            android:text="View Rejected Registration requests"
+            android:textSize="18dp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tableRow"
+        android:layout_width="425dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="36dp"
+        android:background="#527689EF"
+        android:gravity="center"
+        android:text="Home"
+        android:textSize="46dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-7dp" />
+
+    <TextView
+        android:id="@+id/welcomeRoleText"
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="Welcome, Administrator!"
+        android:textAlignment="center"
+        android:textColor="#4F4545"
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="108dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

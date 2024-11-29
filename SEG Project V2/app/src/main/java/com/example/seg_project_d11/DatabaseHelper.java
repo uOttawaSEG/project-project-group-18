@@ -14,7 +14,9 @@ import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Userdata.db";
 
     //database version
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     //user table and columns
     private static final String USER_TABLE = "USERS_TABLE";
@@ -121,6 +123,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
         onCreate(db);
     }
+
+
 
     // add a user to the user table
     public boolean addUser(User user){
@@ -223,8 +227,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
 
-
-
     }
 
     public boolean deleteEvent(int eventId) {
@@ -240,15 +242,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //add an event request to EventRequests table by specifying an attendee email and the requested Event ID
-    public boolean addEventRequest(String attendeeEmail,Integer requestedEventID){
+    public void addEventRequest(RequestEvent request){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_ATTENDEE_EMAIL, attendeeEmail);
-        cv.put(COLUMN_REQUESTED_EVENT_ID, requestedEventID);
+        cv.put(COLUMN_ATTENDEE_EMAIL, request.getAttendeeEmail());
+        cv.put(COLUMN_REQUESTED_EVENT_ID, request.getEventID());
+        cv.put(COLUMN_REQUEST_STATUS, request.getStatus());
 
-        long insert = db.insert(TABLE_EVENT_REQUESTS, null, cv);
+        db.insert(TABLE_EVENT_REQUESTS, null, cv);
         db.close();
-        return insert != -1;
+    }
+
+
+    //return the status of the event request specified by the attendee email and the event request ID
+    public String getEventRequesStatus(String email, Integer eventRequestID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ? AND " + COLUMN_REQUESTED_EVENT_ID + " = ?", new String[] {email, String.valueOf(eventRequestID)});
+        String eventRequestStatus ="null";
+
+        if(cursor.moveToFirst()){
+            do{
+                eventRequestStatus = cursor.getString(3);
+
+            }while(cursor.moveToNext());
+        }else{
+            //no event request found with the specified email and event request id
+
+        }
+        cursor.close();
+        db.close();
+        return eventRequestStatus;
     }
 
     public boolean checkEventRegistration(String attendeeEmail, int eventId){
@@ -305,9 +328,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //get all events for a specific organizer by specifying their user name(email)
-    public List<Event> getEventsForOrganizer(String email){
+    public List<Event> getEventsForOrganizer(String email, String type){
         List<Event> events = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+        Event event;
 
         Cursor cursorEvent = db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ORGANIZER_EMAIL + " = ?", new String[]{email});
 
@@ -323,12 +347,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String eventAddress= cursorEvent.getString(6);
                 int choice = cursorEvent.getInt(8);
 
-                Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
-                events.add(event);
+                if (type.equals("Upcoming")){
+                    Log.d("DBHelper: Type", "upcoming");
+                    if(UserValidator.validateDate(date)){
+                        event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
+                        events.add(event);
+                    }
+                }else if(type.equals("Past")){
+                    Log.d("DBHelper: Type", "past");
+                    if(!UserValidator.validateDate(date)){
+                        event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
+                        events.add(event);
+                    }
+                }else{
+                    Log.d("ERROR", "Enter Upcoming/past");
+                }
 
             }while(cursorEvent.moveToNext());
         }else{
-            //there is no events associated with the organizer email given
+            Log.d("ERROR", "No events for organizer");
         }
         cursorEvent.close();
         db.close();
@@ -337,7 +374,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //get all events created by all organizers
-    public List<Event> getAllEvents(){
+    public List<Event> getAvailableEvents(){
         List<Event> events = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -356,9 +393,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String eventAddress= cursor.getString(6);
                 int choice = cursor.getInt(8);
 
+                if(UserValidator.validateDate(date)){
+                    Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
+                    events.add(event);
+                }
 
-                Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
-                events.add(event);
             }while(cursor.moveToNext());
         }else{
             //no events have been created yet
@@ -366,6 +405,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return events;
+
+    }
+
+    public void deleteEventRequest(String username, int eventID){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Delete the event based on the eventId
+        int rowsDeleted = db.delete(
+                TABLE_EVENT_REQUESTS,
+                COLUMN_REQUESTED_EVENT_ID + " = ? AND " + COLUMN_ATTENDEE_EMAIL + " = ?",
+                new String[]{String.valueOf(eventID), username}
+        );
+        db.close();
 
     }
     //returns a list of Attendees who have requested for a specific event (passed as eventID)
@@ -407,7 +459,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 */
         //Cursor cursor = db.rawQuery(query, new String[]{email, "Pending"});
 
-        Cursor cursorRequest = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ? AND " + COLUMN_REQUEST_STATUS + " = ?", new String[]{email, "Pending"});
+        Cursor cursorRequest = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ? ", new String[]{email});
 
         if (cursorRequest.moveToFirst()) {
             do {
@@ -457,7 +509,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return events;
     }
     // returns a list of upcoming events an attendee may request for
-
+    /* TO DISCUSS
     public List<Event> getUpcomingEvents(String email){
         List<Event> upcomingEvents = getAllEvents();
         List<Event> requestedEvents = getAttendeeEvents(email);
@@ -471,7 +523,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return upcomingEvents;
-    }
+    }*/
 
     /* Enah needs help here:
 
@@ -485,6 +537,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     */
+
+
     //returns an Attendee objbect by specifying the attendee username(email)
     public Attendee getAttendee(String userName){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -566,105 +620,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    //delete the commneted out methods later
-    /*
-
-    public void updateEventList(String username, Event event){
-        SQLiteDatabase db = this.getWritableDatabase();
-        Log.i("Checkpoint", "before cursor");
-        Cursor cursor = db.rawQuery("SELECT " + COLUMN_ORGANIZATIONEVENTS + " FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = ?", new String[]{username});
-        String updatedEventList = null;
-        Log.i("Checkpoint", "after cursor");
-        //check if there exists a staus/if user even exits:
-        if (cursor.moveToFirst()){
-            @SuppressLint("Range") String eventsJson = cursor.getString(cursor.getColumnIndex(COLUMN_ORGANIZATIONEVENTS));
-            // Deserialize the existing event list (if any)
-            ArrayList<Event> eventList = new ArrayList<>();
-            if (eventsJson != null && !eventsJson.isEmpty()) {
-                // Deserialize the JSON string into an ArrayList<Event>
-                Gson gson = new Gson();
-                eventList = gson.fromJson(eventsJson, new TypeToken<ArrayList<Event>>(){}.getType());
-            }
-
-            // Add the new event to the list
-            eventList.add(event);
-
-            // Serialize the updated list back to a JSON string
-            updatedEventList = new Gson().toJson(eventList);
-
-        }
-        // Update the database with the new event list
-        if (updatedEventList != null) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(COLUMN_ORGANIZATIONEVENTS, updatedEventList);  // Store the updated event list as a JSON string
-
-            // Update the user's event list in the database
-            int rowsAffected = db.update(USER_TABLE, contentValues, COLUMN_EMAIL + " = ?", new String[]{username});
-
-            if (rowsAffected > 0) {
-                System.out.println("Event list updated successfully for user: " + username);
-            } else {
-                System.out.println("No user found with the email: " + username);
-            }
-        }
-
-        cursor.close();
-        db.close();
-    }
-
-
-
-    public ArrayList<Event> getAllUpcomingEvents(){
-        ArrayList<Event> upcomingEvents = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        //Query to get all organizers
-        String query = "SELECT " + COLUMN_ORGANIZATIONEVENTS + " FROM " + USER_TABLE +
-                " WHERE " + COLUMN_USERROLE + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[] { "Organizer" });
-
-        if (cursor.moveToFirst()){
-            do{
-                String eventsJson = cursor.getString(0); // get the organizationEvents column
-                // Deserialize the JSON string to ArrayList<Event>
-                if (eventsJson != null && !eventsJson.isEmpty()) {
-                    ArrayList<Event> events = new Gson().fromJson(eventsJson, new TypeToken<List<Event>>(){}.getType());
-                    // Add each event to the combined list
-                    if (events != null) {
-                        upcomingEvents.addAll(events);
-                    }
-                }
-
-            } while (cursor.moveToNext());
-
-        }
-        cursor.close();
-        db.close();
-        return upcomingEvents;
-
-    }
-
-    public ArrayList<Event> getEventList(String username){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT " + COLUMN_ORGANIZATIONEVENTS + " FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = ?", new String[]{username});
-        //check if there exists a staus/if user even exits:
-        ArrayList<Event> eventList = new ArrayList<>();
-        if (cursor.moveToFirst()){
-            @SuppressLint("Range") String eventsJson = cursor.getString(cursor.getColumnIndex(COLUMN_ORGANIZATIONEVENTS));
-            // Deserialize the existing event list (if any)
-            if (eventsJson != null && !eventsJson.isEmpty()) {
-                // Deserialize the JSON string into an ArrayList<Event>
-                Gson gson = new Gson();
-                eventList = gson.fromJson(eventsJson, new TypeToken<ArrayList<Event>>() {
-                }.getType());
-            }
-        }
-        return eventList;
-    }
-
-     */
-
     //method to update the user's status
     public void updateUserStatus(User user){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -714,8 +669,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    //search for events
 
+    /**
+     * @param keyword
+     * @return a list of events that match keyword
+     */
+    public List<Event> searchEvents(String keyword) {
+        List<Event> events = new ArrayList<>();
+       SQLiteDatabase db = this.getReadableDatabase();
 
+        // Query to search for the keyword in title or description
+        String query = "SELECT * FROM events WHERE title LIKE ? OR description LIKE ?";
+        Cursor cursor = db.rawQuery(query, new String[]{"%" + keyword + "%", "%" + keyword + "%"});
 
+        if (cursor.moveToFirst()) {
+            do {
+
+                // Get the data from the cursor
+               String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+               String description= cursor.getString(cursor.getColumnIndexOrThrow("description"));
+               String date =cursor.getString(cursor.getColumnIndexOrThrow("date"));
+               String startTime = cursor.getString(cursor.getColumnIndexOrThrow("start_time"));
+               String endTime = cursor.getString(cursor.getColumnIndexOrThrow("end_time"));
+               String address = cursor.getString(cursor.getColumnIndexOrThrow("address"));
+               Integer choice = cursor.getColumnIndexOrThrow("choice");
+
+                // Create Event objects from information
+                Event event = new Event(title, description, date, startTime, endTime, address,choice);
+                events.add(event); // Add to the list of events
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return events;
+    }
 
 }

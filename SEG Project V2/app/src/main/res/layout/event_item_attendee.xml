@@ -6,57 +6,71 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
+        android:layout_width="352dp"
+        android:layout_height="145dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textview_eventTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Event Title:" />
-
-        <TextView
-            android:id="@+id/textview_eventDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Event description:" />
-
-        <TextView
-            android:id="@+id/textview_eventDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Event Date:" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="15dp" />
-
         <!-- Horizontal layout for buttons -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/button_details"
+            <TextView
+                android:id="@+id/textview_eventTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Title:"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/textview_eventDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event description:"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/textview_eventDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Date:"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/textview_eventRequestStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status of your request:"
+                android:textSize="16dp" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Details" />
+                android:orientation="horizontal">
 
-            <View
-                android:layout_width="10dp"
-                android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/button_details"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Details"
+                    android:textSize="16dp" />
 
-            <Button
-                android:id="@+id/button_cancel_event"
-                android:layout_width="146dp"
-                android:layout_height="wrap_content"
-                android:text="Cancel request" />
+                <Space
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
+                <Button
+                    android:id="@+id/button_cancel_event"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel request"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
         </LinearLayout>
 

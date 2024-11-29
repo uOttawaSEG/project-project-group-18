@@ -104,4 +104,12 @@ public class User {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public ArrayList<Event> getEventList() {
+        return events;
+    }
+
+    public void setEventList(ArrayList<Event> events) {
+        this.events = events;
+    }
 }

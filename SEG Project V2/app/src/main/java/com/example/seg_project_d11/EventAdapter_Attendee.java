@@ -45,7 +45,7 @@ public class EventAdapter_Attendee extends BaseAdapter {
     }
     @Override
     public Object getItem(int position) {
-        return events.get(position); //returns the User at specified position
+        return events.get(position);
     }
 
     @Override
@@ -67,7 +67,9 @@ public class EventAdapter_Attendee extends BaseAdapter {
         TextView tv_title = eventItem.findViewById(R.id.textview_eventTitle);
         TextView tv_description = eventItem.findViewById(R.id.textview_eventDescription);
         TextView tv_date = eventItem.findViewById(R.id.textview_eventDate);
+        TextView tv_requestStatus = eventItem.findViewById(R.id.textview_eventRequestStatus);
         Button details = eventItem.findViewById(R.id.button_details);
+        Button cancelButton = eventItem.findViewById(R.id.button_cancel_event);
 
         String title = event.getTitle();
         String description = event.getDescription();
@@ -76,11 +78,19 @@ public class EventAdapter_Attendee extends BaseAdapter {
         int acceptChoice = event.getAcceptChoice();
         Log.d("EventAdapter", "Event ID: " + eventID + " - Accept Choice: " + acceptChoice);
 
-        Button cancelButton = eventItem.findViewById(R.id.button_cancel_event);
+        String requestStatus = dbHelper.getEventRequesStatus(userName, eventID);
+
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: complete this
+                if (events.contains(event)){
+                    dbHelper.deleteEventRequest(userName, (int) event.getEventID());
+                    events.remove(event);
+                    Toast.makeText(context, "Event is deleted!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Event has already been deleted", Toast.LENGTH_SHORT).show();
+                }
+                notifyDataSetChanged();
             }
         });
 
@@ -88,6 +98,7 @@ public class EventAdapter_Attendee extends BaseAdapter {
         tv_title.setText("Event Title: " + title);
         tv_description.setText("Event description: " + description);
         tv_date.setText("Event date: " + date);
+        tv_requestStatus.setText("Status of your request: "+ requestStatus);
 
         details.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,8 +136,6 @@ public class EventAdapter_Attendee extends BaseAdapter {
                 params.width = WindowManager.LayoutParams.MATCH_PARENT;
                 params.height = WindowManager.LayoutParams.WRAP_CONTENT;
                 window.setAttributes(params);
-
-
 
                 dialog.show();
             }

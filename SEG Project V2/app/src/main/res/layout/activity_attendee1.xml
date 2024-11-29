@@ -9,14 +9,15 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="415dp"
+        android:layout_height="87dp"
+        android:layout_marginTop="55dp"
         android:background="#527689EF"
+        android:gravity="center"
         android:text="Attendee Account Registration"
         android:textAlignment="center"
         android:textSize="30dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,16 +26,16 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="25dp" />
+            android:layout_height="45dp" />
 
         <TextView
             android:id="@+id/textView8"
@@ -118,7 +119,8 @@
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:backgroundTint="#3F51B5"
-                android:text="Back" />
+                android:text="Back"
+                android:textSize="16dp" />
 
             <Space
                 android:layout_width="75dp"
@@ -130,7 +132,8 @@
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:backgroundTint="#3F51B5"
-                android:text="Next" />
+                android:text="Next"
+                android:textSize="16dp" />
         </LinearLayout>
 
     </LinearLayout>

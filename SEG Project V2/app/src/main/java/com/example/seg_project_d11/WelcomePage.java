@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class WelcomePage extends AppCompatActivity {
 
-    Button logOut, createEvent, viewEvents, viewUpcomingEvents,viewMyEvents;
+    Button logOut, createEvent, viewEvents, viewPastEvents, viewUpcomingEvents,viewMyEvents, searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class WelcomePage extends AppCompatActivity {
 
         //for debugging purpose
         Log.d("WelcomePage", "User role received: " + role);
+        Log.d("WelcomePage", "User name received: " + userName);
 
 
         TextView welcomeRoleText = findViewById(R.id.welcomeRoleText);
@@ -43,24 +44,28 @@ public class WelcomePage extends AppCompatActivity {
         // Set the user name and role
         userNameDisplay.setText(userName);
 
-
+//initialize views
         logOut = findViewById(R.id.logOut);
         createEvent = findViewById(R.id.createEvent_button);
         viewEvents = findViewById(R.id.seeEvents_button);
+        viewPastEvents = findViewById(R.id.pastEventsButton);
         viewUpcomingEvents = findViewById(R.id.upcomingEventsButton);
         viewMyEvents = findViewById(R.id.attendeeEventsButton);
+        searchButton = findViewById(R.id.searchButton);
 
         if (role.equals("Organizer")) {
             welcomeRoleText.setText("Welcome, organizer!");
             userRoleDisplay.setText("Organizer");
             createEvent.setVisibility(View.VISIBLE);
-            viewEvents.setVisibility(View.VISIBLE);
+            viewPastEvents.setVisibility(View.VISIBLE);
+            viewUpcomingEvents.setVisibility(View.VISIBLE);
 
         } else if (role.equals("Attendee")) {
             welcomeRoleText.setText("Welcome, attendee!");
             userRoleDisplay.setText("Attendee");
-            viewUpcomingEvents.setVisibility(View.VISIBLE);
+            viewEvents.setVisibility(View.VISIBLE);
             viewMyEvents.setVisibility(View.VISIBLE);
+            searchButton.setVisibility(View.VISIBLE);
         }else{
             welcomeRoleText.setText("Welcome, guest!");
             userRoleDisplay.setText("Guest");
@@ -82,25 +87,39 @@ public class WelcomePage extends AppCompatActivity {
             }
         });
         //if userrole is organizer, display this button
-        viewEvents.setOnClickListener(new View.OnClickListener(){
+        viewUpcomingEvents.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent new_intent = new Intent(WelcomePage.this, Event_list_2.class);
+                Intent new_intent = new Intent(WelcomePage.this, ViewEvents.class);
                 new_intent.putExtra("user_name", userName);
+                new_intent.putExtra("type","Upcoming");
                 new_intent.putExtra("user_role",role);
 
-                Log.i("UserName", userName);
-                Log.i("UserName", role);
-                Log.i("Checkpoint", "onCLick-viewEvents");
+                startActivity(new_intent);
+            }
+        });
+
+        //if userrole is organizer, display this button
+        viewPastEvents.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent new_intent = new Intent(WelcomePage.this, ViewEvents.class);
+                new_intent.putExtra("user_name", userName);
+                new_intent.putExtra("type","Past");
+                new_intent.putExtra("user_role",role);
+
                 startActivity(new_intent);
             }
         });
         //if userrole is Attendee, display this button
-        viewUpcomingEvents.setOnClickListener(new View.OnClickListener(){
+        viewEvents.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent new_intent = new Intent(WelcomePage.this, AttendeeUpcomingEvent_Activity.class);
+                Intent new_intent = new Intent(WelcomePage.this, ViewEvents.class);
                 new_intent.putExtra("user_name", userName);
                 new_intent.putExtra("user_role",role);
-                Log.i("Checkpoint", "onCLick-viewUpcomingEvents");
+                new_intent.putExtra("type","Available");
+
+                Log.i("WelcomePage","UserName:"+userName);
+                Log.i("WelcomePage","UserRole:"+ role);
+                Log.i("WelcomePage", "onCLick-viewEvents");
                 startActivity(new_intent);
             }
         });
@@ -109,9 +128,22 @@ public class WelcomePage extends AppCompatActivity {
             public void onClick(View view){
                 Intent new_intent = new Intent(WelcomePage.this, Event_list_Attendee.class);
                 new_intent.putExtra("user_name", userName);
-                new_intent.putExtra("user_role",role);
-                Log.i("Checkpoint", "onCLick-viewMyEvents");
+                new_intent.putExtra("user_role", role);
+
+                Log.i("WelcomePage", "onCLick-viewMyEvents");
+
                 startActivity(new_intent);
+            }
+        });
+//change this
+        searchButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                //clears user information from the machine if attendee
+                Intent intentLogout = new Intent(WelcomePage.this, SearchResultsActivity.class);
+                intentLogout.putExtra("user_name", userName);
+                intentLogout.putExtra("user_role", role);
+                startActivity(intentLogout);
+                startActivity(intentLogout);
             }
         });
     }

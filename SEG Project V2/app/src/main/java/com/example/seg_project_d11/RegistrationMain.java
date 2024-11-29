@@ -31,7 +31,7 @@ public class RegistrationMain extends AppCompatActivity {
         //Assigns button to variable
         goToOrgReg = findViewById(R.id.amOrganizer);
         goToAttendeeReg = findViewById(R.id.amAttendee);
-        //backButton= findViewById(R.id.signInButton);
+
         //On button click, open activity Organization_1
         goToOrgReg.setOnClickListener(new View.OnClickListener() {
             @Override

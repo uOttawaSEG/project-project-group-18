@@ -13,6 +13,7 @@
         android:layout_height="68dp"
         android:layout_marginTop="60dp"
         android:background="#527689EF"
+        android:gravity="center"
         android:text="My Events"
         android:textAlignment="center"
         android:textSize="30dp"
@@ -23,19 +24,23 @@
 
     <ListView
         android:id="@+id/lvMyEvents"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView26"
+        android:layout_width="340dp"
+        android:layout_height="470dp"
         app:layout_constraintBottom_toTopOf="@+id/button_goBack"
-        app:layout_constraintHeight_default="wrap" />
+        app:layout_constraintHeight_default="wrap"
+        app:layout_constraintTop_toBottomOf="@+id/textView26"
+        app:layout_constraintVertical_bias="0.483"
+        tools:layout_editor_absoluteX="35dp" />
 
     <Button
         android:id="@+id/button_goBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="106dp"
+        android:layout_height="51dp"
         android:layout_marginStart="25dp"
         android:layout_marginBottom="25dp"
+        android:backgroundTint="#3F51B5"
         android:text="back"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

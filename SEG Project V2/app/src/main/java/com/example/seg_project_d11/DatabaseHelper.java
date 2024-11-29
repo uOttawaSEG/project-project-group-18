@@ -292,9 +292,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursorEvent = db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
         while(cursorEvent.moveToNext()){
             //find the start/end times of each event
-            String startEvent = findEvent.getString(4);
-            String endEvent = findEvent.getString(5);
-            String otherDate = findEvent.getString(3);
+            String startEvent = cursorEvent.getString(4);
+            String endEvent = cursorEvent.getString(5);
+            String otherDate = cursorEvent.getString(3);
 
             if (otherDate.equals(date)){
                 if ((startEvent==curStart)||(endEvent==curEnd)) {
@@ -309,9 +309,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursorEventRequest = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
         while(cursorEvent.moveToNext()){
             //find the start/end times of each event
-            String startEvent = findEvent.getString(4);
-            String endEvent = findEvent.getString(5);
-            String otherDate = findEvent.getString(3);
+            String startEvent = cursorEventRequest.getString(4);
+            String endEvent = cursorEventRequest.getString(5);
+            String otherDate = cursorEventRequest.getString(3);
 
             if (otherDate.equals(date)){
                 if ((startEvent==curStart)||(endEvent==curEnd)) {

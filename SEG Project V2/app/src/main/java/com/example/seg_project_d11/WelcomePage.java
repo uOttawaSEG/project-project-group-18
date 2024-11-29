@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class WelcomePage extends AppCompatActivity {
 
-    Button logOut, createEvent, viewEvents, viewUpcomingEvents,viewMyEvents, searchButton;
+    Button logOut, createEvent, viewEvents, viewPastEvents, viewUpcomingEvents,viewMyEvents, searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,7 @@ public class WelcomePage extends AppCompatActivity {
         logOut = findViewById(R.id.logOut);
         createEvent = findViewById(R.id.createEvent_button);
         viewEvents = findViewById(R.id.seeEvents_button);
+        viewPastEvents = findViewById(R.id.pastEventsButton);
         viewUpcomingEvents = findViewById(R.id.upcomingEventsButton);
         viewMyEvents = findViewById(R.id.attendeeEventsButton);
         searchButton = findViewById(R.id.searchButton);
@@ -56,7 +57,8 @@ public class WelcomePage extends AppCompatActivity {
             welcomeRoleText.setText("Welcome, organizer!");
             userRoleDisplay.setText("Organizer");
             createEvent.setVisibility(View.VISIBLE);
-            viewEvents.setVisibility(View.VISIBLE);
+            viewPastEvents.setVisibility(View.VISIBLE);
+            viewUpcomingEvents.setVisibility(View.VISIBLE);
 
         } else if (role.equals("Attendee")) {
             welcomeRoleText.setText("Welcome, attendee!");
@@ -85,25 +87,38 @@ public class WelcomePage extends AppCompatActivity {
             }
         });
         //if userrole is organizer, display this button
+        viewUpcomingEvents.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent new_intent = new Intent(WelcomePage.this, See_Events_Organizer.class);
+                new_intent.putExtra("user_name", userName);
+                new_intent.putExtra("type","Upcoming");
+                new_intent.putExtra("user_role",role);
+
+                startActivity(new_intent);
+            }
+        });
+
+        //if userrole is organizer, display this button
+        viewPastEvents.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent new_intent = new Intent(WelcomePage.this, See_Events_Organizer.class);
+                new_intent.putExtra("user_name", userName);
+                new_intent.putExtra("type","Past");
+                new_intent.putExtra("user_role",role);
+
+                startActivity(new_intent);
+            }
+        });
+        //if userrole is Attendee, display this button
         viewEvents.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent new_intent = new Intent(WelcomePage.this, Event_list_2.class);
+                Intent new_intent = new Intent(WelcomePage.this, See_Events_Organizer.class);
                 new_intent.putExtra("user_name", userName);
                 new_intent.putExtra("user_role",role);
 
                 Log.i("WelcomePage","UserName:"+userName);
                 Log.i("WelcomePage","UserRole:"+ role);
                 Log.i("WelcomePage", "onCLick-viewEvents");
-                startActivity(new_intent);
-            }
-        });
-        //if userrole is Attendee, display this button
-        viewUpcomingEvents.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                Intent new_intent = new Intent(WelcomePage.this, AttendeeUpcomingEvent_Activity.class);
-                new_intent.putExtra("user_name", userName);
-                new_intent.putExtra("user_role", role);
-                Log.i("WelcomePage", "onCLick-viewUpcomingEvents");
                 startActivity(new_intent);
             }
         });

@@ -14,7 +14,9 @@ import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -274,9 +276,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //get all events for a specific organizer by specifying their user name(email)
-    public List<Event> getEventsForOrganizer(String email){
+    public List<Event> getEventsForOrganizer(String email, String type){
         List<Event> events = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+        Event event;
 
         Cursor cursorEvent = db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ORGANIZER_EMAIL + " = ?", new String[]{email});
 
@@ -292,12 +295,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String eventAddress= cursorEvent.getString(6);
                 int choice = cursorEvent.getInt(8);
 
-                Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
-                events.add(event);
+                if (type.equals("Upcoming")){
+                    Log.d("DBHelper: Type", "upcoming");
+                    if(UserValidator.validateDate(date)){
+                        event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
+                        events.add(event);
+                    }
+                }else if(type.equals("Past")){
+                    Log.d("DBHelper: Type", "past");
+                    if(!UserValidator.validateDate(date)){
+                        event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
+                        events.add(event);
+                    }
+                }else{
+                    Log.d("ERROR", "Enter Upcoming/past");
+                }
 
             }while(cursorEvent.moveToNext());
         }else{
-            //there is no events associated with the organizer email given
+            Log.d("ERROR", "No events for organizer");
         }
         cursorEvent.close();
         db.close();

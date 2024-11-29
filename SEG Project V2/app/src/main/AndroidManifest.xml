@@ -25,7 +25,7 @@
             android:name=".AttendeeUpcomingEvent_Activity"
             android:exported="false" />
         <activity
-            android:name=".Event_list_2"
+            android:name=".See_Events_Organizer"
             android:exported="false" />
         <activity
             android:name=".CreateEvent"

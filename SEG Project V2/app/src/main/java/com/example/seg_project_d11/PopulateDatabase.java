@@ -24,12 +24,12 @@ public class PopulateDatabase {
 
         if (!databaseHelper.areEventsInitialized()) {
             //create events
-            Event event1 = new Event("Concert","BEST concert ever", "2024/03/21", "15:00", "21:00", "stadium A" ,1);
-            Event event2 = new Event("Basketball Game","Canada's best team basketball game", "2024/05/21", "12:00", "13:00", "TD place",1 );
-            Event event3 = new Event("Bazaar","everything you can find bazaar", "2024/06/25", "16:00", "21:00", "Ottawa",0 );
-            Event event4 = new Event("Bake Sale","biggest bake sale", "2024/03/21", "15:00", "21:00", "Ottawa",1 );
-            Event event5 = new Event("Music Concert","live music with various bands", "2024/03/21", "15:00", "21:00", "StageB" ,0);
-            Event event6 = new Event("Football Game","Canada's Football team games", "2024/03/21", "15:00", "21:00", "stadium C", 1);
+            Event event1 = new Event("Concert","BEST concert ever", "11/30/2024", "15:00", "21:00", "stadium A" ,1);
+            Event event2 = new Event("Basketball Game","Canada's best team basketball game", "21/05/2024", "12:00", "13:00", "TD place",1 );
+            Event event3 = new Event("Bazaar","everything you can find bazaar", "25/06/2025", "16:00", "21:00", "Ottawa",0 );
+            Event event4 = new Event("Bake Sale","biggest bake sale", "21/03/2024", "15:00", "21:00", "Ottawa",1 );
+            Event event5 = new Event("Music Concert","live music with various bands", "21/03/2025", "15:00", "21:00", "StageB" ,0);
+            Event event6 = new Event("Football Game","Canada's Football team games", "21/03/2025", "15:00", "21:00", "stadium C", 1);
 
             databaseHelper.addEvent(event1, org1.getEmail());
             databaseHelper.addEvent(event2, org1.getEmail());

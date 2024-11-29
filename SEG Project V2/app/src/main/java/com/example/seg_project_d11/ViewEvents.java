@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.List;
 //organizer can see events they create
-public class See_Events_Organizer extends AppCompatActivity {
+public class ViewEvents extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     ListView listOfEvents;
     List<Event> events, pastEvents;
@@ -46,7 +46,13 @@ public class See_Events_Organizer extends AppCompatActivity {
         Log.d("EventList2", "Type: "+ type);
 
         databaseHelper = new DatabaseHelper(this);
-        events = databaseHelper.getEventsForOrganizer(username, type);
+
+        if(type.equals("Upcoming") || type.equals("Past")){
+            events = databaseHelper.getEventsForOrganizer(username, type);
+        }else{
+            events = databaseHelper.getAvailableEvents();
+        }
+
 
 
         //debugging
@@ -64,7 +70,7 @@ public class See_Events_Organizer extends AppCompatActivity {
 
         backButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent intent = new Intent(See_Events_Organizer.this, WelcomePage.class);
+                Intent intent = new Intent(ViewEvents.this, WelcomePage.class);
                 intent.putExtra("user_name",username);
                 intent.putExtra("user_role", databaseHelper.getUserRole(username));
                 startActivity(intent);

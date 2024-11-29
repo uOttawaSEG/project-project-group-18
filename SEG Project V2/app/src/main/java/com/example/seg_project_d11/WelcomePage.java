@@ -63,7 +63,7 @@ public class WelcomePage extends AppCompatActivity {
         } else if (role.equals("Attendee")) {
             welcomeRoleText.setText("Welcome, attendee!");
             userRoleDisplay.setText("Attendee");
-            viewUpcomingEvents.setVisibility(View.VISIBLE);
+            viewEvents.setVisibility(View.VISIBLE);
             viewMyEvents.setVisibility(View.VISIBLE);
             searchButton.setVisibility(View.VISIBLE);
         }else{
@@ -89,7 +89,7 @@ public class WelcomePage extends AppCompatActivity {
         //if userrole is organizer, display this button
         viewUpcomingEvents.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent new_intent = new Intent(WelcomePage.this, See_Events_Organizer.class);
+                Intent new_intent = new Intent(WelcomePage.this, ViewEvents.class);
                 new_intent.putExtra("user_name", userName);
                 new_intent.putExtra("type","Upcoming");
                 new_intent.putExtra("user_role",role);
@@ -101,7 +101,7 @@ public class WelcomePage extends AppCompatActivity {
         //if userrole is organizer, display this button
         viewPastEvents.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent new_intent = new Intent(WelcomePage.this, See_Events_Organizer.class);
+                Intent new_intent = new Intent(WelcomePage.this, ViewEvents.class);
                 new_intent.putExtra("user_name", userName);
                 new_intent.putExtra("type","Past");
                 new_intent.putExtra("user_role",role);
@@ -112,9 +112,10 @@ public class WelcomePage extends AppCompatActivity {
         //if userrole is Attendee, display this button
         viewEvents.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent new_intent = new Intent(WelcomePage.this, See_Events_Organizer.class);
+                Intent new_intent = new Intent(WelcomePage.this, ViewEvents.class);
                 new_intent.putExtra("user_name", userName);
                 new_intent.putExtra("user_role",role);
+                new_intent.putExtra("type","Available");
 
                 Log.i("WelcomePage","UserName:"+userName);
                 Log.i("WelcomePage","UserRole:"+ role);

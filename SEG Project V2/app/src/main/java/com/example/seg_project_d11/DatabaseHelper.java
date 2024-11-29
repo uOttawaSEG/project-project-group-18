@@ -322,7 +322,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //get all events created by all organizers
-    public List<Event> getAllEvents(){
+    public List<Event> getAvailableEvents(){
         List<Event> events = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -341,9 +341,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String eventAddress= cursor.getString(6);
                 int choice = cursor.getInt(8);
 
+                if(UserValidator.validateDate(date)){
+                    Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
+                    events.add(event);
+                }
 
-                Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress,choice);
-                events.add(event);
             }while(cursor.moveToNext());
         }else{
             //no events have been created yet
@@ -442,7 +444,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return events;
     }
     // returns a list of upcoming events an attendee may request for
-
+    /* TO DISCUSS
     public List<Event> getUpcomingEvents(String email){
         List<Event> upcomingEvents = getAllEvents();
         List<Event> requestedEvents = getAttendeeEvents(email);
@@ -456,7 +458,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return upcomingEvents;
-    }
+    }*/
 
     /* Enah needs help here:
 

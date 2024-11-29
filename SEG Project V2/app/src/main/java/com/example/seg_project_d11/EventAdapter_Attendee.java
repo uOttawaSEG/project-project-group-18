@@ -70,6 +70,7 @@ public class EventAdapter_Attendee extends BaseAdapter {
         TextView tv_requestStatus = eventItem.findViewById(R.id.textview_eventRequestStatus);
         Button details = eventItem.findViewById(R.id.button_details);
         Button cancelButton = eventItem.findViewById(R.id.button_cancel_event);
+        Button registerButton = eventItem.findViewById(R.id.button_register_event);
 
         String title = event.getTitle();
         String description = event.getDescription();
@@ -79,6 +80,12 @@ public class EventAdapter_Attendee extends BaseAdapter {
         Log.d("EventAdapter", "Event ID: " + eventID + " - Accept Choice: " + acceptChoice);
 
         String requestStatus = dbHelper.getEventRequesStatus(userName, eventID);
+
+        if(requestStatus.equals("Approved") || requestStatus.equals("Pending")){
+            cancelButton.setVisibility(View.VISIBLE);
+        }else{
+            registerButton.setVisibility(View.VISIBLE);
+        }
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +98,23 @@ public class EventAdapter_Attendee extends BaseAdapter {
                     Toast.makeText(context, "Event has already been deleted", Toast.LENGTH_SHORT).show();
                 }
                 notifyDataSetChanged();
+            }
+        });
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dbHelper.checkEventRegistration(userName,eventID)){
+                    Log.d("EventAdapter_Attendee", "Here 1");
+                    RequestEvent request = new RequestEvent(userName,eventID,"Pending");
+                    Log.d("EventAdapter_Attendee", "Here 2");
+                    dbHelper.addEventRequest(request);
+                    Log.d("EventAdapter_Attendee", "Here 3");
+                    //events.remove(event);
+                    Toast.makeText(context, "Your request is now sent!", Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(context, "Sorry, the event conflicts with your already requested/registered events", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

@@ -24,13 +24,13 @@
 
     <ListView
         android:id="@+id/lvMyEvents"
-        android:layout_width="340dp"
-        android:layout_height="470dp"
+        android:layout_width="0dp"
+        android:layout_height="456dp"
         app:layout_constraintBottom_toTopOf="@+id/button_goBack"
         app:layout_constraintHeight_default="wrap"
         app:layout_constraintTop_toBottomOf="@+id/textView26"
-        app:layout_constraintVertical_bias="0.483"
-        tools:layout_editor_absoluteX="35dp" />
+        app:layout_constraintVertical_bias="0.492"
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
         android:id="@+id/button_goBack"

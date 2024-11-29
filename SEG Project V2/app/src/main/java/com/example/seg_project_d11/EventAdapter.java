@@ -56,7 +56,7 @@ public class EventAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent){
         //send back a view that we can use in the individual list item
 
         View eventItem;

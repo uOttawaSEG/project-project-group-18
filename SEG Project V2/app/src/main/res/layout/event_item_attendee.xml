@@ -53,11 +53,21 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/button_register_event"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#3F51B5"
+                    android:text="Register"
+                    android:textSize="16dp"
+                    android:visibility="gone" />
+                <Button
                     android:id="@+id/button_details"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#3F51B5"
                     android:text="Details"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    />
 
                 <Space
                     android:layout_width="20dp"
@@ -68,8 +78,10 @@
                     android:id="@+id/button_cancel_event"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
-                    android:text="Cancel request"
-                    android:textSize="16dp" />
+                    android:backgroundTint="#3F51B5"
+                    android:text="Cancel Registration"
+                    android:textSize="16dp"
+                    android:visibility="gone" />
             </LinearLayout>
 
         </LinearLayout>

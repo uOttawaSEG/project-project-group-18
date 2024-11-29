@@ -122,12 +122,14 @@ public class EventAdapter extends BaseAdapter {
                 if (userType.equals("Attendee")){
                     Log.d("EventAdapter" , "eventID: "+ eventID);
                     //create an RequestEvent object
-                    RequestEvent request = new RequestEvent(userName,eventID,"Pending");
-                    dbHelper.addEventRequest(request);
-
-                    events.remove(event);
-
-                    Toast.makeText(context, "Your request is now sent!", Toast.LENGTH_SHORT).show();
+                    if (dbHelper.checkEventRegistration(userName,eventID)){
+                        RequestEvent request = new RequestEvent(userName,eventID,"Pending");
+                        dbHelper.addEventRequest(request);
+                        events.remove(event);
+                        Toast.makeText(context, "Your request is now sent!", Toast.LENGTH_SHORT).show();
+                    } else{
+                        Toast.makeText(context, "Sorry, the event conflicts with your already requested/registered events", Toast.LENGTH_SHORT).show();
+                    }
 
                 }else if (userType.equals("Organizer")){
                     Intent new_intent = new Intent(context, OrganizerSeeAttendeeEventRequestsActivity.class);

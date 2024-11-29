@@ -69,6 +69,7 @@ public class EventAdapter_Attendee extends BaseAdapter {
         TextView tv_date = eventItem.findViewById(R.id.textview_eventDate);
         TextView tv_requestStatus = eventItem.findViewById(R.id.textview_eventRequestStatus);
         Button details = eventItem.findViewById(R.id.button_details);
+        Button cancelButton = eventItem.findViewById(R.id.button_cancel_event);
 
         String title = event.getTitle();
         String description = event.getDescription();
@@ -79,11 +80,17 @@ public class EventAdapter_Attendee extends BaseAdapter {
 
         String requestStatus = dbHelper.getEventRequesStatus(userName, eventID);
 
-        Button cancelButton = eventItem.findViewById(R.id.button_cancel_event);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: complete this
+                if (events.contains(event)){
+                    dbHelper.deleteEventRequest(userName, (int) event.getEventID());
+                    events.remove(event);
+                    Toast.makeText(context, "Event is deleted!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Event has already been deleted", Toast.LENGTH_SHORT).show();
+                }
+                notifyDataSetChanged();
             }
         });
 

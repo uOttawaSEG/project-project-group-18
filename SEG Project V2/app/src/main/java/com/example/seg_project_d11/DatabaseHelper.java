@@ -226,8 +226,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
 
-
-
     }
 
     public boolean deleteEvent(int eventId) {
@@ -353,6 +351,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return events;
+
+    }
+
+    public void deleteEventRequest(String username, int eventID){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Delete the event based on the eventId
+        int rowsDeleted = db.delete(
+                TABLE_EVENT_REQUESTS,
+                COLUMN_REQUESTED_EVENT_ID + " = ? AND " + COLUMN_ATTENDEE_EMAIL + " = ?",
+                new String[]{String.valueOf(eventID), username}
+        );
+        db.close();
 
     }
     //returns a list of Attendees who have requested for a specific event (passed as eventID)

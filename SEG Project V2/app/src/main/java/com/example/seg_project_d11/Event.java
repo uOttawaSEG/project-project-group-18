@@ -2,6 +2,7 @@ package com.example.seg_project_d11;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Event {
     private String title, description, date, startTime, endTime, eventAddress;
@@ -19,6 +20,7 @@ public class Event {
         this.eventAddress = eventAddress;
         this.choiceAccept = choiceAccept;
     }
+
     // Constructor for retrieving events from the database (includes eventID)
     public Event(Integer eventID, String title, String description, String date, String startTime, String endTime, String eventAddress, int choiceAccept) {
         this.eventID = eventID;

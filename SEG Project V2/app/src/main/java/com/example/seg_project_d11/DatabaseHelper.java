@@ -274,11 +274,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return eventRequestStatus;
     }
 
-    public boolean checkEventRegistration(String attendeeEmail, int eventId){
+    /*public boolean checkEventRegistration(String attendeeEmail, int eventId){
         SQLiteDatabase db = this.getReadableDatabase();
-        String date = "";
-        String curStart = "";
-        String curEnd = "";
+        String date;
+        String curStart;
+        String curEnd;
         Cursor findEvent= db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ? AND " + COLUMN_REQUESTED_EVENT_ID + " = ?", new String[] {attendeeEmail, String.valueOf(eventId)});
 
         if (findEvent.moveToFirst()){
@@ -286,7 +286,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             curEnd = findEvent.getString(5);
             date = findEvent.getString(3);
         }
-        Log.d("databaseHelper: ", "Event Start: "+ curStart + ", Event End: " + curEnd );
+        //Log.d("databaseHelper: ", "Event Start: "+ curStart + ", Event End: " + curEnd );
         findEvent.close();
 
         Cursor cursorEvent = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
@@ -323,7 +323,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursorEvent.close();
         return true;
-    }
+    }*/
 
 
 

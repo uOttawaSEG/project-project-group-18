@@ -104,7 +104,15 @@ public class EventAdapter_Attendee extends BaseAdapter {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dbHelper.checkEventRegistration(userName,eventID)){
+                Log.d("EventAdapter_Attendee", "Here 1");
+                RequestEvent request = new RequestEvent(userName,eventID,"Pending");
+                Log.d("EventAdapter_Attendee", "Here 2");
+                dbHelper.addEventRequest(request);
+                Log.d("EventAdapter_Attendee", "Here 3");
+                //events.remove(event);
+                Toast.makeText(context, "Your request is now sent!", Toast.LENGTH_SHORT).show();
+
+                /*if (dbHelper.checkEventRegistration(userName,eventID)){
                     Log.d("EventAdapter_Attendee", "Here 1");
                     RequestEvent request = new RequestEvent(userName,eventID,"Pending");
                     Log.d("EventAdapter_Attendee", "Here 2");
@@ -114,7 +122,7 @@ public class EventAdapter_Attendee extends BaseAdapter {
                     Toast.makeText(context, "Your request is now sent!", Toast.LENGTH_SHORT).show();
                 } else{
                     Toast.makeText(context, "Sorry, the event conflicts with your already requested/registered events", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 

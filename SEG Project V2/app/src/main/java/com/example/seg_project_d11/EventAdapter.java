@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import org.intellij.lang.annotations.JdkConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,6 @@ public class EventAdapter extends BaseAdapter {
     private DatabaseHelper dbHelper;
     private String userType;
     private String userName;
-
 
     public EventAdapter(Context context,List<Event> events, DatabaseHelper dbHelper, String userType, String userName) {
         this.context = context;
@@ -83,14 +84,21 @@ public class EventAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 //TODO: complete this
-                if (events.contains(event)){
-                    dbHelper.deleteEvent(eventID);
-                    events.remove(event);
-                    Toast.makeText(context, "Event is deleted!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Event has already been deleted", Toast.LENGTH_SHORT).show();
+
+                String eventID2 = String.valueOf(event.getEventID());
+                if(dbHelper.checkEventExists(eventID2)){
+                    Toast.makeText(context, "You cannot delete an event that has attendees", Toast.LENGTH_SHORT).show();
                 }
-                notifyDataSetChanged();
+                else {
+                    if (events.contains(event)) {
+                        dbHelper.deleteEvent(eventID);
+                        events.remove(event);
+                        Toast.makeText(context, "Event is deleted!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Event has already been deleted", Toast.LENGTH_SHORT).show();
+                    }
+                    notifyDataSetChanged();
+                }
             }
         });
 

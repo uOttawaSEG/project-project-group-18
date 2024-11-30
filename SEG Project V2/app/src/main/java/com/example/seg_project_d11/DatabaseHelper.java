@@ -115,6 +115,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     }
+    public boolean checkEventExists(String eventId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursorUsers = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_REQUESTED_EVENT_ID + " = ?", new String[] {eventId});
+        if(cursorUsers.moveToFirst()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

@@ -25,7 +25,7 @@
     <ListView
         android:id="@+id/lvMyEvents"
         android:layout_width="0dp"
-        android:layout_height="456dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/button_goBack"
         app:layout_constraintHeight_default="wrap"
         app:layout_constraintTop_toBottomOf="@+id/textView26"

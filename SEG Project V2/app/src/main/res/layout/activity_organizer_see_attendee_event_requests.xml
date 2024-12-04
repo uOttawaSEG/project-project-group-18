@@ -13,6 +13,7 @@
         android:layout_height="86dp"
         android:layout_marginTop="55dp"
         android:background="#527689EF"
+        android:gravity="center"
         android:text="Attendee Event            \   Requests"
         android:textAlignment="center"
         android:textSize="30dp"

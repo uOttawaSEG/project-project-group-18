@@ -46,8 +46,8 @@
 
         <ListView
             android:id="@+id/eventListView"
-            android:layout_width="380dp"
-            android:layout_height="431dp"
+            android:layout_width="match_parent"
+            android:layout_height="741dp"
             android:divider="@android:color/darker_gray"
             android:dividerHeight="1dp" />
     </LinearLayout>

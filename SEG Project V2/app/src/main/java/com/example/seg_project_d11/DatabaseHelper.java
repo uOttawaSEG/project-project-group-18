@@ -115,6 +115,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     }
+    public boolean checkEventExists(String eventId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursorUsers = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_REQUESTED_EVENT_ID + " = ?", new String[] {eventId});
+        if(cursorUsers.moveToFirst()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -274,56 +284,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return eventRequestStatus;
     }
 
-    /*public boolean checkEventRegistration(String attendeeEmail, int eventId){
+    public boolean checkEventRegistration(String attendeeEmail, int eventId){
         SQLiteDatabase db = this.getReadableDatabase();
-        String date;
-        String curStart;
-        String curEnd;
-        Cursor findEvent= db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ? AND " + COLUMN_REQUESTED_EVENT_ID + " = ?", new String[] {attendeeEmail, String.valueOf(eventId)});
+        String curDate = null;
+        String curStart = null;
+        String curEnd = null;
 
-        if (findEvent.moveToFirst()){
-            curStart = findEvent.getString(4);
-            curEnd = findEvent.getString(5);
-            date = findEvent.getString(3);
+        Cursor cursorEvent= db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_REQUESTED_EVENT_ID + " = ?", new String[] {String.valueOf(eventId)});
+
+        if (cursorEvent.moveToFirst()){
+            curStart = cursorEvent.getString(4);
+            curEnd = cursorEvent.getString(5);
+            curDate = cursorEvent.getString(3);
         }
         //Log.d("databaseHelper: ", "Event Start: "+ curStart + ", Event End: " + curEnd );
-        findEvent.close();
+        cursorEvent.close();
 
-        Cursor cursorEvent = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
-        while(cursorEvent.moveToNext()){
-            //find the start/end times of each event
-            String startEvent = cursorEvent.getString(4);
-            String endEvent = cursorEvent.getString(5);
-            String otherDate = cursorEvent.getString(3);
+        if (curDate==null||curStart==null||curEnd==null){
+            return false;
+        }
 
-            if (otherDate.equals(date)){
-                if ((startEvent==curStart)||(endEvent==curEnd)) {
-                    cursorEvent.close();
-                    return false;
+        Cursor cursorRegistered = db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
+        if (conflictChecker(cursorRegistered, curDate,curStart,curEnd)){
+            cursorRegistered.close();
+            return false;
+        }
+        cursorRegistered.close();
+
+
+        Cursor cursorRequested = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
+        if (conflictChecker(cursorRequested, curDate,curStart,curEnd)){
+            cursorRegistered.close();
+            return false;
+        }
+        cursorRequested.close();
+        return false;
+    }
+
+
+
+
+
+    public boolean conflictChecker(Cursor c, String curDate, String curStart, String curEnd){
+        while (c.moveToNext()){
+            String otherDate =c.getString(3);
+            String otherStart =c.getString(4);
+            String otherEnd =c.getString(5);
+
+            if (otherDate.equals(curDate)){
+                if (!(curEnd.compareTo(otherStart)<=0 || curStart.compareTo(otherEnd)>=0)){
+                    return true;
                 }
             }
         }
-        cursorEvent.close();
-
-        //Check and compare start/ent times for Requested Events
-        Cursor cursorEventRequest = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
-        while(cursorEvent.moveToNext()){
-            //find the start/end times of each event
-            String startEvent = cursorEventRequest.getString(4);
-            String endEvent = cursorEventRequest.getString(5);
-            String otherDate = cursorEventRequest.getString(3);
-
-            if (otherDate.equals(date)){
-                if ((startEvent==curStart)||(endEvent==curEnd)) {
-                    cursorEvent.close();
-                    return false;
-                }
-            }
-    //Haven't tested it yet, just committed for now
-        }
-        cursorEvent.close();
-        return true;
-    }*/
+        return false;
+    }
 
 
 

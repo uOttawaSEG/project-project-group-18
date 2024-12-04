@@ -290,7 +290,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String curStart = null;
         String curEnd = null;
 
-        Cursor cursorEvent= db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_REQUESTED_EVENT_ID + " = ?", new String[] {String.valueOf(eventId)});
+        Cursor cursorEvent= db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_REQUESTED_EVENT_ID + " = ?", new String[] {String.valueOf(eventId)});
 
         if (cursorEvent.moveToFirst()){
             curStart = cursorEvent.getString(4);
@@ -304,7 +304,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         }
 
-        Cursor cursorRegistered = db.rawQuery("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
+        Cursor cursorRegistered = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{attendeeEmail});
         if (conflictChecker(cursorRegistered, curDate,curStart,curEnd)){
             cursorRegistered.close();
             return false;

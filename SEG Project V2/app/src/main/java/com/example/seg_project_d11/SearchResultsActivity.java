@@ -1,5 +1,6 @@
 package com.example.seg_project_d11;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private List<Event> eventList;
     private EditText searchBar; // Search bar input field
     private Button searchButton ; // Button to trigger search
+    private Button back;
 
 
 
@@ -35,6 +37,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         eventListView = findViewById(R.id.eventListView);
         searchBar = findViewById(R.id.searchBar);
         searchButton = findViewById(R.id.searchButton);
+        back = findViewById(R.id.buttonback);
 
         //get the userName and role from the previous intent
         String username = getIntent().getStringExtra("user_name");
@@ -58,5 +61,18 @@ public class SearchResultsActivity extends AppCompatActivity {
                 eventAdapter.notifyDataSetChanged(); // Notify adapter to refresh the ListView
             }
         });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SearchResultsActivity.this, WelcomePage.class);
+                intent.putExtra("user_name", username);
+                intent.putExtra("user_role", userRole);
+                startActivity(intent);
+
+            }
+        });
+
+
     }
 }

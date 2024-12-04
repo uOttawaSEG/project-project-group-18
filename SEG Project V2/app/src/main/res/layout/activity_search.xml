@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <EditText
@@ -50,6 +51,19 @@
             android:layout_height="431dp"
             android:divider="@android:color/darker_gray"
             android:dividerHeight="1dp" />
+
+        <Button
+            android:id="@+id/buttonback"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginBottom="25dp"
+            android:text="Back"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
+
+
 
 </LinearLayout>

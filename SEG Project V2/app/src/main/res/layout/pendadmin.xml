@@ -24,8 +24,8 @@
 
     <ListView
         android:id="@+id/lvPendingList"
-        android:layout_width="307dp"
-        android:layout_height="474dp"
+        android:layout_width="414dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@id/backButton"
         app:layout_constraintEnd_toEndOf="parent"

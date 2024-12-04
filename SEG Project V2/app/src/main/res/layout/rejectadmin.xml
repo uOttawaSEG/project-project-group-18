@@ -26,8 +26,8 @@
     <!-- Back Button positioned at the bottom left -->
     <ListView
         android:id="@+id/lvRejectList"
-        android:layout_width="335dp"
-        android:layout_height="450dp"
+        android:layout_width="415dp"
+        android:layout_height="718dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@id/backButton"
         app:layout_constraintEnd_toEndOf="parent"

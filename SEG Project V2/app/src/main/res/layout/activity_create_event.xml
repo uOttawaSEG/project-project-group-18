@@ -11,10 +11,11 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="415dp"
-        android:layout_height="wrap_content"
+        android:layout_width="406dp"
+        android:layout_height="87dp"
         android:layout_marginTop="16dp"
         android:background="#527689EF"
+        android:gravity="center"
         android:text="New Event                             \Creation"
         android:textAlignment="inherit"
         android:textSize="30dp"

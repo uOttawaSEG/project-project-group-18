@@ -284,7 +284,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return eventRequestStatus;
     }
 
-    public boolean checkEventRegistration(String attendeeEmail, int eventId){
+    /*public boolean checkEventRegistration(String attendeeEmail, int eventId){
         SQLiteDatabase db = this.getReadableDatabase();
         String curDate = null;
         String curStart = null;
@@ -320,12 +320,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursorRequested.close();
         return false;
     }
+*/
+
+    public boolean checkEventRegistration(String attendee, Event event) {
+        String date = event.getDate();
+        String startTime = event.getStartTime();
+        String endTime = event.getStartTime();
 
 
+        ArrayList<Event> registeredEvents = getAttendeeEvents(attendee);
+
+        for (Event registeredevent: registeredEvents){
+            String eventDate = registeredevent.getDate();
+            String eventStartTime = registeredevent.getStartTime();
+            //String eventEndTime = registeredevent.getStartTime();
+
+            if(date.equals(eventDate) && (startTime.equals(eventStartTime) || (Integer.parseInt(eventStartTime) >= Integer.parseInt(startTime) && Integer.parseInt(eventStartTime) <= Integer.parseInt(endTime)))){
+                return false;
+            }
+        }
+        return true;
+    }
 
 
-
-    public boolean conflictChecker(Cursor c, String curDate, String curStart, String curEnd){
+    /*public boolean conflictChecker(Cursor c, String curDate, String curStart, String curEnd){
         while (c.moveToNext()){
             String otherDate =c.getString(3);
             String otherStart =c.getString(4);
@@ -338,7 +356,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
         return false;
-    }
+    }*/
 
 
 

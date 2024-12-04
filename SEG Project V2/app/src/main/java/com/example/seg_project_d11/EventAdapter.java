@@ -134,7 +134,7 @@ public class EventAdapter extends BaseAdapter {
                     dbHelper.addEventRequest(request);
                     events.remove(event);
                     Toast.makeText(context, "Your request is now sent!", Toast.LENGTH_SHORT).show();*/
-                    if (dbHelper.checkEventRegistration(userName,eventID)){
+                    if (dbHelper.checkEventRegistration(userName, event)){
                         RequestEvent request = new RequestEvent(userName,eventID,"Pending");
                         dbHelper.addEventRequest(request);
                         events.remove(event);

@@ -13,6 +13,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 //organizer can see events they create
 public class ViewEvents extends AppCompatActivity {
@@ -51,6 +53,19 @@ public class ViewEvents extends AppCompatActivity {
             events = databaseHelper.getEventsForOrganizer(username, type);
         }else{
             events = databaseHelper.getAvailableEvents();
+            ArrayList<Event> userEvents = databaseHelper.getAttendeeEvents(username);
+
+            Iterator<Event> iterator = events.iterator();
+            while (iterator.hasNext()) {
+                Event event = iterator.next();
+                for(Event registeredEvent : userEvents){
+                    if (registeredEvent.getEventID().equals(event.getEventID())){
+                        Log.d("PRESENT: ", event.getTitle());
+                        iterator.remove();  // Safely removes the current event from the list
+                        break;  // Exit inner loop once the event is found and removed
+                    }
+                }
+            }
         }
 
         //assign value to listOfRequests

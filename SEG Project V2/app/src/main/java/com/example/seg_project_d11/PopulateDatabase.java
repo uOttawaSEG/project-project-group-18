@@ -30,6 +30,7 @@ public class PopulateDatabase {
             Event event4 = new Event("Bake Sale","biggest bake sale", "21/03/2024", "15:00", "21:00", "Ottawa",1 );
             Event event5 = new Event("Music Concert","live music with various bands", "21/03/2025", "15:00", "21:00", "StageB" ,0);
             Event event6 = new Event("Football Game","Canada's Football team games", "21/03/2025", "15:00", "21:00", "stadium C", 1);
+            Event event7 = new Event("Soccer Game","Canada's soccer team games", "04/12/2024", "15:00", "21:00", "stadium C", 1);
 
             databaseHelper.addEvent(event1, org1.getEmail());
             databaseHelper.addEvent(event2, org1.getEmail());
@@ -37,6 +38,7 @@ public class PopulateDatabase {
             databaseHelper.addEvent(event4, org1.getEmail());
             databaseHelper.addEvent(event5, org1.getEmail());
             databaseHelper.addEvent(event6, org1.getEmail());
+            databaseHelper.addEvent(event7, org1.getEmail());
 
         }
 

@@ -18,7 +18,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EventAdapter_Attendee extends BaseAdapter {
@@ -90,14 +92,33 @@ public class EventAdapter_Attendee extends BaseAdapter {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (events.contains(event)){
-                    dbHelper.deleteEventRequest(userName, (int) event.getEventID());
-                    events.remove(event);
-                    Toast.makeText(context, "Event is deleted!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Event has already been deleted", Toast.LENGTH_SHORT).show();
+                Date today = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                String formattedDate = sdf.format(today);
+
+                String[] formattedDate_split = formattedDate.split("/");
+                int day_today = Integer.parseInt(formattedDate_split[2]);
+                int month_today = Integer.parseInt(formattedDate_split[1]);
+                int year_today = Integer.parseInt(formattedDate_split[0]);
+
+                String date = event.getDate();
+                String[] date_split = date.trim().split("/");
+                int day = Integer.parseInt(date_split[0]);
+                int month = Integer.parseInt(date_split[1]);
+                int year = Integer.parseInt(date_split[2]);
+
+                if(date.equals(formattedDate) || (year == year_today && month_today == month && day_today+1 >= day)){
+                    Toast.makeText(context, "Your request cannot be canceled, event is within 24hours." , Toast.LENGTH_SHORT).show();
+                }else{
+                    if (events.contains(event)){
+                        dbHelper.deleteEventRequest(userName, (int) event.getEventID());
+                        events.remove(event);
+                        Toast.makeText(context, "Event is deleted!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Event has already been deleted", Toast.LENGTH_SHORT).show();
+                    }
+                    notifyDataSetChanged();
                 }
-                notifyDataSetChanged();
             }
         });
 

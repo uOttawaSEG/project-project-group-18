@@ -447,21 +447,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
     // takes in an Attendee email, return list of their requested events
-    public List<Event> getAttendeeEvents(String email) {
-        List<Event> events = new ArrayList<>();
-        List<Integer> eventsID = new ArrayList<>();
+    public ArrayList<Event> getAttendeeEvents(String email) {
+        Log.i("DatabaseHelper", "begginig " +  email);
+        ArrayList<Event> events = new ArrayList<>();
+        ArrayList<Integer> eventsID = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        /*String query = "SELECT e.* " +
-                "FROM " + TABLE_EVENT_REQUESTS + " er " +
-                "INNER JOIN " + TABLE_EVENTS + " e ON er." + COLUMN_REQUESTED_EVENT_ID + " = e." + COLUMN_EVENT_ID + " " +
-                "WHERE er." + COLUMN_ATTENDEE_EMAIL + " = ? AND er." + COLUMN_REQUEST_STATUS + " = ?";
-*/
-        //Cursor cursor = db.rawQuery(query, new String[]{email, "Pending"});
-
-        Cursor cursorRequest = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ? ", new String[]{email});
-
+        Cursor cursorRequest = db.rawQuery("SELECT * FROM " + TABLE_EVENT_REQUESTS + " WHERE " + COLUMN_ATTENDEE_EMAIL + " = ?", new String[]{email});
+        Log.i("DatabaseHelper", String.valueOf(cursorRequest.moveToFirst()));
         if (cursorRequest.moveToFirst()) {
+            Log.i("DatabaseHelper", "first part" );
             do {
                 int requestEventID = cursorRequest.getInt(2);
                 eventsID.add(requestEventID);
@@ -473,6 +468,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursorRequest.close();
 
         for (int i = 0; i < eventsID.size(); i++){
+            Log.i("DatabaseHelper", "eventsID" );
             String query = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENT_ID + " = ?";
             Cursor cursorEvent = db.rawQuery(query, new String[]{String.valueOf(eventsID.get(i))});
 
@@ -486,15 +482,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String endTime= cursorEvent.getString(5);
                     String eventAddress= cursorEvent.getString(6);
                     int choice = cursorEvent.getInt(8);
-               /* @SuppressLint("Range")int eventID = cursor.getInt(cursor.getColumnIndex("event_id"));
-                @SuppressLint("Range")String title = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_TITLE));
-                @SuppressLint("Range") String de
-                scription = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DESCRIPTION));
-                @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_DATE));
-                @SuppressLint("Range") String startTime = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_START_TIME));
-                @SuppressLint("Range") String endTime = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_END_TIME));
-                @SuppressLint("Range") String eventAddress = cursor.getString(cursor.getColumnIndex(COLUMN_EVENT_ADDRESS));
-                @SuppressLint("Range") int choice = cursor.getInt(cursor.getColumnIndex(COLUMN_EVENT_CHOICE));*/
                     Event event = new Event(eventID, title, description, date, startTime, endTime, eventAddress, choice);
                     events.add(event);
 
@@ -505,6 +492,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursorEvent.close();
         }
         db.close();
+
+        Log.i("DatabaseHelper", "GetAttendeeEvents" );
+        for (Event event: events){
+            Log.i("Requested Event", event.getTitle());
+        }
+
 
         return events;
     }

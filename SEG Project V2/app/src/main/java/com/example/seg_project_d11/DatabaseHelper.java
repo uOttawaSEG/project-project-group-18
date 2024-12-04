@@ -644,12 +644,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cursor findUser = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + COLUMN_EMAIL + " = ?", new String[]{email});
 
-
-        //check if there exists a staus/if user even exits:
+        /*//check if there exists a staus/if user even exits:
         if (findUser.moveToFirst()){
             status = findUser.getString(8);;
 
-        }
+        }*/
+        findUser.moveToFirst();
+        status = findUser.getString(8);
         findUser.close();
         return status;
 
